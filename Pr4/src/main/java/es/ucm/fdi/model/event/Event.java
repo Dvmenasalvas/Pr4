@@ -1,11 +1,11 @@
 package es.ucm.fdi.model.event;
 
-public class Event {
+public abstract class Event {
 	int time;
 	
-	public Event() {
-		// TODO Auto-generated constructor stub
+	public int getTime() {
+		return time;
 	}
 	
-	public void execute() {}
+	public abstract void execute();
 }

@@ -18,30 +18,6 @@ public class Junction extends SimObject{
 	public void avanza() {
 		
 	}
-	
-	public String generaInforme() {
-		String informe = "[junction_report]\n";
-		/*
-		informe += "id = " + '\n';
-		informe += "time = " + '\n';
-		informe += "queues = ";
-		for(Road r : colas.keySet()) {
-			informe += "(" + r.getId();
-			if(r.equals(semaforoVerde)) {
-				informe += ",green,[";
-			} else {
-				informe += ",red,[";
-			}
-			for(Vehicle v : colas.get(r)) {
-				informe += v.getId() + ",";
-			}
-			informe = informe.substring(0, informe.length() - 2);
-			informe += "]),";
-		}
-		informe = informe.substring(0, informe.length() - 2);
-		*/
-		return informe;
-	}
 
 	public class CarreteraEntrante{
 		private boolean semaforo;
@@ -56,13 +32,11 @@ public class Junction extends SimObject{
 
 	@Override
 	protected void fillReportDetails(Map<String, String> out) {
-		// TODO Auto-generated method stub
-		
+		//Necesitamos colas
 	}
 
 	@Override
 	protected String getReportHeader() {
-		// TODO Auto-generated method stub
-		return null;
+		return "junction_report";
 	}
 }
