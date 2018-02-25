@@ -1,12 +1,22 @@
-package es.ucm.fdi.model.SimulatedObjects;
+package es.ucm.fdi.model.simulatedobject;
 
 public class Vehicle {
 	private int  velMaxima, velActual;
-	private Road carretera;
-	private Junction[] itinerario;
+	private Road road;
+	private Road[] itinerario;
+	private int posItinerario;
 	private int localizacion;
 	private int tiempoAveria;
 	private boolean haLlegado;
+	private String id;
+	
+	public Road getRoad() {
+		return road;
+	}
+	
+	public String getId() {
+		return id;
+	}
 	
 	public int getTiempoAveria() {
 		return tiempoAveria;
@@ -33,26 +43,31 @@ public class Vehicle {
 		informe += "kilometrage = " + '\n';
 		informe += "faulty = " + tiempoAveria + '\n';
 		//Comprobar si ha llegado
-		informe += "location = (" + carretera + "," + localizacion + ")";
+		informe += "location = (" + road + "," + localizacion + ")";
 		return informe;
 	}
 	
 	public void avanza(){
-		if(tiempoAveria > 0) tiempoAveria++;
-		else {
-			//Comprobar si cruze y llamar moverASiguienteCarretera
-			localizacion += velActual;
-			if(localizacion > carretera.getLongitud()) {
-				localizacion = carretera.getLongitud();
-				//Entra cola cruce
+		if(tiempoAveria > 0) {
+			tiempoAveria--;
+		} else {
+			if(localizacion < road.getLongitud()) {
+				localizacion += velActual;
+				if(localizacion > road.getLongitud()) {
+					localizacion = road.getLongitud();
+					//Entra cola cruce
+				}
 			}
 		}
 	}
 	
-	private void moverASiguienteCarretera () {
-		//Asigna nueva carretera
-		localizacion = 0;
-		//If ultima carretera
-		haLlegado = true;
+	public void moverASiguienteCarretera () {
+		posItinerario++;
+		if(posItinerario < itinerario.length) {
+			localizacion = 0;
+			road = itinerario[posItinerario];
+		} else {
+			haLlegado = true;
+		}
 	}
 }

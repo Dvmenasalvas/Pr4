@@ -1,4 +1,4 @@
-package es.ucm.fdi.model.SimulatedObjects;
+package es.ucm.fdi.model.simulatedobject;
 
 import java.util.ArrayList;
 
@@ -9,6 +9,15 @@ public class Road {
 	private int maxVel;
 	private int velBase;
 	private MultiTreeMap<Integer ,Vehicle> vehiculos;
+	private String id;
+	
+	public String getId() {
+		return id;
+	}
+	
+	public int getLongitud() {
+		return longitud;
+	}
 	
 	public void entraVehiculo(Vehicle v){
 		vehiculos.putValue(0, v);
@@ -43,8 +52,9 @@ public class Road {
 		informe += "time = " + '\n';
 		informe += "state = ";
 		for(Vehicle v : vehiculos.innerValues()) {
-			informe += "(" + cocheid + "," + v.getLocalizacion() + ")," ;
+			informe += "(" + v.getId() + "," + v.getLocalizacion() + "),";
 		}
+		informe = informe.substring(0, informe.length() - 2);
 		return informe;
 	}
 }
