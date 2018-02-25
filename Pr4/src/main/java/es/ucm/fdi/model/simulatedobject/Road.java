@@ -10,6 +10,7 @@ public class Road {
 	private int velBase;
 	private MultiTreeMap<Integer ,Vehicle> vehiculos;
 	private String id;
+	private Junction
 	
 	public String getId() {
 		return id;
