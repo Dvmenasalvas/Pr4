@@ -1,6 +1,8 @@
 package es.ucm.fdi.model.simulatedobject;
 
-public class Vehicle {
+import java.util.Map;
+
+public class Vehicle extends SimObject{
 	private int  velMaxima, velActual;
 	private Road road;
 	private Road[] itinerario;
@@ -8,14 +10,9 @@ public class Vehicle {
 	private int localizacion;
 	private int tiempoAveria;
 	private boolean haLlegado;
-	private String id;
 	
-	public Road getRoad() {
-		return road;
-	}
-	
-	public String getId() {
-		return id;
+	public String getRoadId() {
+		return road.getId();
 	}
 	
 	public int getTiempoAveria() {
@@ -53,9 +50,10 @@ public class Vehicle {
 		} else {
 			if(localizacion < road.getLongitud()) {
 				localizacion += velActual;
-				if(localizacion > road.getLongitud()) {
+				if(localizacion > road.getLongitud()) {		//Entra al cruze
 					localizacion = road.getLongitud();
-					//Entra cola cruce
+					road.getJunction().entraVehiculo(this);
+					road = null;
 				}
 			}
 		}
@@ -69,5 +67,17 @@ public class Vehicle {
 		} else {
 			haLlegado = true;
 		}
+	}
+
+	@Override
+	protected void fillReportDetails(Map<String, String> out) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	protected String getReportHeader() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

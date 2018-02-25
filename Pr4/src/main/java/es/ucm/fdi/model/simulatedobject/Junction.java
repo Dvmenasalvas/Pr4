@@ -4,23 +4,24 @@ import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Queue;
 
 import es.ucm.fdi.util.MultiTreeMap;
 
-public class Junction {
-	private ArrayList<CarreteraEntrante> carreteras;
-	private String id;
+public class Junction extends SimObject{
+	private Map<String, CarreteraEntrante> carreteras;
 
 	public void entraVehiculo(Vehicle v) {
-		carreteras.get(v.getRoad()).entraVehiculo(v);
+		carreteras.get(v.getRoadId()).entraVehiculo(v);
 	}
 	
 	public void avanza() {
-		carreteras.g
+		
 	}
 	
 	public String generaInforme() {
 		String informe = "[junction_report]\n";
+		/*
 		informe += "id = " + '\n';
 		informe += "time = " + '\n';
 		informe += "queues = ";
@@ -38,29 +39,30 @@ public class Junction {
 			informe += "]),";
 		}
 		informe = informe.substring(0, informe.length() - 2);
+		*/
 		return informe;
 	}
 
-	private class CarreteraEntrante{
+	public class CarreteraEntrante{
 		private boolean semaforo;
-		private ArrayDeque<Vehicle> vehiculos;
+		private Queue<Vehicle> vehiculos;
 		private String carreteraId;
 		
-		public boolean getSemaforo() {
-			return semaforo;
-		}
-		
-		public void verde() {
-			semaforo = true;
-		}
-		
-		public void rojo() {
-			semaforo = false;
-		}
-		
 		public void entraVehiculo(Vehicle v) {
-			vehiculos.push(v);
+			vehiculos.add(v);
 		}
 		
+	}
+
+	@Override
+	protected void fillReportDetails(Map<String, String> out) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	protected String getReportHeader() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }
