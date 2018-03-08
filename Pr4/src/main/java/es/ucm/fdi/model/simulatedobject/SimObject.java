@@ -3,7 +3,7 @@ package es.ucm.fdi.model.simulatedobject;
 import java.util.Map;
 
 public abstract class SimObject {
-	private String id;
+	String id;
 	
 	public String getId() {
 		return id;
@@ -23,4 +23,6 @@ public abstract class SimObject {
 	public boolean equals(SimObject o) {
 		return id == o.getId();
 	}
+	
+	//Hashcode
 }

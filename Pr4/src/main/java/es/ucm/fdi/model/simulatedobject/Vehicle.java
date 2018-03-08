@@ -1,26 +1,44 @@
 package es.ucm.fdi.model.simulatedobject;
 
+import java.util.List;
 import java.util.Map;
 
 public class Vehicle extends SimObject{
 	private int  maxSpeed, actSpeed;
 	private Road road;
-	private Road[] itinerary;
+	private List<Junction> itinerary;
 	private int posItinerary;
 	private int location;
 	private int kilometrage;
 	private int faultyTime;
 	private boolean arrived;
 	
-	public String getRoadId() {
-		return road.getId();
+	public Vehicle(String id, int maxSpeed, List<Junction> itinerary) {
+		this.id = id;
+		this.maxSpeed = maxSpeed;
+		this.itinerary = itinerary;
+		road = itinerary.get(0).carreteraSaliente(itinerary.get(1));
+		road.entraVehiculo(this);
+		posItinerary = 0;
+		location = 0;
+		kilometrage = 0;
+		faultyTime = 0;
+		arrived = false;
+	}
+	
+	public Road getRoad() {
+		return road;
+	}
+	
+	public boolean averiado() {
+		return faultyTime > 0;
 	}
 	
 	public int getTiempoAveria() {
 		return faultyTime;
 	}
 	
-	public int getLocalizacion() {
+	public int getLocation() {
 		return location;
 	}
 	
@@ -33,22 +51,17 @@ public class Vehicle extends SimObject{
 		else actSpeed = v;
 	}
 	
-	public String generalInforme(){
-		String informe = "[vehicle_report]\n";
-	
-		return informe;
-	}
-	
 	public void avanza(){
 		if(faultyTime > 0) {
 			faultyTime--;
 		} else {
 			if(location < road.getLongitud()) {
-				if(location + actSpeed > road.getLongitud()) {		//Entra al cruze
+				if(location + actSpeed >= road.getLongitud()) {		//Entra al cruze
 					kilometrage += road.getLongitud() - location;
 					location = road.getLongitud();
-					road.getJunction().entraVehiculo(this);
+					road.getDest().entraVehiculo(this);
 					road = null;
+					posItinerary++;
 				} else {
 					kilometrage += actSpeed;
 					location += actSpeed;
@@ -58,10 +71,9 @@ public class Vehicle extends SimObject{
 	}
 	
 	public void moverASiguienteCarretera () {
-		posItinerary++;
-		if(posItinerary < itinerary.length) {
+		if(posItinerary < itinerary.size() - 1) {
 			location = 0;
-			road = itinerary[posItinerary];
+			road = itinerary.get(posItinerary).carreteraSaliente(itinerary.get(posItinerary - 1));
 		} else {
 			arrived = true;
 		}

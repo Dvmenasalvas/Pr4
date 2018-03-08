@@ -1,6 +1,8 @@
 package es.ucm.fdi.model.event;
 
 import es.ucm.fdi.ini.IniSection;
+import es.ucm.fdi.model.RoadMap;
+import es.ucm.fdi.model.simulatedobject.Junction;
 
 public class NewJunction extends Event {
 	private String id;
@@ -10,14 +12,16 @@ public class NewJunction extends Event {
 		this.id = id;
 	}
 	
+	public NewJunction() {
+		// TODO Auto-generated constructor stub
+	}
+
 	@Override
-	public void execute() {
-		// TODO Auto-generated method stub
-		
+	public void execute(RoadMap simObjects) {
+		simObjects.addJunction(new Junction(id));
 	}
 	
-	public class Builder implements EventBuilder{
-
+	public class Builder implements Event.Builder{
 		@Override
 		public Event parse(IniSection sec) {
 			if(!sec.getTag().equals("new_junction")) return null;

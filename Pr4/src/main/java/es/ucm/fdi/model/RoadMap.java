@@ -8,17 +8,25 @@ public class RoadMap {
 	// búsqueda por ids, unicidad
 	private Map<String, SimObject> simObjects;
 	// listados reales
-	private List<Junction> junctions = new ArrayList<Junction>();
-	private List<Road> roads = new ArrayList<Road>();
-	private List<Vehicle> vehicles = new ArrayList<Vehicle>();
+	private List<Junction> junctions;
+	private List<Road> roads;
+	private List<Vehicle> vehicles;
 	// listados read-only, via Collections.unmodifiableList();
 	private List<Junction> junctionsRO;
 	private List<Road> roadsRO;
-	private List<Vehicle> vehiclesRO; 
+	private List<Vehicle> vehiclesRO;
 	
 	
 	public RoadMap() {
-		// TODO Auto-generated constructor stub
+		simObjects = new HashMap<String, SimObject>();
+		junctions = new ArrayList<Junction>();
+		roads = new ArrayList<Road>();
+		vehicles = new ArrayList<Vehicle>();
+		// listados read-only, via Collections.unmodifiableList();
+		junctionsRO = Collections.unmodifiableList(junctions);
+		roadsRO = Collections.unmodifiableList(roads);
+		vehiclesRO = Collections.unmodifiableList(vehicles);
+		
 	}
 	
 	// búsqueda por ids, unicidad
@@ -54,29 +62,35 @@ public class RoadMap {
 		return vehiclesRO;
 	}
 	
-	// inserción de objetos (package-protected)
-	void addJunction(Junction j) {
+	// inserción de objetos (solo se deben llamar desde execute)
+	public void addJunction(Junction j) {
 		if(!simObjects.containsKey(j.getId())) {
 			simObjects.put(j.getId(), j);
 			junctions.add(j);
-			junctionsRO = Collections.unmodifiableList(junctions);
 		}
 	}
 	
-	void addRoad(Road r) {
+	public void addRoad(Road r) {
 		if(!simObjects.containsKey(r.getId())) {
 			simObjects.put(r.getId(), r);
 			roads.add(r);
-			roadsRO = Collections.unmodifiableList(roads);
+			r.getSrc().añadirCarreteraSaliente(r,r.getDest());
+			r.getDest().añadirCarreteraEntrante(r);
 		}
 	}
 	
-	void addVehicle(Vehicle v) {
+	public void addVehicle(Vehicle v) {
 		if(!simObjects.containsKey(v.getId())) {
 			simObjects.put(v.getId(), v);
 			vehicles.add(v);
-			vehiclesRO = Collections.unmodifiableList(vehicles);
 		}
 	}
+	//Metodo para averiar coches
+	public void averiar(String id, int t) {
+		if(getVehicle(id) != null) {
+			getVehicle(id).setTiempoAveria(t);
+		}
+	}
+	
 	
 }

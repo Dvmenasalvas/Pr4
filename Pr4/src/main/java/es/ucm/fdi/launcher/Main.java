@@ -1,9 +1,11 @@
 package es.ucm.fdi.launcher;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FilenameFilter;
 import java.io.IOException;
+import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;
 
 import org.apache.commons.cli.CommandLine;
@@ -14,9 +16,13 @@ import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
 
+import es.ucm.fdi.control.Controller;
 import es.ucm.fdi.ini.Ini;
+import es.ucm.fdi.ini.IniSection;
+import es.ucm.fdi.model.TrafficSimulator;
+import es.ucm.fdi.model.event.Event;
 
-public class ExampleMain {
+public class Main {
 
 	private final static Integer _timeLimitDefaultValue = 10;
 	private static Integer _timeLimit = null;
@@ -75,7 +81,7 @@ public class ExampleMain {
 	private static void parseHelpOption(CommandLine line, Options cmdLineOptions) {
 		if (line.hasOption("h")) {
 			HelpFormatter formatter = new HelpFormatter();
-			formatter.printHelp(ExampleMain.class.getCanonicalName(), cmdLineOptions, true);
+			formatter.printHelp(Main.class.getCanonicalName(), cmdLineOptions, true);
 			System.exit(0);
 		}
 	}
@@ -146,9 +152,22 @@ public class ExampleMain {
 	 * @throws IOException
 	 */
 	private static void startBatchMode() throws IOException {
-		// TODO
 		// Add your code here. Note that the input argument where parsed and stored into
 		// corresponding fields.
+		
+		//Leemos el fichero .ini
+		File file = new File(_inFile);
+		InputStream s = new FileInputStream(file);
+		Ini ini = new Ini(s);
+		
+		//Insertamos todos los eventos
+		TrafficSimulator tf = new TrafficSimulator();
+		for(IniSection sec : ini.getSections()) {
+			Event e = Controller.parseSec(sec);
+			tf.insertaEvento(e);
+		}
+		
+		tf.ejecuta(_timeLimit, System.out);
 	}
 
 	private static void start(String[] args) throws IOException {
@@ -173,6 +192,7 @@ public class ExampleMain {
 
 		// Call start to start the simulator from command line, etc.
 		start(args);
+		test("/Users/Daniel/git/Pr4Local/Pr4/src/main/resources/examples/basic");
 
 	}
 
