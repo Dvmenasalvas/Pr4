@@ -4,7 +4,8 @@ import java.util.List;
 import java.util.Map;
 
 public class Vehicle extends SimObject{
-	private int  maxSpeed, actSpeed;
+	protected int  maxSpeed;
+	protected int actSpeed;
 	private Road road;
 	private List<Junction> itinerary;
 	private int posItinerary;
@@ -26,6 +27,10 @@ public class Vehicle extends SimObject{
 		arrived = false;
 	}
 	
+	public boolean arrived() {
+		return road == null;
+	}
+	
 	public Road getRoad() {
 		return road;
 	}
@@ -44,37 +49,45 @@ public class Vehicle extends SimObject{
 	
 	public void setTiempoAveria(int t) {
 		faultyTime += t;
+		actSpeed = 0;
 	}
 	
 	public void setVelocidadActual(int v){
-		if(v > maxSpeed) actSpeed = maxSpeed;
-		else actSpeed = v;
+		if(faultyTime == 0) {
+			if(v > maxSpeed) actSpeed = maxSpeed;
+			else actSpeed = v;
+		}
 	}
 	
 	public void avanza(){
 		if(faultyTime > 0) {
 			faultyTime--;
 		} else {
-			if(location < road.getLongitud()) {
-				if(location + actSpeed >= road.getLongitud()) {		//Entra al cruze
-					kilometrage += road.getLongitud() - location;
-					location = road.getLongitud();
-					road.getDest().entraVehiculo(this);
-					road = null;
-					posItinerary++;
-				} else {
-					kilometrage += actSpeed;
-					location += actSpeed;
+			if(road != null) {
+				if(location < road.getLongitud()) {
+					if(location + actSpeed >= road.getLongitud()) {		//Entra al cruze
+						kilometrage += road.getLongitud() - location;
+						location = road.getLongitud();
+						actSpeed = 0;
+						road.getDest().entraVehiculo(this);
+					} else {
+						kilometrage += actSpeed;
+						location += actSpeed;
+					}
 				}
 			}
 		}
 	}
 	
 	public void moverASiguienteCarretera () {
+		posItinerary++;
+		road.saleVehiculo(this, location);
 		if(posItinerary < itinerary.size() - 1) {
 			location = 0;
-			road = itinerary.get(posItinerary).carreteraSaliente(itinerary.get(posItinerary - 1));
+			road = itinerary.get(posItinerary).carreteraSaliente(itinerary.get(posItinerary + 1));
+			road.entraVehiculo(this);
 		} else {
+			road = null;
 			arrived = true;
 		}
 	}
@@ -84,7 +97,11 @@ public class Vehicle extends SimObject{
 		out.put("speed", String.valueOf(actSpeed));
 		out.put("kilometrage", String.valueOf(kilometrage));
 		out.put("faulty", String.valueOf(faultyTime));
-		out.put("location", "(" + road.getId() + "," + String.valueOf(location) + ")");
+		if(road == null) {
+			out.put("location", "arrived");
+		} else {
+			out.put("location", "(" + road.getId() + "," + String.valueOf(location) + ")");
+		}
 	}
 
 	@Override

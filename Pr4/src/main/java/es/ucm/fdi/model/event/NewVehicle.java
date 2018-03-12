@@ -10,9 +10,9 @@ import es.ucm.fdi.model.simulatedobject.Road;
 import es.ucm.fdi.model.simulatedobject.Vehicle;
 
 public class NewVehicle extends Event {
-	private String id;
-	private int maxSpeed;
-	private List<String> itinerary;
+	protected String id;
+	protected int maxSpeed;
+	protected List<String> itinerary;
 	
 	public NewVehicle(int time, String id, int maxSpeed, List<String> itinerary) {
 		this.time = time;
@@ -27,11 +27,15 @@ public class NewVehicle extends Event {
 
 	@Override
 	public void execute(RoadMap simObjects) {
+		simObjects.addVehicle(new Vehicle(id, maxSpeed, toJunction(itinerary, simObjects)));
+	}
+	
+	List<Junction> toJunction(List<String> l, RoadMap simObjects){
 		List<Junction> it = new ArrayList<Junction>();
-		for(String id : itinerary) {
+		for(String id : l) {
 			it.add(simObjects.getJunction(id));
 		}
-		simObjects.addVehicle(new Vehicle(id, maxSpeed, it));
+		return it;
 	}
 	
 	public class Builder implements Event.Builder{

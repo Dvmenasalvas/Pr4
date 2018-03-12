@@ -30,6 +30,22 @@ public abstract class Event {
 			}
 		}
 		
+		public default double parseDouble(IniSection sec, String key, double def) {
+			if(sec.getValue(key) == null) {
+				return def;
+			} else {
+				return Double.parseDouble(sec.getValue(key));
+			}
+		}
+		
+		public default long parseLong(IniSection sec, String key, long def) {
+			if(sec.getValue(key) == null) {
+				return def;
+			} else {
+				return Long.parseLong(sec.getValue(key));
+			}
+		}
+		
 		public default List<String> parseIdList(IniSection sec, String key) {
 			String ids[] = sec.getValue(key).split("[, ]+"); 
 			List<String> listaIds = Arrays.asList(ids);

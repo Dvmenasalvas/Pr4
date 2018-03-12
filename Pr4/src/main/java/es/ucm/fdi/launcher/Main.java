@@ -3,6 +3,7 @@ package es.ucm.fdi.launcher;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.InputStream;
@@ -131,7 +132,7 @@ public class Main {
 		});
 
 		for (File file : files) {
-			test(file.getAbsolutePath(), file.getAbsolutePath() + ".out", file.getAbsolutePath() + ".eout",100);
+			test(file.getAbsolutePath(), file.getAbsolutePath() + ".out", file.getAbsolutePath() + ".eout",10);
 		}
 
 	}
@@ -167,7 +168,7 @@ public class Main {
 			tf.insertaEvento(e);
 		}
 		
-		tf.ejecuta(_timeLimit, System.out);
+		tf.ejecuta(_timeLimit, new FileOutputStream(_outFile));
 	}
 
 	private static void start(String[] args) throws IOException {
@@ -191,9 +192,9 @@ public class Main {
 	    //	test("resources/examples/events/basic");
 
 		// Call start to start the simulator from command line, etc.
-		start(args);
-		test("/Users/Daniel/git/Pr4Local/Pr4/src/main/resources/examples/basic");
-
+		//test("/Users/Daniel/git/Pr4Local/Pr4/src/main/resources/examples/basic");
+		//start(args);
+		test("src/main/resources/basic");
 	}
 
 }

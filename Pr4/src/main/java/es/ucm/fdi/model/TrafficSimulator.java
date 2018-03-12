@@ -3,9 +3,12 @@ package es.ucm.fdi.model;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 
+import es.ucm.fdi.ini.Ini;
 import es.ucm.fdi.ini.IniSection;
 import es.ucm.fdi.model.event.Event;
 import es.ucm.fdi.model.simulatedobject.Junction;
@@ -32,9 +35,11 @@ public class TrafficSimulator {
 	
 	public void ejecuta(int pasosSimulacion, OutputStream out) throws IOException {
 		int limiteTiempo = time + pasosSimulacion;
-		while(time < limiteTiempo) {
-			for(Event e : events.get(time)) {		//Ejecuta eventos correspondientes a este tiempo
-				e.execute(simObjects);
+ 		while(time < limiteTiempo) {
+			if(events.containsKey(time)) {
+				for(Event e : events.get(time)) {		//Ejecuta eventos correspondientes a este tiempo
+					e.execute(simObjects);
+				}
 			}
 			
 			for(Road r : simObjects.getRoads()) {		//Invoca a avanzar en carreteras
@@ -59,25 +64,28 @@ public class TrafficSimulator {
 	
 	private void writeObjects(List<? extends SimObject> objects, OutputStream out) throws IOException {
 		if(out != null) {
-			Map<String, String> report = new HashMap<String, String>();	
+			Map<String, String> report = new LinkedHashMap<String, String>();	//Mantenemos orden de insercion
+			Ini rep = new Ini();
 			for(SimObject o : objects) {
 				o.report(time, report);
-				writeReport(report, out);
-			
+				rep.addsection(writeReport(report, out));
+			}
+			try {
+				rep.store(out);
+			} catch (IOException e1) {
+				throw new IOException("Error al escribir " + rep, e1);
 			}
 		}
 	}
 	
-	private void writeReport(Map<String, String> report, OutputStream out) throws IOException {
+	private IniSection writeReport(Map<String, String> report, OutputStream out) throws IOException {
 		IniSection sec = new IniSection(report.get(""));
 		for(Map.Entry<String,String> e : report.entrySet()) {
+			if(!e.getKey().equals("")) {
 				sec.setValue(e.getKey(), e.getValue());
+			}
 		}
-		try {
-			sec.store(out);
-		} catch (IOException e1) {
-			throw new IOException("Error al escribir " + report.get("") + " con id " + report.get("id"), e1);
-		}
+		return sec;
 	}
 
 }

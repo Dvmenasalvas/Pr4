@@ -5,11 +5,11 @@ import es.ucm.fdi.model.RoadMap;
 import es.ucm.fdi.model.simulatedobject.Road;
 
 public class NewRoad extends Event {
-	private String id;
-	private String src;
-	private String dest;
-	private int maxSpeed;
-	private int length;
+	String id;
+	String src;
+	String dest;
+	int maxSpeed;
+	int length;
 
 	public NewRoad(int time, String id, String src, String dest, int maxSpeed, int length) {
 		this.time = time;

@@ -1,6 +1,7 @@
 package es.ucm.fdi.util;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * A TreeMap that supports multiple values for the same key, via ArrayLists.

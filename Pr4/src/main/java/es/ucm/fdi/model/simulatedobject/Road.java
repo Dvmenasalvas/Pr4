@@ -6,8 +6,8 @@ import es.ucm.fdi.util.MultiTreeMap;
 
 public class Road extends SimObject{
 	private int length;
-	private int maxSpeed;
-	private MultiTreeMap<Integer, Vehicle> vehicles;
+	protected int maxSpeed;
+	protected MultiTreeMap<Integer, Vehicle> vehicles;
 	private Junction src;
 	private Junction dest;
 	
@@ -17,7 +17,7 @@ public class Road extends SimObject{
 		this.dest = dest;
 		this.maxSpeed = maxSpeed;
 		this.length = length; 
-		vehicles = new MultiTreeMap<Integer, Vehicle>((a, b) -> a - b);
+		vehicles = new MultiTreeMap<Integer, Vehicle>((a, b) -> b - a);
 	}
 	
 	public Junction getSrc() {
@@ -36,30 +36,51 @@ public class Road extends SimObject{
 		vehicles.putValue(0, v);
 	}
 	
-	public void saleVehiculo(Vehicle v){
-		vehicles.removeValue(length, v);
+	public void saleVehiculo(Vehicle v, int loc){
+		vehicles.removeValue(loc, v);
+		if(vehicles.get(loc).size() == 0) {
+			vehicles.remove(loc);
+		}
 	}
 	
 	public void avanza(){
-		int velBase = (int) Math.min(maxSpeed, maxSpeed / Math.max(vehicles.sizeOfValues(), 1));
-		int factorReduccion = 1;
-		MultiTreeMap<Integer,Vehicle> actualizados = new MultiTreeMap<Integer, Vehicle>((a, b) -> a - b);
+		int velBase = velocidadBase();
+		int averiados = 0;
+		MultiTreeMap<Integer,Vehicle> actualizados = new MultiTreeMap<Integer, Vehicle>((a, b) -> b - a);
 		
 		for(Vehicle v : vehicles.innerValues()) {
-			v.setVelocidadActual(velBase / factorReduccion);
+			if(v.getLocation() < length) {				//Si el vehiculo no esta en un cruze, actualizamos su velocidad
+				v.setVelocidadActual(velBase / factorReduccion(averiados));
+			}
 			v.avanza();
-			if(v.averiado()) factorReduccion = 2;
-			actualizados.putValue(v.getLocation(), v);
+			if(v.averiado()) averiados++;
+			if(!v.arrived()) {
+				actualizados.putValue(v.getLocation(), v);
+			}
 		}
 		vehicles = actualizados;
+	}
+	
+	int factorReduccion(int averiados) {
+		if(averiados == 0) return 1;
+		else return 2;
+	}
+	
+	int velocidadBase() {
+		return (int) Math.min(maxSpeed, maxSpeed / Math.max(vehicles.sizeOfValues(), 1) + 1);
 	}
 
 	@Override
 	protected void fillReportDetails(Map<String, String> out) {
-		out.put("src", src.getId());
-		out.put("dest", dest.getId());
-		out.put("max_speed", String.valueOf(maxSpeed));
-		out.put("length", String.valueOf(length));
+		String state = "";
+		for(Vehicle v : vehicles.innerValues()) {
+			state += "(" + v.getId() + "," + v.getLocation() + "),";
+		}
+		if(vehicles.size() > 0) {
+			
+			state = state.substring(0, state.length() - 1);
+		}
+		out.put("state", state);
 	}
 
 	@Override
