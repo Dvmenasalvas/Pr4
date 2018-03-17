@@ -18,6 +18,7 @@ import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
 
 import es.ucm.fdi.control.Controller;
+import es.ucm.fdi.exceptions.SimulationException;
 import es.ucm.fdi.ini.Ini;
 import es.ucm.fdi.ini.IniSection;
 import es.ucm.fdi.model.TrafficSimulator;
@@ -116,7 +117,7 @@ public class Main {
 	 * 
 	 * @throws IOException
 	 */
-	private static void test(String path) throws IOException {
+	static boolean test(String path) throws IOException, SimulationException{
 
 		File dir = new File(path);
 
@@ -130,14 +131,16 @@ public class Main {
 				return name.endsWith(".ini");
 			}
 		});
-
+		
+		boolean result = true;
 		for (File file : files) {
-			test(file.getAbsolutePath(), file.getAbsolutePath() + ".out", file.getAbsolutePath() + ".eout",10);
+			result = result && test(file.getAbsolutePath(), file.getAbsolutePath() + ".out", file.getAbsolutePath() + ".eout",10);
 		}
-
+		
+		return result;
 	}
 
-	private static void test(String inFile, String outFile, String expectedOutFile, int timeLimit) throws IOException {
+	private static boolean test(String inFile, String outFile, String expectedOutFile, int timeLimit) throws IOException {
 		_outFile = outFile;
 		_inFile = inFile;
 		_timeLimit = timeLimit;
@@ -145,6 +148,7 @@ public class Main {
 		boolean equalOutput = (new Ini(_outFile)).equals(new Ini(expectedOutFile));
 		System.out.println("Result for: '" + _inFile + "' : "
 				+ (equalOutput ? "OK!" : ("not equal to expected output +'" + expectedOutFile + "'")));
+		return equalOutput;
 	}
 
 	/**
@@ -176,7 +180,7 @@ public class Main {
 		startBatchMode();
 	}
 
-	public static void main(String[] args) throws IOException, InvocationTargetException, InterruptedException {
+	public static void main(String[] args) throws IOException, InvocationTargetException, InterruptedException{
 
 		// example command lines:
 		//
@@ -194,7 +198,7 @@ public class Main {
 		// Call start to start the simulator from command line, etc.
 		//test("/Users/Daniel/git/Pr4Local/Pr4/src/main/resources/examples/basic");
 		//start(args);
-		test("src/main/resources/basic");
+		test("src/main/resources/err");
 	}
 
 }

@@ -2,6 +2,7 @@ package es.ucm.fdi.model;
 
 import java.util.*;
 
+import es.ucm.fdi.exceptions.SimulationException;
 import es.ucm.fdi.model.simulatedobject.*;
 
 public class RoadMap {
@@ -31,22 +32,24 @@ public class RoadMap {
 	
 	// búsqueda por ids, unicidad
 	public SimObject getSimObject(String id) {
-		return simObjects.get(id);
+		if(simObjects.get(id) != null)
+			return simObjects.get(id);
+		else throw new SimulationException("Se ha intentado llamar al objeto " + id + " inexistente.");
 	}
 	
 	public Junction getJunction(String id){
 		if(simObjects.get(id) instanceof Junction) return (Junction) simObjects.get(id);
-		else return null;
+		else throw new SimulationException("Se ha intentado llamar al cruze: " + id + " inexistente.");
 	}
 	
 	public Road getRoad(String id){
 		if(simObjects.get(id) instanceof Road) return (Road) simObjects.get(id);
-		else return null;
+		else throw new SimulationException("Se ha intentado llamar a la carretera: " + id + " inexistente.");
 	}
 	
 	public Vehicle getVehicle(String id){
 		if(simObjects.get(id) instanceof Vehicle) return (Vehicle) simObjects.get(id);
-		else return null;
+		else throw new SimulationException("Se ha intentado llamar al vehiculo: " + id + " inexistente.");
 	}
 	
 	// listado (sólo lectura)
@@ -67,6 +70,8 @@ public class RoadMap {
 		if(!simObjects.containsKey(j.getId())) {
 			simObjects.put(j.getId(), j);
 			junctions.add(j);
+		} else {
+			idDuplicado(j.getId());
 		}
 	}
 	
@@ -76,6 +81,8 @@ public class RoadMap {
 			roads.add(r);
 			r.getSrc().añadirCarreteraSaliente(r,r.getDest());
 			r.getDest().añadirCarreteraEntrante(r);
+		} else {
+			idDuplicado(r.getId());
 		}
 	}
 	
@@ -83,12 +90,21 @@ public class RoadMap {
 		if(!simObjects.containsKey(v.getId())) {
 			simObjects.put(v.getId(), v);
 			vehicles.add(v);
+		} else {
+			idDuplicado(v.getId());
 		}
 	}
+	
+	private void idDuplicado(String id) {
+		throw new SimulationException("El id: " + id + " esta duplicado.");
+	}
+	
 	//Metodo para averiar coches
 	public void averiar(String id, int t) {
 		if(getVehicle(id) != null) {
 			getVehicle(id).setTiempoAveria(t);
+		} else {
+			throw new SimulationException("Se ha intentado averiar un coche no existente con id: " + id + ".");
 		}
 	}
 	

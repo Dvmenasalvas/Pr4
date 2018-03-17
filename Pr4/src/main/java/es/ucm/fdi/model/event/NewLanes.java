@@ -13,11 +13,12 @@ public class NewLanes extends NewRoad {
 	}
 
 	public NewLanes() {
-		// TODO Auto-generated constructor stub
 	}
 	
 	@Override
 	public void execute(RoadMap simObjects) {
+		checkParameters();
+		checkParameters(simObjects);
 		simObjects.addRoad(new Lanes(id, simObjects.getJunction(src), simObjects.getJunction(dest), maxSpeed, length, lanes));
 	}
 	
@@ -25,7 +26,7 @@ public class NewLanes extends NewRoad {
 		@Override
 		public Event parse(IniSection sec) {
 			if(!sec.getTag().equals("new_road") || !"lanes".equals(sec.getValue("type"))) return null;
-			return new NewLanes(parseInt(sec, "time", 0), sec.getValue("id"), sec.getValue("src"), sec.getValue("dest"), parseInt(sec, "max_speed", 0), parseInt(sec, "length", 0), parseInt(sec, "lanes", 1));
+			return new NewLanes(parseInt(sec, "time", 0), isValidId(sec.getValue("id")), sec.getValue("src"), sec.getValue("dest"), parseInt(sec, "max_speed", 0), parseInt(sec, "length", 0), parseInt(sec, "lanes", 1));
 		}
 	}
 

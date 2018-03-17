@@ -9,7 +9,7 @@ import java.util.Queue;
 
 
 public class Junction extends SimObject{
-	Map<Road, IncomingRoad> carreterasEntrantes; //Mapa y lista ordenada para semaforo
+	Map<Road, IncomingRoad> carreterasEntrantes; //Mapa y lista ordenada para carreteras entrantes
 	List<IncomingRoad> semaforos;
 	int verde;
 	private Map<Junction, Road> carreterasSalientes;
@@ -34,7 +34,7 @@ public class Junction extends SimObject{
 	
 	public void añadirCarreteraEntrante(Road r) {
 		if(!carreterasEntrantes.containsKey(r)) {
-			IncomingRoad ir = new IncomingRoad(r, 1);
+			IncomingRoad ir = new IncomingRoad(r);
 			carreterasEntrantes.put(r, ir);
 			semaforos.add(ir);
 		}
@@ -109,25 +109,13 @@ public class Junction extends SimObject{
 		private Queue<Vehicle> vehicles;
 		private Road road;
 		private boolean semaforo;
-		private int timeSlice;
-		private int time;
-		private int usedTime;
 
-		public IncomingRoad(Road road, int timeSlice) {
+		public IncomingRoad(Road road) {
 			vehicles = new ArrayDeque<Vehicle>();
 			this.road = road;
 			semaforo = false;
-			time = 0;
-			usedTime = 0;
-			this.timeSlice = timeSlice;
-		}
-		
-		boolean intervaloConsumido() {
-			return time == timeSlice;
-		}
-		
-		
-		
+		}	
+			
 		public void cambiarSemaforo() {
 			if(semaforo) semaforo = false;
 			else semaforo = true;
@@ -137,10 +125,8 @@ public class Junction extends SimObject{
 			if(vehicles.size() > 0) {
 				if(!vehicles.peek().averiado()) {
 					vehicles.poll().moverASiguienteCarretera();
-					usedTime++;
 				}
 			}
-			time++;
 		}
 		
 		public void entraVehiculo(Vehicle v) {

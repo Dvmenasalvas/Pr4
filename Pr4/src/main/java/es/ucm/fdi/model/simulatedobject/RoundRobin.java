@@ -1,5 +1,6 @@
 package es.ucm.fdi.model.simulatedobject;
-
+//Lo dejamos para la siguiente entrega
+/*
 public class RoundRobin extends Junction {
 	int maxTimeSlice;
 	int minTimeSlice;
@@ -21,7 +22,7 @@ public class RoundRobin extends Junction {
 			siguienteSemaforo();
 		}
 	}
-	/*
+
 	void updateTimeSlice() {
 		if(time == usedTime) {
 			timeSlice = Math.min(a, b)
@@ -29,5 +30,5 @@ public class RoundRobin extends Junction {
 		time = 0;
 		usedTime = 0;
 	}
-	*/
 }
+*/

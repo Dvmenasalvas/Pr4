@@ -6,7 +6,6 @@ public class Dirt extends Road {
 
 	public Dirt(String id, Junction src, Junction dest, int maxSpeed, int length) {
 		super(id, src, dest, maxSpeed, length);
-		// TODO Auto-generated constructor stub
 	}
 	
 	@Override

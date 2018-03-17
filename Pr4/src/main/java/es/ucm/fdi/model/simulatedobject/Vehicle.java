@@ -6,13 +6,12 @@ import java.util.Map;
 public class Vehicle extends SimObject{
 	protected int  maxSpeed;
 	protected int actSpeed;
-	private Road road;
+	private Road road;			//No necesitamos booleano arrive, ya que road sera igual a null si y solo si el vehiculo ha llegado a su destino
+	private int location;
 	private List<Junction> itinerary;
 	private int posItinerary;
-	private int location;
 	private int kilometrage;
 	private int faultyTime;
-	private boolean arrived;
 	
 	public Vehicle(String id, int maxSpeed, List<Junction> itinerary) {
 		this.id = id;
@@ -24,7 +23,6 @@ public class Vehicle extends SimObject{
 		location = 0;
 		kilometrage = 0;
 		faultyTime = 0;
-		arrived = false;
 	}
 	
 	public boolean arrived() {
@@ -37,10 +35,6 @@ public class Vehicle extends SimObject{
 	
 	public boolean averiado() {
 		return faultyTime > 0;
-	}
-	
-	public int getTiempoAveria() {
-		return faultyTime;
 	}
 	
 	public int getLocation() {
@@ -64,10 +58,10 @@ public class Vehicle extends SimObject{
 			faultyTime--;
 		} else {
 			if(road != null) {
-				if(location < road.getLongitud()) {
-					if(location + actSpeed >= road.getLongitud()) {		//Entra al cruze
-						kilometrage += road.getLongitud() - location;
-						location = road.getLongitud();
+				if(location < road.getLength()) {
+					if(location + actSpeed >= road.getLength()) {		//Entra al cruze
+						kilometrage += road.getLength() - location;
+						location = road.getLength();
 						actSpeed = 0;
 						road.getDest().entraVehiculo(this);
 					} else {
@@ -88,7 +82,6 @@ public class Vehicle extends SimObject{
 			road.entraVehiculo(this);
 		} else {
 			road = null;
-			arrived = true;
 		}
 	}
 

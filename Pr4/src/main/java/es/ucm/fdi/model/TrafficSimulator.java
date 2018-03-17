@@ -2,12 +2,11 @@ package es.ucm.fdi.model;
 
 import java.io.IOException;
 import java.io.OutputStream;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.TreeMap;
 
+import es.ucm.fdi.exceptions.SimulationException;
 import es.ucm.fdi.ini.Ini;
 import es.ucm.fdi.ini.IniSection;
 import es.ucm.fdi.model.event.Event;
@@ -38,7 +37,11 @@ public class TrafficSimulator {
  		while(time < limiteTiempo) {
 			if(events.containsKey(time)) {
 				for(Event e : events.get(time)) {		//Ejecuta eventos correspondientes a este tiempo
+					try {
 					e.execute(simObjects);
+					} catch(SimulationException se) {
+						throw new SimulationException("Error en la ejecucion del evento " + e + " en el tiempo " + time + ".", se);
+					}
 				}
 			}
 			

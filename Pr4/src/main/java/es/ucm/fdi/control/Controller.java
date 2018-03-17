@@ -1,5 +1,7 @@
 package es.ucm.fdi.control;
 
+import java.io.IOException;
+
 import es.ucm.fdi.ini.IniSection;
 import es.ucm.fdi.model.event.*;
 
@@ -15,7 +17,7 @@ public class Controller {
 			new NewVehicle().new Builder()
 			};
 	
-	public static Event parseSec(IniSection sec) {
+	public static Event parseSec(IniSection sec) throws IOException {
 		Event e = null;
 		for(Event.Builder eb : bs) {
 			if((e = eb.parse(sec)) != null) break;

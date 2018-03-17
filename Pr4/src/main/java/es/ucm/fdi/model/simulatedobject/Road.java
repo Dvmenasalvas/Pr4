@@ -24,7 +24,7 @@ public class Road extends SimObject{
 		return src;
 	}
 	
-	public int getLongitud() {
+	public int getLength() {
 		return length;
 	}
 	
@@ -38,9 +38,6 @@ public class Road extends SimObject{
 	
 	public void saleVehiculo(Vehicle v, int loc){
 		vehicles.removeValue(loc, v);
-		if(vehicles.get(loc).size() == 0) {
-			vehicles.remove(loc);
-		}
 	}
 	
 	public void avanza(){

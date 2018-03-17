@@ -1,8 +1,10 @@
 package es.ucm.fdi.model.event;
 
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
+import es.ucm.fdi.exceptions.SimulationException;
 import es.ucm.fdi.ini.IniSection;
 import es.ucm.fdi.model.RoadMap;
 
@@ -13,13 +15,17 @@ public abstract class Event {
 		return time;
 	}
 	
-	public abstract void execute(RoadMap simObjects);
+	public abstract void execute(RoadMap simObjects)throws SimulationException;
+	
+	protected abstract void checkParameters() throws SimulationException;
 	
 	public interface Builder {
-		public Event parse(IniSection sec);
+		public Event parse(IniSection sec) throws IOException;
+
 		
-		public default boolean isValidId(String id) {
-			return false;
+		public default String isValidId(String id) throws IllegalArgumentException {
+			if (id.matches("[a-zA-Z0-9_]+")) return id;
+			else throw new IllegalArgumentException("El id: " + id + " no es valido.");
 		}
 		
 		public default int parseInt(IniSection sec, String key, int def) {

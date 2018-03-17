@@ -2,9 +2,9 @@ package es.ucm.fdi.model.event;
 
 import java.util.List;
 
+import es.ucm.fdi.exceptions.SimulationException;
 import es.ucm.fdi.ini.IniSection;
 import es.ucm.fdi.model.RoadMap;
-import es.ucm.fdi.model.simulatedobject.Vehicle;
 
 public class MakeVehicleFaulty extends Event {
 	private List<String> vehicles;
@@ -17,11 +17,11 @@ public class MakeVehicleFaulty extends Event {
 	}
 	
 	public MakeVehicleFaulty() {
-		// TODO Auto-generated constructor stub
 	}
 
 	@Override
 	public void execute(RoadMap simObjects) {
+		checkParameters();
 		for(String id: vehicles) {
 			simObjects.averiar(id,duration);
 		}
@@ -33,6 +33,14 @@ public class MakeVehicleFaulty extends Event {
 			if(!sec.getTag().equals("make_vehicle_faulty")) return null;
 			return new MakeVehicleFaulty(parseInt(sec, "time", 0), parseIdList(sec,"vehicles"), parseInt(sec, "duration", 0));
 		}
+	}
+
+	@Override
+	protected void checkParameters() throws SimulationException {
+		if(duration < 0) {
+			throw new SimulationException("Error en la ejecucion del evento " + this + " la duracion de la averia ha de ser estrictamente positiva.");
+		}
+		
 	}
 
 	

@@ -3,10 +3,10 @@ package es.ucm.fdi.model.event;
 import java.util.ArrayList;
 import java.util.List;
 
+import es.ucm.fdi.exceptions.SimulationException;
 import es.ucm.fdi.ini.IniSection;
 import es.ucm.fdi.model.RoadMap;
 import es.ucm.fdi.model.simulatedobject.Junction;
-import es.ucm.fdi.model.simulatedobject.Road;
 import es.ucm.fdi.model.simulatedobject.Vehicle;
 
 public class NewVehicle extends Event {
@@ -22,12 +22,22 @@ public class NewVehicle extends Event {
 	}
 
 	public NewVehicle() {
-		// TODO Auto-generated constructor stub
 	}
 
 	@Override
 	public void execute(RoadMap simObjects) {
+		checkParameters();
 		simObjects.addVehicle(new Vehicle(id, maxSpeed, toJunction(itinerary, simObjects)));
+	}
+	
+	protected void checkParameters() {
+		if(maxSpeed <= 0) {
+			throw new SimulationException("Error en la ejecucion del evento creador del vehiculo " + id + " la velocidad maxima ha de ser estrictamente positiva.");
+		}
+		
+		if(itinerary.size() < 2) {
+			throw new SimulationException("Error en la ejecucion del evento " + id + " el itinerario ha de tener, al menos, dos elementos.");
+		}
 	}
 	
 	List<Junction> toJunction(List<String> l, RoadMap simObjects){
@@ -42,7 +52,7 @@ public class NewVehicle extends Event {
 		@Override
 		public Event parse(IniSection sec) {
 			if(!sec.getTag().equals("new_vehicle")) return null;
-			return new NewVehicle(parseInt(sec, "time", 0), sec.getValue("id"), parseInt(sec, "max_speed", 0), parseIdList(sec, "itinerary"));
+			return new NewVehicle(parseInt(sec, "time", 0), isValidId(sec.getValue("id")), parseInt(sec, "max_speed", 0), parseIdList(sec, "itinerary"));
 		}
 	}
 
