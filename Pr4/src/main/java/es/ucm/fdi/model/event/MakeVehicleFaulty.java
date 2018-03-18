@@ -36,7 +36,7 @@ public class MakeVehicleFaulty extends Event {
 	}
 
 	@Override
-	protected void checkParameters() throws SimulationException {
+	protected void checkParameters() {
 		if(duration < 0) {
 			throw new SimulationException("Error en la ejecucion del evento " + this + " la duracion de la averia ha de ser estrictamente positiva.");
 		}

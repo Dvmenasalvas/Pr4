@@ -1,6 +1,5 @@
 package es.ucm.fdi.model.event;
 
-import es.ucm.fdi.exceptions.SimulationException;
 import es.ucm.fdi.ini.IniSection;
 import es.ucm.fdi.model.RoadMap;
 import es.ucm.fdi.model.simulatedobject.Junction;
@@ -31,7 +30,7 @@ public class NewJunction extends Event {
 	}
 
 	@Override
-	protected void checkParameters() throws SimulationException {
+	protected void checkParameters() {
 	}
 
 }

@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
-import es.ucm.fdi.exceptions.SimulationException;
 import es.ucm.fdi.ini.IniSection;
 import es.ucm.fdi.model.RoadMap;
 
@@ -15,9 +14,9 @@ public abstract class Event {
 		return time;
 	}
 	
-	public abstract void execute(RoadMap simObjects)throws SimulationException;
+	public abstract void execute(RoadMap simObjects);
 	
-	protected abstract void checkParameters() throws SimulationException;
+	protected abstract void checkParameters();
 	
 	public interface Builder {
 		public Event parse(IniSection sec) throws IOException;

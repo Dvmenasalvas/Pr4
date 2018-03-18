@@ -34,7 +34,7 @@ public class NewRoad extends Event {
 	}
 	
 	@Override
-	protected void checkParameters() throws SimulationException {
+	protected void checkParameters() {
 		if(maxSpeed <= 0) {
 			throw new SimulationException("Error en la ejecucion del evento de creacion de la carretera " + id + " la velocidad maxima ha de ser estrictamente positiva.");
 		}
@@ -44,7 +44,7 @@ public class NewRoad extends Event {
 		}
 	}
 	
-	protected void checkParameters(RoadMap simObjects) throws SimulationException {
+	protected void checkParameters(RoadMap simObjects) {
 		if(simObjects.getJunction(src) == null) {
 			throw new SimulationException("Error en la ejecucion del evento de creacion de la carretera " + id + " el cruce de salida es nulo.");
 		}
