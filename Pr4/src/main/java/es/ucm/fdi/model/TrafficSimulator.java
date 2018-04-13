@@ -6,6 +6,8 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.swing.event.DocumentEvent.EventType;
+
 import es.ucm.fdi.exceptions.SimulationException;
 import es.ucm.fdi.ini.Ini;
 import es.ucm.fdi.ini.IniSection;
@@ -13,6 +15,7 @@ import es.ucm.fdi.model.event.Event;
 import es.ucm.fdi.model.simulatedobject.Junction;
 import es.ucm.fdi.model.simulatedobject.Road;
 import es.ucm.fdi.model.simulatedobject.SimObject;
+import es.ucm.fdi.model.simulatedobject.Vehicle;
 import es.ucm.fdi.util.MultiTreeMap;
 
 public class TrafficSimulator {
@@ -90,5 +93,6 @@ public class TrafficSimulator {
 		}
 		return sec;
 	}
-
+	
+	//clase interna update event
 }
