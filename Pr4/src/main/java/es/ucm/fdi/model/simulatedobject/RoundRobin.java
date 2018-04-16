@@ -1,4 +1,4 @@
-package es.ucm.fdi.model.simulatedobject;
+/*package es.ucm.fdi.model.simulatedobject;
 //Lo dejamos para la siguiente entrega
 public class RoundRobin extends Junction {
 	int maxTimeSlice;
@@ -30,4 +30,4 @@ public class RoundRobin extends Junction {
 		time = 0;
 		usedTime = 0;
 	}
-}
+}*/
