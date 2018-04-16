@@ -11,7 +11,6 @@ import javax.swing.event.DocumentEvent.EventType;
 import es.ucm.fdi.exceptions.SimulationException;
 import es.ucm.fdi.ini.Ini;
 import es.ucm.fdi.ini.IniSection;
-import es.ucm.fdi.model.Listener.UpdateEvent;
 import es.ucm.fdi.model.event.Event;
 import es.ucm.fdi.model.simulatedobject.Junction;
 import es.ucm.fdi.model.simulatedobject.Road;
@@ -94,8 +93,8 @@ public class TrafficSimulator {
 		}
 		return sec;
 	}
-	/*
-	Listener
+	
+	//Listener
 	public interface Listener {
 		void registered(UpdateEvent ue);
 		void reset(UpdateEvent ue);
@@ -114,5 +113,7 @@ public class TrafficSimulator {
 			public EventType getEvent() {...}
 			public RoadMap getRoadMap() {...}
 			public List<Event> getEvenQueue() {...}
-			public int getCurrentTime() {...}*/
+			public int getCurrentTime() {...}
+		}
+	}
 }

@@ -1,11 +1,13 @@
 package es.ucm.fdi.control;
 
 import java.awt.BorderLayout;
+import java.awt.Component;
 import java.awt.event.KeyEvent;
 
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
+import javax.swing.JSplitPane;
 import javax.swing.JToolBar;
 import javax.swing.SwingUtilities;
 
@@ -30,6 +32,20 @@ public class SimWindow extends JFrame {
 	}
 	
 	private void addBars() {
+		//split window
+		Component componenteIzquierdo = null;
+		Component componenteDerecho = null;
+		JSplitPane bottomSplit = new JSplitPane(
+				JSplitPane.HORIZONTAL_SPLIT,
+				componenteIzquierdo, componenteDerecho);
+		Component componenteDeArriba = null;
+		Component componenteDeAbajo = null;
+		JSplitPane topSplit = new JSplitPane(
+				JSplitPane.VERTICAL_SPLIT,
+				componenteDeArriba, componenteDeAbajo);
+		//da posición inicial a los componentes
+		setVisible(true);
+		bottomSplit.setDividerLocation(.5); // = 50% para cada lado
 		// instantiate actions
 		SimulatorAction salir = new SimulatorAction(
 				"Salir", "exit.png", "Salir de la aplicacion",
