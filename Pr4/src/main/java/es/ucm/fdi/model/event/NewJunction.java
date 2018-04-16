@@ -5,7 +5,7 @@ import es.ucm.fdi.model.RoadMap;
 import es.ucm.fdi.model.simulatedobject.Junction;
 
 public class NewJunction extends Event {
-	private String id;
+	String id;
 
 	public NewJunction(int time, String id) {
 		this.time = time;

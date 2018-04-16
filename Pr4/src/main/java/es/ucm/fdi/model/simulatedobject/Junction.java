@@ -75,29 +75,26 @@ public class Junction extends SimObject{
 	
 	@Override
 	protected void fillReportDetails(Map<String, String> out) {
-		String queues = "";
-		String sem = "";
+		StringBuilder queues = new StringBuilder();
+		String sem ;
 		for(IncomingRoad ir : semaforos) {
-			if(ir.semaforo) {
-				sem = "green";
-			} else {
-				sem = "red";
-			}
+			sem = ir.writeSem();
 			
-			queues += "(" + ir.road.getId() + "," + sem + ",[";
+			
+			queues.append("(" + ir.road.getId() + "," + sem + ",[");
 			for(Vehicle v : ir.vehicles) {
-				queues += v.getId() + ",";
+				queues.append(v.getId() + ",");
 			}
 			if(ir.vehicles.size() > 0) {
-				queues = queues.substring(0, queues.length() - 1);
+				queues.deleteCharAt(queues.length() - 1);
 			}
-			queues += "]),";
+			queues.append("]),");
 		}
 		if(semaforos.size() != 0) {
-			queues = queues.substring(0, queues.length() - 1);
+			queues.deleteCharAt(queues.length() - 1);
 		}
 		
-		out.put("queues", queues);
+		out.put("queues", queues.toString());
 	}
 
 	@Override
@@ -106,9 +103,9 @@ public class Junction extends SimObject{
 	}
 
 	public class IncomingRoad{
-		private Queue<Vehicle> vehicles;
-		private Road road;
-		private boolean semaforo;
+		Queue<Vehicle> vehicles;
+		Road road;
+		boolean semaforo;
 
 		public IncomingRoad(Road road) {
 			vehicles = new ArrayDeque<Vehicle>();
@@ -116,6 +113,14 @@ public class Junction extends SimObject{
 			semaforo = false;
 		}	
 			
+		public String writeSem() {
+			if(semaforo) {
+				return "green";
+			} else {
+				return "red";
+			}
+		}
+
 		public void cambiarSemaforo() {
 			if(semaforo) semaforo = false;
 			else semaforo = true;
@@ -132,6 +137,7 @@ public class Junction extends SimObject{
 		public void entraVehiculo(Vehicle v) {
 			vehicles.add(v);
 		}
+
 		
 	}
 }
