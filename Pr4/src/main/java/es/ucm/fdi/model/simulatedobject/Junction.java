@@ -95,6 +95,7 @@ public class Junction extends SimObject{
 		}
 		
 		out.put("queues", queues.toString());
+
 	}
 	
 	protected String semaforo(IncomingRoad ir) {
@@ -103,6 +104,7 @@ public class Junction extends SimObject{
 		} else {
 			return "red";
 		}
+
 	}
 
 	@Override
@@ -113,6 +115,7 @@ public class Junction extends SimObject{
 	public class IncomingRoad{
 		Queue<Vehicle> vehicles;
 		Road road;
+
 		protected boolean semaforo;
 
 		public IncomingRoad(Road road) {
@@ -121,6 +124,14 @@ public class Junction extends SimObject{
 			semaforo = false;
 		}	
 			
+		public String writeSem() {
+			if(semaforo) {
+				return "green";
+			} else {
+				return "red";
+			}
+		}
+
 		public void cambiarSemaforo() {
 			if(semaforo) semaforo = false;
 			else semaforo = true;

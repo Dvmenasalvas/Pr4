@@ -7,6 +7,7 @@ import es.ucm.fdi.model.simulatedobject.Junction;
 public class NewJunction extends Event {
 	protected String id;
 
+
 	public NewJunction(int time, String id) {
 		this.time = time;
 		this.id = id;

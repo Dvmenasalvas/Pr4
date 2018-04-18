@@ -2,8 +2,6 @@ package es.ucm.fdi.model.simulatedobject;
 
 import java.util.Map;
 
-
-
 public class RoundRobin extends Junction {
 	int maxTimeSlice;
 	int minTimeSlice;
@@ -32,6 +30,7 @@ public class RoundRobin extends Junction {
 					actual.usedTime++;
 				}
 				actual.pastTime++;
+	
 			}
 			if(actual.timeSliceConsumed()){	//Si se ha consumido, actualiza los intervalos de tiempo y pasa al siguiente
 				actual.cambiarSemaforo();
@@ -42,9 +41,9 @@ public class RoundRobin extends Junction {
 		} else {
 			siguienteSemaforo();	//Comprueba si hay algun semaforo para empezar
 			semaforos.get(verde).cambiarSemaforo();
+
 		}
 	}
-	
 	
 	@Override
 	protected void fillReportDetails(Map<String, String> out) {
