@@ -198,7 +198,7 @@ public class Main {
 		// Call start to start the simulator from command line, etc.
 		//test("/Users/Daniel/git/Pr4Local/Pr4/src/main/resources/examples/basic");
 		//start(args);
-		test("src/main/resources/err");
+		test("src/main/resources/advanced/14");
 	}
 
 }

@@ -10,7 +10,7 @@ import java.util.Queue;
 
 public class Junction extends SimObject{
 	Map<Road, IncomingRoad> carreterasEntrantes; //Mapa y lista ordenada para carreteras entrantes
-	List<IncomingRoad> semaforos;
+	protected List<IncomingRoad> semaforos;
 	int verde;
 	private Map<Junction, Road> carreterasSalientes;
 	
@@ -26,12 +26,6 @@ public class Junction extends SimObject{
 		carreterasEntrantes.get(v.getRoad()).entraVehiculo(v);
 	}
 	
-	public void añadirCarreteraSaliente(Road r, Junction dest) {
-		if(!carreterasSalientes.containsKey(dest)) {
-			carreterasSalientes.put(dest, r);
-		}
-	}
-	
 	public void añadirCarreteraEntrante(Road r) {
 		if(!carreterasEntrantes.containsKey(r)) {
 			IncomingRoad ir = new IncomingRoad(r);
@@ -39,6 +33,14 @@ public class Junction extends SimObject{
 			semaforos.add(ir);
 		}
 	}
+	
+	public void añadirCarreteraSaliente(Road r, Junction dest) {
+		if(!carreterasSalientes.containsKey(dest)) {
+			carreterasSalientes.put(dest, r);
+		}
+	}
+	
+	
 	
 	public void avanza() {
 		if(verde != -1) { 	//Si hay algun semaforo en verde, este actua
@@ -75,29 +77,32 @@ public class Junction extends SimObject{
 	
 	@Override
 	protected void fillReportDetails(Map<String, String> out) {
-		String queues = "";
-		String sem = "";
+		StringBuilder queues = new StringBuilder();
 		for(IncomingRoad ir : semaforos) {
-			if(ir.semaforo) {
-				sem = "green";
-			} else {
-				sem = "red";
-			}
+			String sem = semaforo(ir);
 			
-			queues += "(" + ir.road.getId() + "," + sem + ",[";
+			queues.append("(" + ir.road.getId() + "," + sem + ",[");
 			for(Vehicle v : ir.vehicles) {
-				queues += v.getId() + ",";
+				queues.append(v.getId() + ",");
 			}
 			if(ir.vehicles.size() > 0) {
-				queues = queues.substring(0, queues.length() - 1);
+				queues.deleteCharAt(queues.length() - 1);
 			}
-			queues += "]),";
+			queues.append("]),");
 		}
 		if(semaforos.size() != 0) {
-			queues = queues.substring(0, queues.length() - 1);
+			queues.deleteCharAt(queues.length() - 1);
 		}
 		
-		out.put("queues", queues);
+		out.put("queues", queues.toString());
+	}
+	
+	protected String semaforo(IncomingRoad ir) {
+		if(ir.semaforo) {
+			return "green";
+		} else {
+			return "red";
+		}
 	}
 
 	@Override
@@ -106,9 +111,9 @@ public class Junction extends SimObject{
 	}
 
 	public class IncomingRoad{
-		private Queue<Vehicle> vehicles;
-		private Road road;
-		private boolean semaforo;
+		Queue<Vehicle> vehicles;
+		Road road;
+		protected boolean semaforo;
 
 		public IncomingRoad(Road road) {
 			vehicles = new ArrayDeque<Vehicle>();
@@ -121,17 +126,21 @@ public class Junction extends SimObject{
 			else semaforo = true;
 		}
 		
-		public void primeroActua() {
+		public boolean primeroActua() {
+			boolean avanzado = false;
 			if(vehicles.size() > 0) {
 				if(!vehicles.peek().averiado()) {
 					vehicles.poll().moverASiguienteCarretera();
+					avanzado = true;
 				}
 			}
+			return avanzado;
 		}
 		
 		public void entraVehiculo(Vehicle v) {
 			vehicles.add(v);
 		}
+
 		
 	}
 }

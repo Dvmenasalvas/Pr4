@@ -22,10 +22,13 @@ public class Car extends Vehicle {
 	
 	@Override
 	public void avanza() {
-		if(!averiado() && ultAveria >= resistance && randomNumber.nextDouble() < faultProbability) {
+		if(!averiado() && ultAveria > resistance && randomNumber.nextDouble() < faultProbability) {
 			setTiempoAveria(randomNumber.nextInt(maxFaultDuration) + 1);
+			ultAveria = 0;
 		}
+		int aux = kilometrage;
 		super.avanza();
+		ultAveria += kilometrage - aux;
 	}
 	
 	@Override

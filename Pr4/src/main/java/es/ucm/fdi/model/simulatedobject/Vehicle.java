@@ -10,7 +10,7 @@ public class Vehicle extends SimObject{
 	private int location;
 	private List<Junction> itinerary;
 	private int posItinerary;
-	private int kilometrage;
+	protected int kilometrage;
 	private int faultyTime;
 	
 	public Vehicle(String id, int maxSpeed, List<Junction> itinerary) {

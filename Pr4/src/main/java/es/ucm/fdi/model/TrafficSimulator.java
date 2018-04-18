@@ -67,9 +67,10 @@ public class TrafficSimulator {
 	
 	private void writeObjects(List<? extends SimObject> objects, OutputStream out) throws IOException {
 		if(out != null) {
-			Map<String, String> report = new LinkedHashMap<String, String>();	//Mantenemos orden de insercion
+			Map<String, String> report;	
 			Ini rep = new Ini();
 			for(SimObject o : objects) {
+				report = new LinkedHashMap<String, String>();	//Mantenemos orden de insercion
 				o.report(time, report);
 				rep.addsection(writeReport(report, out));
 			}
