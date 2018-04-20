@@ -3,7 +3,7 @@ package es.ucm.fdi.model;
 public enum EventType {
 	REGISTERED,
 	RESET,
-	NEWEVENT,
+	NEW_EVENT,
 	ADVANCED,
 	ERROR
 }

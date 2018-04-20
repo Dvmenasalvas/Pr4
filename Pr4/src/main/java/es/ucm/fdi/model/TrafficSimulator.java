@@ -2,9 +2,12 @@ package es.ucm.fdi.model;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+
+import javax.swing.SwingUtilities;
 
 import es.ucm.fdi.exceptions.SimulationException;
 import es.ucm.fdi.ini.Ini;
@@ -13,13 +16,31 @@ import es.ucm.fdi.model.event.Event;
 import es.ucm.fdi.model.simulatedobject.Junction;
 import es.ucm.fdi.model.simulatedobject.Road;
 import es.ucm.fdi.model.simulatedobject.SimObject;
-import es.ucm.fdi.model.simulatedobject.Vehicle;
+import es.ucm.fdi.model.EventType;
 import es.ucm.fdi.util.MultiTreeMap;
 
 public class TrafficSimulator {
 	private MultiTreeMap<Integer, Event> events; 
 	private RoadMap simObjects;
 	int time;
+	private List<Listener> listeners = new ArrayList<>();
+	
+	public void addSimulatorListener(Listener l) {
+		listeners.add(l);
+		UpdateEvent ue = new UpdateEvent(EventType.REGISTERED);
+		SwingUtilities.invokeLater(()->l.update(ue, ""));
+	}
+	
+	public void removeListener(Listener l) {
+		listeners.remove(l);
+	}
+	
+	private void fireUpdateEvent(EventType type, String error) {
+		UpdateEvent ue = new UpdateEvent(type);
+		for(Listener l : listeners) {
+			 l.update(ue, error);
+		 }
+	}
 	
 	public TrafficSimulator() {
 		simObjects = new RoadMap();
@@ -93,12 +114,29 @@ public class TrafficSimulator {
 		return sec;
 	}
 	
-	//Listener
+	
 	public interface Listener {
-		void registered(UpdateEvent ue);
-		void reset(UpdateEvent ue);
-		void newEvent(UpdateEvent ue);
-		void advanced(UpdateEvent ue);
-		void error(UpdateEvent ue, String error);
+		 void update(UpdateEvent ue, String error);
+	}
+	
+	public class UpdateEvent {
+		private EventType et;
+		
+		public UpdateEvent(EventType et) {
+			this.et = et;
+		}
+		
+		public EventType getEvent() {
+			return et;
+		};
+		public RoadMap getRoadMap() {
+			return simObjects;
+		};
+		public List<Event> getEventsQueue() {
+			return events.get(time);
+		};
+		public int getCurrentTime() {
+			return time;
+		};
 	}
 }
