@@ -2,6 +2,7 @@ package es.ucm.fdi.model.event;
 
 import es.ucm.fdi.ini.IniSection;
 import es.ucm.fdi.model.RoadMap;
+import es.ucm.fdi.model.simulatedobject.Junction;
 import es.ucm.fdi.model.simulatedobject.MostCrowded;
 
 public class NewMostCrowded extends NewRoundRobin {

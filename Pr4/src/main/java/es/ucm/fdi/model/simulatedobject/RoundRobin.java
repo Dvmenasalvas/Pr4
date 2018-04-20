@@ -6,7 +6,8 @@ public class RoundRobin extends Junction {
 	int maxTimeSlice;
 	int minTimeSlice;
 	
-	public RoundRobin(String id, int maxTimeSlice, int minTimeSlice) {
+	public RoundRobin(String id, int maxTimeSlice, 
+	int minTimeSlice) {
 		super(id);
 		this.maxTimeSlice = maxTimeSlice;
 		this.minTimeSlice = minTimeSlice;
@@ -87,3 +88,4 @@ public class RoundRobin extends Junction {
 		}
 	}
 }
+

@@ -13,6 +13,7 @@ import es.ucm.fdi.model.event.Event;
 import es.ucm.fdi.model.simulatedobject.Junction;
 import es.ucm.fdi.model.simulatedobject.Road;
 import es.ucm.fdi.model.simulatedobject.SimObject;
+import es.ucm.fdi.model.simulatedobject.Vehicle;
 import es.ucm.fdi.util.MultiTreeMap;
 
 public class TrafficSimulator {
@@ -91,5 +92,13 @@ public class TrafficSimulator {
 		}
 		return sec;
 	}
-
+	
+	//Listener
+	public interface Listener {
+		void registered(UpdateEvent ue);
+		void reset(UpdateEvent ue);
+		void newEvent(UpdateEvent ue);
+		void advanced(UpdateEvent ue);
+		void error(UpdateEvent ue, String error);
+	}
 }
