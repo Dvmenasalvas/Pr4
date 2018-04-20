@@ -23,21 +23,21 @@ public class TrafficSimulator {
 	private MultiTreeMap<Integer, Event> events; 
 	private RoadMap simObjects;
 	int time;
-	private List<Listener> listeners = new ArrayList<>();
+	private List<SimulatorListener> listeners = new ArrayList<>();
 	
-	public void addSimulatorListener(Listener l) {
+	public void addSimulatorListener(SimulatorListener l) {
 		listeners.add(l);
 		UpdateEvent ue = new UpdateEvent(EventType.REGISTERED);
 		SwingUtilities.invokeLater(()->l.update(ue, ""));
 	}
 	
-	public void removeListener(Listener l) {
+	public void removeListener(SimulatorListener l) {
 		listeners.remove(l);
 	}
 	
 	private void fireUpdateEvent(EventType type, String error) {
 		UpdateEvent ue = new UpdateEvent(type);
-		for(Listener l : listeners) {
+		for(SimulatorListener l : listeners) {
 			 l.update(ue, error);
 		 }
 	}
@@ -115,7 +115,7 @@ public class TrafficSimulator {
 	}
 	
 	
-	public interface Listener {
+	public interface SimulatorListener {
 		 void update(UpdateEvent ue, String error);
 	}
 	
