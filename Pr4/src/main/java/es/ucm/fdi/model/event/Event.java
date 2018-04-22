@@ -6,8 +6,9 @@ import java.util.List;
 
 import es.ucm.fdi.ini.IniSection;
 import es.ucm.fdi.model.RoadMap;
+import es.ucm.fdi.view.SimulatorTablePanel;
 
-public abstract class Event {
+public abstract class Event implements SimulatorTablePanel.Describable{
 	int time;
 	
 	public int getTime() {
