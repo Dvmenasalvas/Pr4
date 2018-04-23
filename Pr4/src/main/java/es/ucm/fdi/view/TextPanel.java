@@ -207,14 +207,14 @@ public class TextPanel extends JPanel{
 	}
 	
 	private String newJunctionTemplate() {
-		String s = "\n[new_junction]\n";
+		String s = "[new_junction]\n";
 		s += "time =\n";
 		s += "id =\n";
 		return s;
 	}
 	
 	private String newRoadTemplate() {
-		String s = "\n[new_road]\n";
+		String s = "[new_road]\n";
 		s += "time =\n";
 		s += "id =\n";
 		s += "src =\n";
@@ -227,7 +227,7 @@ public class TextPanel extends JPanel{
 	
 	//faltan templates
 	private String newVehicleTemplate() {
-		String s = "\n[new_vehicle]\n";
+		String s = "[new_vehicle]\n";
 		s += "time =\n";
 		s += "id =\n";
 		return s;

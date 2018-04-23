@@ -6,7 +6,7 @@ queues =
 [junction_report]
 id = j2
 time = 1
-queues = (r1,green,[]),(r3,red,[])
+queues = (r1,green,[])(r3,red,[])
 
 [junction_report]
 id = j3
@@ -81,7 +81,7 @@ queues =
 [junction_report]
 id = j2
 time = 2
-queues = (r1,red,[]),(r3,green,[])
+queues = (r1,red,[])(r3,green,[])
 
 [junction_report]
 id = j3
@@ -156,7 +156,7 @@ queues =
 [junction_report]
 id = j2
 time = 3
-queues = (r1,green,[]),(r3,red,[])
+queues = (r1,green,[])(r3,red,[])
 
 [junction_report]
 id = j3
@@ -231,7 +231,7 @@ queues =
 [junction_report]
 id = j2
 time = 4
-queues = (r1,red,[]),(r3,green,[])
+queues = (r1,red,[])(r3,green,[])
 
 [junction_report]
 id = j3
@@ -306,7 +306,7 @@ queues =
 [junction_report]
 id = j2
 time = 5
-queues = (r1,green,[]),(r3,red,[])
+queues = (r1,green,[])(r3,red,[])
 
 [junction_report]
 id = j3
@@ -381,7 +381,7 @@ queues =
 [junction_report]
 id = j2
 time = 6
-queues = (r1,red,[]),(r3,green,[])
+queues = (r1,red,[])(r3,green,[])
 
 [junction_report]
 id = j3
@@ -456,7 +456,7 @@ queues =
 [junction_report]
 id = j2
 time = 7
-queues = (r1,green,[]),(r3,red,[])
+queues = (r1,green,[])(r3,red,[])
 
 [junction_report]
 id = j3
@@ -531,7 +531,7 @@ queues =
 [junction_report]
 id = j2
 time = 8
-queues = (r1,red,[]),(r3,green,[])
+queues = (r1,red,[])(r3,green,[])
 
 [junction_report]
 id = j3
@@ -606,7 +606,7 @@ queues =
 [junction_report]
 id = j2
 time = 9
-queues = (r1,green,[]),(r3,red,[])
+queues = (r1,green,[])(r3,red,[])
 
 [junction_report]
 id = j3
@@ -681,7 +681,7 @@ queues =
 [junction_report]
 id = j2
 time = 10
-queues = (r1,red,[]),(r3,green,[v2])
+queues = (r1,red,[])(r3,green,[v2])
 
 [junction_report]
 id = j3
