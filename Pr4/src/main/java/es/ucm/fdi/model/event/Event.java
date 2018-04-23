@@ -3,6 +3,7 @@ package es.ucm.fdi.model.event;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 import es.ucm.fdi.ini.IniSection;
 import es.ucm.fdi.model.RoadMap;

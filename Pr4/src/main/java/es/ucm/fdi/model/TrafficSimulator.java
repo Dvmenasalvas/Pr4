@@ -18,6 +18,7 @@ import es.ucm.fdi.model.simulatedobject.Road;
 import es.ucm.fdi.model.simulatedobject.SimObject;
 import es.ucm.fdi.model.EventType;
 import es.ucm.fdi.util.MultiTreeMap;
+import es.ucm.fdi.view.SimulatorTablePanel;
 
 public class TrafficSimulator {
 	private MultiTreeMap<Integer, Event> events; 
@@ -28,7 +29,7 @@ public class TrafficSimulator {
 	public void addSimulatorListener(SimulatorListener l) {
 		listeners.add(l);
 		UpdateEvent ue = new UpdateEvent(EventType.REGISTERED);
-		SwingUtilities.invokeLater(()->l.update(ue, ""));
+		SwingUtilities.invokeLater(()->l.registered(ue));
 	}
 	
 	public void removeListener(SimulatorListener l) {
@@ -37,9 +38,29 @@ public class TrafficSimulator {
 	
 	private void fireUpdateEvent(EventType type, String error) {
 		UpdateEvent ue = new UpdateEvent(type);
-		for(SimulatorListener l : listeners) {
-			 l.update(ue, error);
-		 }
+		switch(type) {
+		case ADVANCED:
+			for(SimulatorListener l : listeners) {
+				 l.advanced(ue);
+			}
+			break;
+		case ERROR:
+			for(SimulatorListener l : listeners) {
+				 l.error(ue,error);
+			}
+			break;
+		case NEW_EVENT:
+			for(SimulatorListener l : listeners) {
+				 l.newEvent(ue);
+			}
+			break;
+		case RESET:
+			for(SimulatorListener l : listeners) {
+				 l.reset(ue);
+			}
+			break;
+		}
+		
 	}
 	
 	public TrafficSimulator() {
@@ -51,6 +72,7 @@ public class TrafficSimulator {
 	public void insertaEvento(Event e) {
 		if(e.getTime() >= time && e != null) {
 			events.putValue(e.getTime(), e);
+			fireUpdateEvent(EventType.NEW_EVENT, "");
 		}
 	}
 	
@@ -116,8 +138,13 @@ public class TrafficSimulator {
 	
 	
 	public interface SimulatorListener {
-		 void update(UpdateEvent ue, String error);
+		void registered(UpdateEvent ue);
+		void reset(UpdateEvent ue);
+		void newEvent(UpdateEvent ue);
+		void advanced(UpdateEvent ue);
+		void error(UpdateEvent ue, String error);
 	}
+
 	
 	public class UpdateEvent {
 		private EventType et;
@@ -125,15 +152,20 @@ public class TrafficSimulator {
 		public UpdateEvent(EventType et) {
 			this.et = et;
 		}
-		
-		public EventType getEvent() {
+				public EventType getEvent() {
 			return et;
 		};
 		public RoadMap getRoadMap() {
 			return simObjects;
 		};
-		public List<Event> getEventsQueue() {
-			return events.get(time);
+		public List<SimulatorTablePanel.Describable> getEventsQueue() {
+			List<SimulatorTablePanel.Describable> queue = new ArrayList<SimulatorTablePanel.Describable>();
+			for(Event e: events.innerValues()) {
+				if(e.getTime() >= time) {
+					queue.add(e);
+				}
+			}
+			return queue;
 		};
 		public int getCurrentTime() {
 			return time;

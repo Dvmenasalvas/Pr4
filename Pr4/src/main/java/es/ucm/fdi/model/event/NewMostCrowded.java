@@ -1,5 +1,7 @@
 package es.ucm.fdi.model.event;
 
+import java.util.Map;
+
 import es.ucm.fdi.ini.IniSection;
 import es.ucm.fdi.model.RoadMap;
 import es.ucm.fdi.model.simulatedobject.Junction;
@@ -18,6 +20,12 @@ public class NewMostCrowded extends NewRoundRobin {
 	public void execute(RoadMap simObjects) {
 		checkParameters();
 		simObjects.addJunction(new MostCrowded(id, maxTimeSlice, minTimeSlice));
+	}
+	
+	@Override
+	public void describe(Map<String, String> out) {
+		super.describe(out);
+		out.put("Tipo", "New MostCrowded " + id);
 	}
 	
 	public class Builder implements Event.Builder{

@@ -7,11 +7,14 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.nio.file.Files;
 import java.util.HashMap;
+import java.util.Scanner;
 
 import javax.swing.JFileChooser;
 import javax.swing.JMenuItem;
@@ -31,55 +34,61 @@ public class EventsEditorPanel extends JPanel{
 	public EventsEditorPanel(HashMap<Command, SimulatorAction> actions) {
 		super();
 		fc = new JFileChooser();
-		eventsEditor = new JTextArea(40, 30);
+		eventsEditor = new JTextArea(24, 30);
+		eventsEditor.setEditable(true);
+		eventsEditor.setLineWrap(true);
+		eventsEditor.setWrapStyleWord(true);
 		this.actions = actions;
-		
-		this.add(new JScrollPane(eventsEditor, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
-				JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED), BorderLayout.CENTER);
-		
 		this.add(eventsEditor);
+		
 		TitledBorder controlBorder = new TitledBorder("Editor de eventos");
 	    this.setBorder(controlBorder);
-	    
-	    JPopupMenu rightClick = new JPopupMenu();
-		
-		rightClick.add(actions.get(Command.LoadEvents));
-		rightClick.add(actions.get(Command.SaveEvents));
-		rightClick.add(actions.get(Command.CleanEvents));
-		
-		//Falta añadir los templates
-		
-		// connect the popup menu to the text area _editor
-		eventsEditor.addMouseListener(new MouseListener() {
+	   
+	    addRightClick();
+	}
+	
+	
+	
+	public void addRightClick() {
+		 JPopupMenu rightClick = new JPopupMenu();
+			
+			rightClick.add(actions.get(Command.LoadEvents));
+			rightClick.add(actions.get(Command.SaveEvents));
+			rightClick.add(actions.get(Command.CleanEvents));
+			
+			//Falta añadir los templates
+			
+			// connect the popup menu to the text area _editor
+			eventsEditor.addMouseListener(new MouseListener() {
 
-			@Override
-			public void mousePressed(MouseEvent e) {
-				showPopup(e);
-			}
-
-			@Override
-			public void mouseReleased(MouseEvent e) {
-				showPopup(e);
-			}
-
-			private void showPopup(MouseEvent e) {
-				if (e.isPopupTrigger() && rightClick.isEnabled()) {
-					rightClick.show(e.getComponent(), e.getX(), e.getY());
+				@Override
+				public void mousePressed(MouseEvent e) {
+					showPopup(e);
 				}
-			}
 
-			@Override
-			public void mouseExited(MouseEvent e) {
-			}
+				@Override
+				public void mouseReleased(MouseEvent e) {
+					showPopup(e);
+				}
 
-			@Override
-			public void mouseEntered(MouseEvent e) {
-			}
+				private void showPopup(MouseEvent e) {
+					if (e.isPopupTrigger() && rightClick.isEnabled()) {
+						rightClick.show(e.getComponent(), e.getX(), e.getY());
+					}
+				}
 
-			@Override
-			public void mouseClicked(MouseEvent e) {
-			}
-		});
+				@Override
+				public void mouseExited(MouseEvent e) {
+				}
+
+				@Override
+				public void mouseEntered(MouseEvent e) {
+				}
+
+				@Override
+				public void mouseClicked(MouseEvent e) {
+				}
+			});
 	}
 
 	public void loadEvents(){
@@ -91,37 +100,45 @@ public class EventsEditorPanel extends JPanel{
         }
 	}
 	
-	private String readFile(File file) {
-		String out = null;
-		 try {
-			out = new String(Files.readAllBytes(file.toPath()), "UTF-8");
-		} catch (UnsupportedEncodingException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
+	public static String readFile(File file) {
+		String s = "";
+		try {
+			s = new Scanner(file).useDelimiter("\\A").next();
+		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
-		return out;
+
+		return s;
 	}
 	
 	public void saveEvents() {
 		int returnVal = fc.showSaveDialog(this);
 
-        if (returnVal == JFileChooser.APPROVE_OPTION) {
-            File file = fc.getSelectedFile();
-            try {
-				BufferedWriter bw = new BufferedWriter(new FileWriter(file));
-				bw.write(eventsEditor.getText());
-				bw.close();
-			} catch (IOException e) {
-				//throw new IOException("Error al guardar el archivo en: " + file.getAbsolutePath(), e);
-			}
-            
-        }
+		if (returnVal == JFileChooser.APPROVE_OPTION) {
+			File file = fc.getSelectedFile();
+			writeFile(file, eventsEditor.getText());
+		}  
+	}
+	
+	private void writeFile(File file, String content) {
+		try {
+			PrintWriter pw = new PrintWriter(file);
+			pw.print(content);
+			pw.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	public void clearEvents() {
 		eventsEditor.setText("");
+	}
+	
+	public String getText() {
+		return eventsEditor.getText();
+	}
+	
+	public void setText(String text) {
+		eventsEditor.setText(text);
 	}
 }

@@ -2,9 +2,11 @@ package es.ucm.fdi.view;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.border.TitledBorder;
 import javax.swing.table.AbstractTableModel;
@@ -12,11 +14,11 @@ import javax.swing.table.AbstractTableModel;
 public class SimulatorTablePanel extends JPanel{
 	ListOfMapsTableModel tableModel;
 	JTable eventsTable;
-	ArrayList<Describable> elements;
+	List<? extends Describable> elements;
 	String[] fieldNames;
 	
 	
-	public SimulatorTablePanel(ArrayList<Describable> elements,	
+	public SimulatorTablePanel(List<Describable> elements,	
 			String[] fieldNames) {
 		super();
 		this.elements = elements;
@@ -27,11 +29,16 @@ public class SimulatorTablePanel extends JPanel{
 	    
 		initTable();
 	}
+	
+	public void setElements(List<Describable> elements) {
+		this.elements = elements;
+	}
 
 	private void initTable() {
 	    tableModel = new ListOfMapsTableModel();
 	    eventsTable = new JTable(tableModel);
-	    this.add(eventsTable);
+	    this.add(new JScrollPane(eventsTable));
+	    eventsTable.setFillsViewportHeight(true);
 	}
 	
 	private class ListOfMapsTableModel extends AbstractTableModel {
@@ -52,6 +59,9 @@ public class SimulatorTablePanel extends JPanel{
 		
 		@Override
 		public Object getValueAt(int rowIndex, int columnIndex) {
+			if(fieldNames[columnIndex] == "#") {
+				return rowIndex;
+			}
 			Map<String, String> description = new HashMap<String, String>();
 			elements.get(rowIndex).describe(description);
 			return description.get(fieldNames[columnIndex]);

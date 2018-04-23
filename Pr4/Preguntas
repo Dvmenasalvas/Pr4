@@ -1,10 +1,5 @@
-1-Hay un array de Listeners por cada evento?
-2-Qué otros eventos hay que crear aparte de los
-dados en las diapositivas de ayuda para la implementación?
-3-Qué evnetos tienen que ir dentro de EvenType y cuales están
-definidos en librerías de Java?
-4-Hay que crear un adapatador(una clase abstracta con  
-implementaciones vacías para todos los eventos de un
-manejador con muchos)?
-5-Si hacemos la interfaz Listener externa hace falta hacer
-interna la clase UpdateEvent?
+-Como cargar eventos? Comunicación listener -> model
+Como organizarlo bien? Toolbar, actions... Cada JPanel una clase?
+Funcionamiento de newEvent
+Como hacer lista de vehiculos(etc) para que sean describable?
+

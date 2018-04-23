@@ -1,6 +1,7 @@
 package es.ucm.fdi.model.event;
 
 import java.io.IOException;
+import java.util.Map;
 
 import es.ucm.fdi.exceptions.SimulationException;
 import es.ucm.fdi.ini.IniSection;
@@ -53,6 +54,12 @@ public class NewRoad extends Event {
 		if(simObjects.getJunction(dest) == null) {
 			throw new SimulationException("Error en la ejecucion del evento de creacion de la carretera " + id + " el cruce de llegada es nulo.");
 		}
+	}
+	
+	@Override
+	public void describe(Map<String, String> out) {
+		out.put("Tiempo", Integer.toString(time));
+		out.put("Tipo", "New Road " + id);
 	}
 	
 	public class Builder implements Event.Builder{

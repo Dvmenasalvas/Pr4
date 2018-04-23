@@ -1,10 +1,13 @@
 package es.ucm.fdi.model.event;
 
 import java.util.List;
+import java.util.Map;
 
 import es.ucm.fdi.exceptions.SimulationException;
 import es.ucm.fdi.ini.IniSection;
 import es.ucm.fdi.model.RoadMap;
+import es.ucm.fdi.model.simulatedobject.Vehicle;
+import es.ucm.fdi.model.simulatedobject.Junction.IncomingRoad;
 
 public class MakeVehicleFaulty extends Event {
 	private List<String> vehicles;
@@ -41,6 +44,23 @@ public class MakeVehicleFaulty extends Event {
 			throw new SimulationException("Error en la ejecucion del evento " + this + " la duracion de la averia ha de ser estrictamente positiva.");
 		}
 		
+	}
+
+	@Override
+	public void describe(Map<String, String> out) {
+		out.put("Tiempo", Integer.toString(time));
+		
+		StringBuilder lAveriar = new StringBuilder();
+		lAveriar.append("Break Vehicles [");
+		for(String v : vehicles) {
+			lAveriar.append(v + ",");
+		}
+		if(vehicles.size() != 0) {
+			lAveriar.deleteCharAt(lAveriar.length() - 1);
+		}
+		lAveriar.append("]");
+		
+		out.put("Tipo", lAveriar.toString());
 	}
 
 	

@@ -1,5 +1,7 @@
 package es.ucm.fdi.model.event;
 
+import java.util.Map;
+
 import es.ucm.fdi.ini.IniSection;
 import es.ucm.fdi.model.RoadMap;
 import es.ucm.fdi.model.simulatedobject.Dirt;
@@ -18,6 +20,12 @@ public class NewDirt extends NewRoad {
 		checkParameters();
 		checkParameters(simObjects);
 		simObjects.addRoad(new Dirt(id, simObjects.getJunction(src), simObjects.getJunction(dest), maxSpeed, length));
+	}
+	
+	@Override
+	public void describe(Map<String, String> out) {
+		super.describe(out);
+		out.put("Tipo", "New Road " + id);
 	}
 	
 	public class Builder implements Event.Builder{

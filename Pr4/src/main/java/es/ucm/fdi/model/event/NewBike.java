@@ -1,6 +1,7 @@
 package es.ucm.fdi.model.event;
 
 import java.util.List;
+import java.util.Map;
 
 import es.ucm.fdi.ini.IniSection;
 import es.ucm.fdi.model.RoadMap;
@@ -18,6 +19,12 @@ public class NewBike extends NewVehicle {
 	public void execute(RoadMap simObjects) {
 		checkParameters();
 		simObjects.addVehicle(new Bike(id, maxSpeed, toJunction(itinerary, simObjects)));
+	}
+	
+	@Override
+	public void describe(Map<String, String> out) {
+		super.describe(out);
+		out.put("Tipo", "New Bike " + id);
 	}
 
 	public class Builder implements Event.Builder{

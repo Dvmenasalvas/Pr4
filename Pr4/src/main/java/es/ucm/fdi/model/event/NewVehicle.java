@@ -2,6 +2,7 @@ package es.ucm.fdi.model.event;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import es.ucm.fdi.exceptions.SimulationException;
 import es.ucm.fdi.ini.IniSection;
@@ -46,6 +47,12 @@ public class NewVehicle extends Event {
 			it.add(simObjects.getJunction(id));
 		}
 		return it;
+	}
+	
+	@Override
+	public void describe(Map<String, String> out) {
+		out.put("Tiempo", Integer.toString(time));
+		out.put("Tipo", "New Vehicle " + id);
 	}
 	
 	public class Builder implements Event.Builder{

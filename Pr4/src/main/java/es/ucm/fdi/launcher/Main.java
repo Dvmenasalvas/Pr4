@@ -9,6 +9,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;
 
+import javax.swing.SwingUtilities;
+
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
 import org.apache.commons.cli.DefaultParser;
@@ -23,6 +25,7 @@ import es.ucm.fdi.ini.Ini;
 import es.ucm.fdi.ini.IniSection;
 import es.ucm.fdi.model.TrafficSimulator;
 import es.ucm.fdi.model.event.Event;
+import es.ucm.fdi.view.MainWindow;
 
 public class Main {
 
@@ -30,6 +33,7 @@ public class Main {
 	private static Integer _timeLimit = null;
 	private static String _inFile = null;
 	private static String _outFile = null;
+	private static boolean _GUI = true;
 
 	private static void parseArgs(String[] args) {
 
@@ -44,6 +48,7 @@ public class Main {
 			CommandLine line = parser.parse(cmdLineOptions, args);
 			parseHelpOption(line, cmdLineOptions);
 			parseInFileOption(line);
+			parseModeOption(line);
 			parseOutFileOption(line);
 			parseStepsOption(line);
 
@@ -71,11 +76,13 @@ public class Main {
 
 		cmdLineOptions.addOption(Option.builder("h").longOpt("help").desc("Print this message").build());
 		cmdLineOptions.addOption(Option.builder("i").longOpt("input").hasArg().desc("Events input file").build());
+		cmdLineOptions.addOption(Option.builder("m").longOpt("mode").hasArg().desc("'batch' for batch mode and 'gui' for GUI mode (default value is 'batch'").build());
 		cmdLineOptions.addOption(
 				Option.builder("o").longOpt("output").hasArg().desc("Output file, where reports are written.").build());
 		cmdLineOptions.addOption(Option.builder("t").longOpt("ticks").hasArg()
 				.desc("Ticks to execute the simulator's main loop (default value is " + _timeLimitDefaultValue + ").")
 				.build());
+		
 
 		return cmdLineOptions;
 	}
@@ -93,6 +100,11 @@ public class Main {
 		if (_inFile == null) {
 			throw new ParseException("An events file is missing");
 		}
+	}
+	
+	private static void parseModeOption(CommandLine line) throws ParseException {
+		if(line.getOptionValue("m") == "gui") 
+			_GUI = true;
 	}
 
 	private static void parseOutFileOption(CommandLine line) throws ParseException {
@@ -174,10 +186,20 @@ public class Main {
 		
 		tf.ejecuta(_timeLimit, new FileOutputStream(_outFile));
 	}
+	
+	private static void startGUIMode() throws IOException {
+		TrafficSimulator tf = new TrafficSimulator();
+		
+		SwingUtilities.invokeLater(() -> new MainWindow(tf, _inFile));
+	}
 
 	private static void start(String[] args) throws IOException {
 		parseArgs(args);
-		startBatchMode();
+		if(_GUI) {
+			startGUIMode();
+		} else {
+			startBatchMode();
+		}
 	}
 
 	public static void main(String[] args) throws IOException, InvocationTargetException, InterruptedException{
@@ -197,8 +219,7 @@ public class Main {
 
 		// Call start to start the simulator from command line, etc.
 		//test("/Users/Daniel/git/Pr4Local/Pr4/src/main/resources/examples/basic");
-		//start(args);
-		test("src/main/resources/advanced/14");
+		start(args);
 	}
 
 }

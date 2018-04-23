@@ -1,9 +1,10 @@
 package es.ucm.fdi.model.simulatedobject;
 
 import java.util.List;
+import es.ucm.fdi.view.SimulatorTablePanel;
 import java.util.Map;
 
-public class Vehicle extends SimObject{
+public class Vehicle extends SimObject implements SimulatorTablePanel.Describable{
 	protected int  maxSpeed;
 	protected int actSpeed;
 	private Road road;			//No necesitamos booleano arrive, ya que road sera igual a null si y solo si el vehiculo ha llegado a su destino
@@ -100,5 +101,11 @@ public class Vehicle extends SimObject{
 	@Override
 	protected String getReportHeader() {
 		return "vehicle_report";
+	}
+
+	@Override
+	public void describe(Map<String, String> out) {
+		// TODO Auto-generated method stub
+		
 	}
 }

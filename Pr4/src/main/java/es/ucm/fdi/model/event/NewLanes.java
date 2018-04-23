@@ -1,5 +1,7 @@
 package es.ucm.fdi.model.event;
 
+import java.util.Map;
+
 import es.ucm.fdi.ini.IniSection;
 import es.ucm.fdi.model.RoadMap;
 import es.ucm.fdi.model.simulatedobject.Lanes;
@@ -20,6 +22,12 @@ public class NewLanes extends NewRoad {
 		checkParameters();
 		checkParameters(simObjects);
 		simObjects.addRoad(new Lanes(id, simObjects.getJunction(src), simObjects.getJunction(dest), maxSpeed, length, lanes));
+	}
+	
+	@Override
+	public void describe(Map<String, String> out) {
+		super.describe(out);
+		out.put("Tipo", "New Lanes " + id);
 	}
 	
 	public class Builder implements Event.Builder{
