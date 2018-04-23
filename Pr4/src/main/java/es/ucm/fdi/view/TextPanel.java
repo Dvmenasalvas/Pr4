@@ -43,7 +43,9 @@ public class TextPanel extends JPanel{
 		this.actions = actions;
 		this.add(eventsEditor);
 	   
-	    addRightClick();
+	    if(editable) {
+	    	addRightClick();
+	    }
 	}
 	
 	

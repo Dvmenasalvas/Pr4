@@ -30,6 +30,10 @@ public class RoadMapPanel extends JPanel{
 		this.rm = rm;
 		initGUI();
 	}
+	
+	public void setRoadMap(RoadMap rm) {
+		this.rm = rm;
+	}
 
 	private void initGUI() {
 		

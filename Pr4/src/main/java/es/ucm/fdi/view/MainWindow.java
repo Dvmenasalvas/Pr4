@@ -75,22 +75,16 @@ public class MainWindow extends JFrame implements SimulatorListener {
 	private JTextField timeViewer;
 	private JToolBar toolBar;
 	private JTextArea reportsArea;
-	
-	private File currentFile;
-	
-
-	
 	//private ReportDialog reportDialog; // opcional
 	
 	public MainWindow(Controller controller, String inFileName, int timeLimit) {
 			 super("Traffic Simulator");
 			 setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-			 
-			 currentFile = inFileName != null ? new File(inFileName) : null;
+
 			 //ctrl.setOutputStream(reportsOutputStream); // ver sección 8
 			 
 			this.controller = controller;
-			initGUI(timeLimit);
+			initGUI(timeLimit, inFileName);
 			controller.getSimulator().addSimulatorListener(this);
 			 
 			setSize(1250, 1000);
@@ -99,7 +93,7 @@ public class MainWindow extends JFrame implements SimulatorListener {
 			mainPanel.setDividerLocation(.5);
 	}
 	
-	private void initGUI(int timeLimit) {
+	private void initGUI(int timeLimit, String inFileName) {
 		//Split de ventanas
 		topPanel = new JPanel();
 		topPanel.setLayout(new BoxLayout(topPanel,
@@ -124,7 +118,7 @@ public class MainWindow extends JFrame implements SimulatorListener {
 		addCommands();
 		addToolbar(timeLimit);
 		addMenu();
-		addEventsEditor();
+		addEventsEditor(inFileName);
 		addEventsView();
 		addReportsArea();
 		addVehiclesTable();
@@ -181,7 +175,7 @@ public class MainWindow extends JFrame implements SimulatorListener {
 				"Limpiar", "delete_report.png", "Limpiar informes",
 				KeyEvent.VK_L, "control L", 
 				()-> System.err.println("guardando...")));
-		actions.put(Command.CleanReports, new SimulatorAction(
+		actions.put(Command.SaveReports, new SimulatorAction(
 				"Guardar", "save_report.png", "Guardar informes",
 				KeyEvent.VK_A, "control A", 
 				()-> System.err.println("guardando...")));
@@ -283,12 +277,17 @@ public class MainWindow extends JFrame implements SimulatorListener {
 				setJMenuBar(menu);
 	}
 	
-	private void addEventsEditor() {
+	private void addEventsEditor(String inFileName) {
 		eventsEditor = new TextPanel(actions, true);
+		
+		TitledBorder border = new TitledBorder("Informe");
+	    eventsEditor.setBorder(border);
+		
 		topPanel.add(new JScrollPane(eventsEditor, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
 				JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED), BorderLayout.CENTER);
-		if(currentFile != null) {
-			 eventsEditor.setText(TextPanel.readFile(currentFile));
+		
+		if(inFileName != null) {
+			 eventsEditor.setText(TextPanel.readFile(new File(inFileName)));
 		 }
 	}
 
@@ -360,11 +359,12 @@ public class MainWindow extends JFrame implements SimulatorListener {
 		TitledBorder border = new TitledBorder("RoadMap");
 	    map.setBorder(border);
 	    
-		topPanel.add(new JScrollPane(reportsAreaPanel, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
+		bottomPanel.add(new JScrollPane(map, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
 				JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED), BorderLayout.CENTER);
 	}
 	
 	private void refreshInfo(UpdateEvent ue) {
+		map.setRoadMap(ue.getRoadMap());
 		eventsTable.setElements(ue.getEventsQueue());
 		vehiclesTable.setElements(ue.getRoadMap().getVehicles());
 		roadsTable.setElements(ue.getRoadMap().getRoads());
