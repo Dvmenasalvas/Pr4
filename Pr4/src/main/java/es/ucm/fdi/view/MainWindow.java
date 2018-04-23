@@ -354,7 +354,14 @@ public class MainWindow extends JFrame implements SimulatorListener {
 	}
 	
 	private void addMap() {
+		RoadMap rm = new RoadMap();
+        map = new RoadMapPanel(rm);
 		
+		TitledBorder border = new TitledBorder("RoadMap");
+	    map.setBorder(border);
+	    
+		topPanel.add(new JScrollPane(reportsAreaPanel, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
+				JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED), BorderLayout.CENTER);
 	}
 	
 	private void refreshInfo(UpdateEvent ue) {
