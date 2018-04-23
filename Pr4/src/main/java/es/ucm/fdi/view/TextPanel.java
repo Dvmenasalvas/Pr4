@@ -131,12 +131,6 @@ public class TextPanel extends JPanel{
 		}
 	}
 	
-	public Ini getEvents() throws IOException {
-		Ini ini = null;
-		ini = new Ini(new ByteArrayInputStream(eventsEditor.getText().getBytes()));
-		return ini;
-	}
-	
 	public void clearEvents() {
 		eventsEditor.setText("");
 	}
