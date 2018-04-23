@@ -105,7 +105,28 @@ public class Vehicle extends SimObject implements SimulatorTablePanel.Describabl
 
 	@Override
 	public void describe(Map<String, String> out) {
-		// TODO Auto-generated method stub
+		out.put("ID", id);
+		if(road == null) {
+			out.put("Carretera", "Arrived");
+		}
+		else {
+			out.put("Carretera", road.id);
+		}
+		out.put("Localizacion", Integer.toString(location));
+		out.put("Velocidad", Integer.toString(actSpeed));
+		out.put("Km",  Integer.toString(kilometrage));
+		out.put("Unidades de averia",  Integer.toString(faultyTime));
 		
+		StringBuilder itineraryOut = new StringBuilder();
+		itineraryOut.append("[");
+		for(Junction j : itinerary) {
+			itineraryOut.append(j.id + ",");
+		}
+		if(itinerary.size() != 0) {
+			itineraryOut.deleteCharAt(itineraryOut.length() - 1);
+		}
+		itineraryOut.append("]");
+		
+		out.put("Itinerario", itineraryOut.toString());
 	}
 }

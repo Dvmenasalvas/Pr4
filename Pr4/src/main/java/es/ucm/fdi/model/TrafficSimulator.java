@@ -76,6 +76,13 @@ public class TrafficSimulator {
 		}
 	}
 	
+	public void reset() {
+		events = new MultiTreeMap<Integer, Event>();
+		simObjects = new RoadMap();
+		time = 0;
+		fireUpdateEvent(EventType.RESET, "");
+	}
+	
 	public void ejecuta(int pasosSimulacion, OutputStream out) throws IOException {
 		int limiteTiempo = time + pasosSimulacion;
  		while(time < limiteTiempo) {
@@ -106,8 +113,9 @@ public class TrafficSimulator {
 			} catch (IOException e1) {
 				throw new IOException("Excepcion de escritura de objetos en tiempo: " + time, e1);
 			}
+			fireUpdateEvent(EventType.ADVANCED, "");
 		}
-	}
+	} 
 	
 	private void writeObjects(List<? extends SimObject> objects, OutputStream out) throws IOException {
 		if(out != null) {

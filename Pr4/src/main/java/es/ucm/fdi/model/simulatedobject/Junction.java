@@ -7,8 +7,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Queue;
 
+import es.ucm.fdi.view.SimulatorTablePanel;
 
-public class Junction extends SimObject{
+
+public class Junction extends SimObject implements SimulatorTablePanel.Describable{
 	Map<Road, IncomingRoad> carreterasEntrantes; //Mapa y lista ordenada para carreteras entrantes
 	protected List<IncomingRoad> semaforos;
 	int verde;
@@ -78,24 +80,31 @@ public class Junction extends SimObject{
 	@Override
 	protected void fillReportDetails(Map<String, String> out) {
 		StringBuilder queues = new StringBuilder();
+		
 		for(IncomingRoad ir : semaforos) {
-			String sem = semaforo(ir);
-			
-			queues.append("(" + ir.road.getId() + "," + sem + ",[");
-			for(Vehicle v : ir.vehicles) {
-				queues.append(v.getId() + ",");
-			}
-			if(ir.vehicles.size() > 0) {
-				queues.deleteCharAt(queues.length() - 1);
-			}
-			queues.append("]),");
-		}
-		if(semaforos.size() != 0) {
-			queues.deleteCharAt(queues.length() - 1);
+			queues.append(semInfo(ir));
 		}
 		
 		out.put("queues", queues.toString());
+	}
+	
+	private String semInfo(IncomingRoad ir) {
+		StringBuilder incomingRoad = new StringBuilder();
+		String sem = semaforo(ir);
+		
+		incomingRoad.append("(" + ir.road.getId() + "," + sem + ",[");
+		for(Vehicle v : ir.vehicles) {
+			incomingRoad.append(v.getId() + ",");
+		}
+		if(ir.vehicles.size() > 0) {
+			incomingRoad.deleteCharAt(incomingRoad.length() - 1);
+		}
+		incomingRoad.append("]),");
 
+		if(semaforos.size() != 0) {
+			incomingRoad.deleteCharAt(incomingRoad.length() - 1);
+		}
+		return incomingRoad.toString();
 	}
 	
 	protected String semaforo(IncomingRoad ir) {
@@ -153,5 +162,39 @@ public class Junction extends SimObject{
 		}
 
 		
+	}
+
+	@Override
+	public void describe(Map<String, String> out) {
+		out.put("ID", id);
+		
+		StringBuilder green = new StringBuilder();
+		StringBuilder red = new StringBuilder();
+		boolean redEmpty = true;
+		boolean greenEmpty = true;
+		green.append("[");
+		red.append("[");
+		
+		for(IncomingRoad ir : semaforos) {
+			if(ir.semaforo) {
+				green.append(semInfo(ir));
+				greenEmpty = false;
+			}
+			else {
+				red.append(semInfo(ir));
+				redEmpty = false;
+			}
+		}
+		if(!greenEmpty) {
+			green.deleteCharAt(green.length() - 1);
+		}
+		if(!redEmpty) {
+			red.deleteCharAt(red.length() - 1);
+		}
+		green.append("]");
+		red.append("]");
+		
+		out.put("Verde", green.toString());
+		out.put("Rojo", red.toString());
 	}
 }

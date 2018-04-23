@@ -42,9 +42,6 @@ public class TextPanel extends JPanel{
 		eventsEditor.setWrapStyleWord(true);
 		this.actions = actions;
 		this.add(eventsEditor);
-		
-		TitledBorder controlBorder = new TitledBorder("Editor de eventos");
-	    this.setBorder(controlBorder);
 	   
 	    addRightClick();
 	}
