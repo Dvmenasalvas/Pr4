@@ -46,7 +46,9 @@ public class TextPanel extends JPanel{
 		this.actions = actions;
 		this.add(eventsEditor);
 	   
-	    addRightClick();
+	    if(editable) {
+	    	addRightClick();
+	    }
 	}
 	
 	
@@ -190,12 +192,6 @@ public class TextPanel extends JPanel{
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-	}
-	
-	public Ini getEvents() throws IOException {
-		Ini ini = null;
-		ini = new Ini(new ByteArrayInputStream(eventsEditor.getText().getBytes()));
-		return ini;
 	}
 	
 	public void clearEvents() {

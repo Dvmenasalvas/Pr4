@@ -57,6 +57,7 @@ public class MainWindow extends JFrame implements SimulatorListener {
 	private JPanel bottomPanel;
 	private JPanel bottomLeftPanel;
 	
+	private ToolBar toolBar;
 	private TextPanel eventsEditor;
 	private SimulatorTablePanel eventsTable;
 	private TextPanel reportsAreaPanel;
@@ -71,27 +72,17 @@ public class MainWindow extends JFrame implements SimulatorListener {
 	private JMenu reportsMenu;
 	private HashMap<Command, SimulatorAction> actions;
 	
-	private JSpinner stepsSpinner;
-	private JTextField timeViewer;
-	private JToolBar toolBar;
-	private JTextArea reportsArea;
-	
-	private File currentFile;
-	
-
-	
 	//private ReportDialog reportDialog; // opcional
 	
 	public MainWindow(Controller controller, String inFileName, int timeLimit) {
 			 super("Traffic Simulator");
 			 setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-			 
-			 currentFile = inFileName != null ? new File(inFileName) : null;
+
 			 //ctrl.setOutputStream(reportsOutputStream); // ver sección 8
 			 
 			this.controller = controller;
-			initGUI(timeLimit);
-			controller.getSimulator().addSimulatorListener(this);
+			initGUI(timeLimit, inFileName);
+			controller.addSimulatorListener(this);
 			 
 			setSize(1250, 1000);
 			setLocationRelativeTo(null);
@@ -99,7 +90,7 @@ public class MainWindow extends JFrame implements SimulatorListener {
 			mainPanel.setDividerLocation(.5);
 	}
 	
-	private void initGUI(int timeLimit) {
+	private void initGUI(int timeLimit, String inFileName) {
 		//Split de ventanas
 		topPanel = new JPanel();
 		topPanel.setLayout(new BoxLayout(topPanel,
@@ -122,9 +113,12 @@ public class MainWindow extends JFrame implements SimulatorListener {
 		
 		
 		addCommands();
-		addToolbar(timeLimit);
+		
+		toolBar = new ToolBar(actions, timeLimit);
+		add(toolBar, BorderLayout.NORTH);
+		
 		addMenu();
-		addEventsEditor();
+		addEventsEditor(inFileName);
 		addEventsView();
 		addReportsArea();
 		addVehiclesTable();
@@ -157,103 +151,31 @@ public class MainWindow extends JFrame implements SimulatorListener {
 		actions.put(Command.InsertEvents, new SimulatorAction(
 				"Insertar Eventos", "events.png", "Insertar eventos en el simulador",
 				KeyEvent.VK_I, "control I", 
-				()-> {
-					try {
-						insertEvents();
-					} catch (IOException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-				}));
+				()-> controller.insertarEventos(eventsEditor.getText())));
 		actions.put(Command.Execute, new SimulatorAction(
 				"Ejecutar", "play.png", "Ejecutar el simulador",
 				KeyEvent.VK_E, "control E", 
-				()-> ejecuta()));
+				()-> controller.ejecuta(toolBar.getSpinnerValue(), null)));
 		actions.put(Command.Reset, new SimulatorAction(
 				"Reiniciar", "reset.png", "Reiniciar el simulador",
 				KeyEvent.VK_R, "control R", 
-				()-> controller.getSimulator().reset()));
+				()-> controller.reset()));
 		actions.put(Command.GenerateReports, new SimulatorAction(
 				"Generar", "report.png", "Generar informes",
 				KeyEvent.VK_P, "control P", 
-				()-> System.err.println("guardando...")));
+				()-> reportsAreaPanel.setText(controller.generateReports())));
 		actions.put(Command.CleanReports, new SimulatorAction(
 				"Limpiar", "delete_report.png", "Limpiar informes",
 				KeyEvent.VK_L, "control L", 
-				()-> System.err.println("guardando...")));
-		actions.put(Command.CleanReports, new SimulatorAction(
+				()-> reportsAreaPanel.clearEvents()));
+		actions.put(Command.SaveReports, new SimulatorAction(
 				"Guardar", "save_report.png", "Guardar informes",
 				KeyEvent.VK_A, "control A", 
-				()-> System.err.println("guardando...")));
+				()-> reportsAreaPanel.saveEvents()));
 		actions.put(Command.Exit, new SimulatorAction(
 				"Salir", "exit.png", "Salir de la aplicacion",
 				KeyEvent.VK_A, "control shift X", 
 				()-> System.exit(0)));
-	}
-	
-	private void ejecuta() {
-		try {
-			controller.getSimulator().ejecuta((Integer) stepsSpinner.getValue(),  new FileOutputStream("src/salida.ini"));
-		} catch (NumberFormatException | IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
-	
-	private void insertEvents() throws IOException  {
-		Ini ini = eventsEditor.getEvents();
-		for(IniSection sec : ini.getSections()) {
-			Event e;
-			try {
-				e = Controller.parseSec(sec);
-				controller.getSimulator().insertaEvento(e);
-			} catch (IOException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
-			
-		}
-	}
-
-	private void addToolbar(int timeLimit) {
-		// instantiate actions
-		stepsSpinner = new JSpinner(new SpinnerNumberModel(timeLimit, 1, 100, 1));
-		timeViewer = new JTextField();
-		timeViewer.setText("0");
-		timeViewer.setEditable(false);
-		timeViewer.setPreferredSize(new Dimension(50, 60));
-		
-		// add actions to toolbar, and bar to window
-		toolBar = new JToolBar();
-		toolBar.add(actions.get(Command.LoadEvents));
-		toolBar.add(actions.get(Command.SaveEvents));
-		toolBar.add(actions.get(Command.CleanEvents));
-		toolBar.addSeparator();
-		
-		toolBar.add(actions.get(Command.InsertEvents));
-		toolBar.add(actions.get(Command.Execute));
-		toolBar.add(actions.get(Command.Reset));
-		
-		toolBar.add(new JLabel("Pasos: "));
-		toolBar.add(stepsSpinner);
-		stepsSpinner.setToolTipText(
-	                "<html>Determina el numero de pasos que se <br>"
-	                + "dan en la simulacion");
-	
-		toolBar.add(new JLabel("Tiempo: "));
-		toolBar.add(timeViewer);
-		toolBar.addSeparator();
-		
-		toolBar.add(actions.get(Command.GenerateReports));
-		toolBar.add(actions.get(Command.CleanReports));
-		toolBar.add(actions.get(Command.SaveReports));
-		toolBar.addSeparator();
-		
-		toolBar.add(actions.get(Command.Exit));
-		
-		toolBar.setLayout(new BoxLayout(toolBar, BoxLayout.X_AXIS));
-		
-		add(toolBar, BorderLayout.NORTH);
 	}
 	
 	private void addMenu() {
@@ -282,12 +204,16 @@ public class MainWindow extends JFrame implements SimulatorListener {
 				setJMenuBar(menu);
 	}
 	
-	private void addEventsEditor() {
+	private void addEventsEditor(String inFileName) {
 		eventsEditor = new TextPanel(actions, true);
+		
+		eventsEditor.setBorder(new TitledBorder("Informe"));
+		
 		topPanel.add(new JScrollPane(eventsEditor, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
 				JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED), BorderLayout.CENTER);
-		if(currentFile != null) {
-			 eventsEditor.setText(TextPanel.readFile(currentFile));
+		
+		if(inFileName != null) {
+			 eventsEditor.setText(TextPanel.readFile(new File(inFileName)));
 		 }
 	}
 
@@ -356,19 +282,20 @@ public class MainWindow extends JFrame implements SimulatorListener {
 		RoadMap rm = new RoadMap();
         map = new RoadMapPanel(rm);
 		
-		TitledBorder border = new TitledBorder("RoadMap");
-	    map.setBorder(border);
+	    map.setBorder(new TitledBorder("RoadMap"));
 	    
-		topPanel.add(new JScrollPane(reportsAreaPanel, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
+		bottomPanel.add(new JScrollPane(map, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
 				JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED), BorderLayout.CENTER);
 	}
 	
+	
 	private void refreshInfo(UpdateEvent ue) {
+		map.setRoadMap(ue.getRoadMap());
 		eventsTable.setElements(ue.getEventsQueue());
 		vehiclesTable.setElements(ue.getRoadMap().getVehicles());
 		roadsTable.setElements(ue.getRoadMap().getRoads());
 		junctionsTable.setElements(ue.getRoadMap().getJunctions());
-		timeViewer.setText(Integer.toString(ue.getCurrentTime()));
+		toolBar.setTimeValue(ue.getCurrentTime());
 	}
 	
 	@Override

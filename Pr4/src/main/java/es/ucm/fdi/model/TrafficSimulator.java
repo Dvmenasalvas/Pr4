@@ -117,15 +117,14 @@ public class TrafficSimulator {
 		}
 	} 
 	
+	public String stringReport() {
+		return report(simObjects.getJunctions()).toString() + report(simObjects.getRoads()).toString() + report(simObjects.getVehicles()).toString();
+
+	}
+	
 	private void writeObjects(List<? extends SimObject> objects, OutputStream out) throws IOException {
 		if(out != null) {
-			Map<String, String> report;	
-			Ini rep = new Ini();
-			for(SimObject o : objects) {
-				report = new LinkedHashMap<String, String>();	//Mantenemos orden de insercion
-				o.report(time, report);
-				rep.addsection(writeReport(report, out));
-			}
+			Ini rep = report(objects);
 			try {
 				rep.store(out);
 			} catch (IOException e1) {
@@ -134,7 +133,18 @@ public class TrafficSimulator {
 		}
 	}
 	
-	private IniSection writeReport(Map<String, String> report, OutputStream out) throws IOException {
+	private Ini report(List<? extends SimObject> objects) {
+		Map<String, String> report;	
+		Ini rep = new Ini();
+		for(SimObject o : objects) {
+			report = new LinkedHashMap<String, String>();	//Mantenemos orden de insercion
+			o.report(time, report);
+			rep.addsection(writeReport(report));
+		}
+		return rep;
+	}
+	
+	private IniSection writeReport(Map<String, String> report) {
 		IniSection sec = new IniSection(report.get(""));
 		for(Map.Entry<String,String> e : report.entrySet()) {
 			if(!e.getKey().equals("")) {
