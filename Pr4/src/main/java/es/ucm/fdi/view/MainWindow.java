@@ -189,7 +189,6 @@ public class MainWindow extends JFrame implements SimulatorListener {
 				"Salir", "exit.png", "Salir de la aplicacion",
 				KeyEvent.VK_A, "control shift X", 
 				()-> System.exit(0)));
-		
 	}
 	
 	private void ejecuta() {

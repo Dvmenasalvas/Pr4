@@ -11,11 +11,13 @@ import java.util.Random;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 
 import es.ucm.fdi.extra.graphlayout.Dot;
 import es.ucm.fdi.extra.graphlayout.Edge;
 import es.ucm.fdi.extra.graphlayout.Graph;
 import es.ucm.fdi.extra.graphlayout.GraphComponent;
+import es.ucm.fdi.extra.graphlayout.GraphLayoutExample;
 import es.ucm.fdi.extra.graphlayout.Node;
 import es.ucm.fdi.model.RoadMap;
 import es.ucm.fdi.model.simulatedobject.Junction;
@@ -72,4 +74,13 @@ public class RoadMapPanel extends JPanel{
 			++i;
 		}
 	}
+	/*
+	public static void main(String[] args) {
+		SwingUtilities.invokeLater(new Runnable() {
+			public void run() {
+				new RoadMapPanel(rm);
+			}
+		});
+}
+*/
 }

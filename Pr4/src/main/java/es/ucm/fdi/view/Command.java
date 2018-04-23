@@ -11,6 +11,18 @@ public enum Command {
 	CleanReports("Limpiar Informes"),
 	SaveReports("Guardar Informes"),
 	Exit("Salir");
+	/**
+	NewRRJunction("Nuevo cruce RR"), 
+	NewMCJunction("Nuevo Cruce MC"), 
+	NewJunction("Nuevo Cruce"),
+	NewDirtRoad("Nueva Carretera sin asfaltar"), 
+	NewLanesRoad("Nueva Autopista"),
+	NewRoad("Nueva Carretera"), 
+	NewBike("Nueva Bici"), 
+	NewCar("Nuevo Coche"),
+	NewVehicle("Nuevo vehiculo"), 
+	NewVehicleFaulty("Nueva averia");
+	**/
 	
 	private String text;
 	Command(String text){
