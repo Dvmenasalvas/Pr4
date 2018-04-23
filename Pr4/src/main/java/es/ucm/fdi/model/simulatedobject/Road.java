@@ -1,5 +1,6 @@
 package es.ucm.fdi.model.simulatedobject;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import es.ucm.fdi.view.SimulatorTablePanel;
@@ -39,7 +40,7 @@ public class Road extends SimObject implements SimulatorTablePanel.Describable{
 	}
 	
 	public List<Integer> vehiclesPosition(){
-		List<Integer> p = null;
+		List<Integer> p = new ArrayList<Integer>();
 		for(Vehicle v : vehicles.innerValues()) {
 			p.add(v.getLocation());
 		}
