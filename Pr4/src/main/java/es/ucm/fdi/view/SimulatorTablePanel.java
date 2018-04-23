@@ -18,7 +18,7 @@ public class SimulatorTablePanel extends JPanel{
 	String[] fieldNames;
 	
 	
-	public SimulatorTablePanel(List<Describable> elements,	
+	public SimulatorTablePanel(List<? extends Describable> elements,	
 			String[] fieldNames) {
 		super();
 		this.elements = elements;
@@ -30,8 +30,9 @@ public class SimulatorTablePanel extends JPanel{
 		initTable();
 	}
 	
-	public void setElements(List<Describable> elements) {
+	public void setElements(List<? extends Describable> elements) {
 		this.elements = elements;
+		tableModel.fireTableDataChanged();
 	}
 
 	private void initTable() {

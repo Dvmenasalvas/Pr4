@@ -49,11 +49,7 @@ import es.ucm.fdi.model.event.MakeVehicleFaulty;
 import es.ucm.fdi.view.SimulatorTablePanel.Describable;
 
 public class MainWindow extends JFrame implements SimulatorListener {
-	private RoadMap map;
-	private int time;
-	private List<Describable> events;
-	private OutputStream reportsOutputStream;
-	private TrafficSimulator model;
+	private Controller controller;
 	
 	private JSplitPane mainPanel;
 	private JPanel topPanel;
@@ -61,12 +57,13 @@ public class MainWindow extends JFrame implements SimulatorListener {
 	private JPanel bottomLeftPanel;
 	private JPanel bottomRightPanel;
 	
-	private EventsEditorPanel eventsEditor;
+	private TextPanel eventsEditor;
 	private SimulatorTablePanel eventsTable;
-	private JPanel reportsAreaPanel;
+	private TextPanel reportsAreaPanel;
 	private SimulatorTablePanel vehiclesTable; // tabla de vehiculos
 	private SimulatorTablePanel roadsTable; // tabla de carreteras
 	private SimulatorTablePanel junctionsTable; // tabla de cruces
+	private RoadMapPanel map;
 	
 	private JMenuBar menu;
 	private JMenu fileMenu;
@@ -85,17 +82,16 @@ public class MainWindow extends JFrame implements SimulatorListener {
 	
 	//private ReportDialog reportDialog; // opcional
 	
-	public MainWindow(TrafficSimulator model, String inFileName) {
+	public MainWindow(Controller controller, String inFileName) {
 			 super("Traffic Simulator");
 			 setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 			 
 			 currentFile = inFileName != null ? new File(inFileName) : null;
-			 //reportsOutputStream = new JTextAreaOutputStream(reportsArea,null);
 			 //ctrl.setOutputStream(reportsOutputStream); // ver sección 8
 			 
-			this.model = model;
+			this.controller = controller;
 			initGUI();
-			model.addSimulatorListener(this);
+			controller.getSimulator().addSimulatorListener(this);
 			 
 			setSize(1250, 1000);
 			setLocationRelativeTo(null);
@@ -131,11 +127,10 @@ public class MainWindow extends JFrame implements SimulatorListener {
 		addEventsView(); // cola de eventos
 		addReportsArea(); // zona de informes
 		addVehiclesTable(); // tabla de vehiculos
-		/*
 		addRoadsTable(); // tabla de carreteras
 		addJunctionsTable(); // tabla de cruces
-		
 		addMap(); // mapa de carreteras
+		/*
 		addStatusBar(); // barra de estado
 		*/
 		
@@ -161,7 +156,14 @@ public class MainWindow extends JFrame implements SimulatorListener {
 		actions.put(Command.InsertEvents, new SimulatorAction(
 				"Insertar Eventos", "events.png", "Insertar eventos en el simulador",
 				KeyEvent.VK_I, "control I", 
-				()-> insertEvents()));
+				()-> {
+					try {
+						insertEvents();
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}));
 		actions.put(Command.Execute, new SimulatorAction(
 				"Ejecutar", "play.png", "Ejecutar el simulador",
 				KeyEvent.VK_E, "control E", 
@@ -189,18 +191,13 @@ public class MainWindow extends JFrame implements SimulatorListener {
 		
 	}
 	
-	private void insertEvents()  {
-		Ini ini = null;
-		try {
-			 ini = new Ini(new ByteArrayInputStream(eventsEditor.getText().getBytes()));
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+	private void insertEvents() throws IOException  {
+		Ini ini = eventsEditor.getEvents();
 		for(IniSection sec : ini.getSections()) {
 			Event e;
 			try {
 				e = Controller.parseSec(sec);
-				model.insertaEvento(e);
+				controller.getSimulator().insertaEvento(e);
 			} catch (IOException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
@@ -274,26 +271,24 @@ public class MainWindow extends JFrame implements SimulatorListener {
 	}
 	
 	private void addEventsEditor() {
-		eventsEditor = new EventsEditorPanel(actions);
+		eventsEditor = new TextPanel(actions, true);
 		topPanel.add(new JScrollPane(eventsEditor, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
 				JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED), BorderLayout.CENTER);
 		if(currentFile != null) {
-			 eventsEditor.setText(EventsEditorPanel.readFile(currentFile));
+			 eventsEditor.setText(TextPanel.readFile(currentFile));
 		 }
 	}
 
 	private void addEventsView() {
 		String[] columnas = {"#" , "Tiempo" , "Tipo"};
-		events = new ArrayList<Describable>();
+		List<Describable> events = new ArrayList<Describable>();
 		eventsTable = new SimulatorTablePanel(events, columnas);
 		topPanel.add(new JScrollPane(eventsTable, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
 				JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED), BorderLayout.CENTER);
 	}
 	
 	private void addReportsArea() {
-		reportsAreaPanel = new JPanel();
-		reportsArea = new JTextArea(24, 30);
-		reportsAreaPanel.add(reportsArea);
+		reportsAreaPanel = new TextPanel(actions, false);
 		
 		TitledBorder border = new TitledBorder("Informe");
 	    reportsAreaPanel.setBorder(border);
@@ -305,9 +300,31 @@ public class MainWindow extends JFrame implements SimulatorListener {
 	
 	private void addVehiclesTable() {
 		String[] columnas = {"ID", "Carretera", "Localizacion", "Velocidad", "Km", "Unidades de averia", "Itinerario"};
+		List<Describable> events = new ArrayList<Describable>();
 		vehiclesTable = new SimulatorTablePanel(events, columnas);
 		bottomLeftPanel.add(new JScrollPane(vehiclesTable, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
 				JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED), BorderLayout.CENTER);
+		
+	}
+
+	private void addRoadsTable() {
+		String[] columnas = {"ID", "Inicio", "Final", "Longitud", "Maxima Velocidad", "Vehiculos"};
+		List<Describable> events = new ArrayList<Describable>();
+		roadsTable = new SimulatorTablePanel(events, columnas);
+		bottomLeftPanel.add(new JScrollPane(roadsTable, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
+				JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED), BorderLayout.CENTER);	
+	}
+	
+	private void addJunctionsTable() {
+		String[] columnas = {"ID", "Verde", "Rojo"};
+		List<Describable> events = new ArrayList<Describable>();
+		junctionsTable = new SimulatorTablePanel(events, columnas);
+		bottomLeftPanel.add(new JScrollPane(junctionsTable, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
+				JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED), BorderLayout.CENTER);
+		
+	}
+	
+	private void addMap() {
 		
 	}
 	
@@ -325,7 +342,7 @@ public class MainWindow extends JFrame implements SimulatorListener {
 
 	@Override
 	public void newEvent(UpdateEvent ue) {
-		events = ue.getEventsQueue();
+		eventsTable.setElements(ue.getEventsQueue());
 	}
 
 	@Override

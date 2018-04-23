@@ -33,7 +33,7 @@ public class Main {
 	private static Integer _timeLimit = null;
 	private static String _inFile = null;
 	private static String _outFile = null;
-	private static boolean _GUI = true;
+	private static boolean _GUI = false;
 
 	private static void parseArgs(String[] args) {
 
@@ -103,7 +103,7 @@ public class Main {
 	}
 	
 	private static void parseModeOption(CommandLine line) throws ParseException {
-		if(line.getOptionValue("m") == "gui") 
+		if("gui".equals(line.getOptionValue("m"))) 
 			_GUI = true;
 	}
 
@@ -189,8 +189,9 @@ public class Main {
 	
 	private static void startGUIMode() throws IOException {
 		TrafficSimulator tf = new TrafficSimulator();
+		Controller controller = new Controller(tf);
 		
-		SwingUtilities.invokeLater(() -> new MainWindow(tf, _inFile));
+		SwingUtilities.invokeLater(() -> new MainWindow(controller, _inFile));
 	}
 
 	private static void start(String[] args) throws IOException {

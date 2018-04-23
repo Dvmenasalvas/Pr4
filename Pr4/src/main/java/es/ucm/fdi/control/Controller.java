@@ -3,9 +3,16 @@ package es.ucm.fdi.control;
 import java.io.IOException;
 
 import es.ucm.fdi.ini.IniSection;
+import es.ucm.fdi.model.TrafficSimulator;
 import es.ucm.fdi.model.event.*;
 
 public class Controller {
+	private TrafficSimulator ts;
+	
+	public Controller(TrafficSimulator ts) {
+		this.ts = ts;
+	}
+	
 	private final static Event.Builder[] bs = new Event.Builder[] {
 			new MakeVehicleFaulty().new Builder(), 
 			new NewRoundRobin().new Builder(),
@@ -26,5 +33,11 @@ public class Controller {
 		}
 		return e;
 	}
+	
+	public TrafficSimulator getSimulator() {
+		return ts;
+	}
+	
+	
 
 }

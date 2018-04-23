@@ -21,21 +21,20 @@ import es.ucm.fdi.model.RoadMap;
 import es.ucm.fdi.model.simulatedobject.Junction;
 import es.ucm.fdi.model.simulatedobject.Road;
 
-public class RoadMapPanel extends JFrame{
+public class RoadMapPanel extends JPanel{
 	private GraphComponent _graphComp;
-	private RoadMap roadMap;
+	private RoadMap rm;
 	
-	public RoadMapPanel() {
+	public RoadMapPanel(RoadMap rm) {
 		super();
+		this.rm = rm;
 		initGUI();
 	}
 
 	private void initGUI() {
-
-		JPanel mainPanel = new JPanel(new BorderLayout() );
 		
 		_graphComp = new GraphComponent();
-		mainPanel.add(_graphComp, BorderLayout.CENTER);
+		add(_graphComp, BorderLayout.CENTER);
 
 		JButton newGraph = new JButton("New Graph");
 		newGraph.addActionListener( new ActionListener() {
@@ -45,27 +44,21 @@ public class RoadMapPanel extends JFrame{
 			}
 		});
 		
-		mainPanel.add(newGraph,BorderLayout.PAGE_START);
-		
-		this.setContentPane(mainPanel);
-		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		this.pack();
-		this.setVisible(true);
-
+		add(newGraph,BorderLayout.PAGE_START);
 	}
 	
 	protected void generateGraph() {
 
 		Graph g = new Graph();
 		Map<Junction, Node> js = new HashMap<>();
-		for (Junction j : roadMap.getJunctions()) {
+		for (Junction j : rm.getJunctions()) {
 			Node n = new Node(j.getId());
 			js.put(j, n); // <-- para convertir Junction a Node en aristas
 			g.addNode(n);
 		}
 		
 		int i = 0;
-		for (Road r : roadMap.getRoads()) {
+		for (Road r : rm.getRoads()) {
 			Edge e = 
 			     new Edge("e"+i, 
 			    		 g.getNodes().get(g.getNodes().indexOf(r.getSrc())), 

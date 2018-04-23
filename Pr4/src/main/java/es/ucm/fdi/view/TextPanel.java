@@ -6,6 +6,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.BufferedWriter;
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
@@ -25,17 +26,18 @@ import javax.swing.JTextArea;
 import javax.swing.border.TitledBorder;
 
 import es.ucm.fdi.control.SimulatorAction;
+import es.ucm.fdi.ini.Ini;
 
-public class EventsEditorPanel extends JPanel{
+public class TextPanel extends JPanel{
 	private JTextArea eventsEditor; // editor de eventos
 	private JFileChooser fc;
 	private HashMap<Command, SimulatorAction> actions;
 	
-	public EventsEditorPanel(HashMap<Command, SimulatorAction> actions) {
+	public TextPanel(HashMap<Command, SimulatorAction> actions, boolean editable) {
 		super();
 		fc = new JFileChooser();
 		eventsEditor = new JTextArea(24, 30);
-		eventsEditor.setEditable(true);
+		eventsEditor.setEditable(editable);
 		eventsEditor.setLineWrap(true);
 		eventsEditor.setWrapStyleWord(true);
 		this.actions = actions;
@@ -128,6 +130,12 @@ public class EventsEditorPanel extends JPanel{
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	public Ini getEvents() throws IOException {
+		Ini ini = null;
+		ini = new Ini(new ByteArrayInputStream(eventsEditor.getText().getBytes()));
+		return ini;
 	}
 	
 	public void clearEvents() {
