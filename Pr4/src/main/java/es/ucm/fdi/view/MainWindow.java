@@ -181,28 +181,27 @@ public class MainWindow extends JFrame implements SimulatorListener {
 	
 	private void addMenu() {
 		// add actions to menubar, and bar to window
-				fileMenu = new JMenu("Archivo");
-				fileMenu.add(actions.get(Command.LoadEvents));		
-				fileMenu.add(actions.get(Command.SaveEvents));
-				fileMenu.addSeparator();
-				fileMenu.add(actions.get(Command.SaveReports));
-				fileMenu.addSeparator();
-				fileMenu.add(actions.get(Command.Exit));	
-				
-				simulatorMenu = new JMenu("Simulador");
-				simulatorMenu.add(actions.get(Command.Execute));
-				simulatorMenu.add(actions.get(Command.Reset));
-				//simulator.add(menuItem);	Redirect Output...
-				
-				reportsMenu = new JMenu("Informes");
-				reportsMenu.add(actions.get(Command.GenerateReports));
-				reportsMenu.add(actions.get(Command.CleanReports));
-				
-				menu = new JMenuBar();
-				menu.add(fileMenu);
-				menu.add(simulatorMenu);
-				menu.add(reportsMenu);
-				setJMenuBar(menu);
+		fileMenu = new JMenu("Archivo");
+		fileMenu.add(actions.get(Command.LoadEvents));		
+		fileMenu.add(actions.get(Command.SaveEvents));
+		fileMenu.addSeparator();
+		fileMenu.add(actions.get(Command.SaveReports));
+		fileMenu.addSeparator();
+		fileMenu.add(actions.get(Command.Exit));	
+		
+		simulatorMenu = new JMenu("Simulador");
+		simulatorMenu.add(actions.get(Command.Execute));
+		simulatorMenu.add(actions.get(Command.Reset));
+		
+		reportsMenu = new JMenu("Informes");
+		reportsMenu.add(actions.get(Command.GenerateReports));
+		reportsMenu.add(actions.get(Command.CleanReports));
+		
+		menu = new JMenuBar();
+		menu.add(fileMenu);
+		menu.add(simulatorMenu);
+		menu.add(reportsMenu);
+		setJMenuBar(menu);
 	}
 	
 	private void addEventsEditor(String inFileName) {
