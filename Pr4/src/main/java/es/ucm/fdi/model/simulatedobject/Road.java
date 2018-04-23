@@ -1,5 +1,6 @@
 package es.ucm.fdi.model.simulatedobject;
 
+import java.util.List;
 import java.util.Map;
 
 import es.ucm.fdi.util.MultiTreeMap;
@@ -26,6 +27,22 @@ public class Road extends SimObject{
 	
 	public int getLength() {
 		return length;
+	}
+	
+	public MultiTreeMap<Integer, Vehicle> getVehicles() {
+		return vehicles;
+	}
+	
+	public int numVehicles() {
+		return vehicles.size();
+	}
+	
+	public List<Integer> vehiclesPosition(){
+		List<Integer> p = null;
+		for(Vehicle v : vehicles.innerValues()) {
+			p.add(v.getLocation());
+		}
+		return p;
 	}
 	
 	public Junction getDest() {
