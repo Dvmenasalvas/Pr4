@@ -31,11 +31,11 @@ import es.ucm.fdi.control.SimulatorAction;
 import es.ucm.fdi.ini.Ini;
 import es.ucm.fdi.model.RoadMap;
 
-public class TextPanel extends JPanel{
+public class TextPanel extends JPanel {
 	private JTextArea eventsEditor; // editor de eventos
 	private JFileChooser fc;
 	private HashMap<Command, SimulatorAction> actions;
-	
+
 	public TextPanel(HashMap<Command, SimulatorAction> actions, boolean editable) {
 		super();
 		fc = new JFileChooser();
@@ -45,125 +45,121 @@ public class TextPanel extends JPanel{
 		eventsEditor.setWrapStyleWord(true);
 		this.actions = actions;
 		this.add(eventsEditor);
-	   
-	    if(editable) {
-	    	addRightClick();
-	    }
+
+		if (editable) {
+			addRightClick();
+		}
 	}
-	
-	
-	
+
 	public void addRightClick() {
-		 JPopupMenu rightClick = new JPopupMenu();
-			
-			rightClick.add(actions.get(Command.LoadEvents));
-			rightClick.add(actions.get(Command.SaveEvents));
-			rightClick.add(actions.get(Command.CleanEvents));
-			JMenu subMenu = new JMenu("Add template");
-			rightClick.add(subMenu);
+		JPopupMenu rightClick = new JPopupMenu();
 
-			String[] templates = { "New RR Junction", 
-					"New MC Junction", "New Junction",
-					"New Dirt Road", "New Lanes Road",
-					"New Road", "New Bike", "New Car",
-					"New Vehicle", "New Vehicle Faulty"};
-			
-			for (String s : templates) {
-				JMenuItem menuItem = new JMenuItem(s);
-				menuItem.addActionListener(new ActionListener() {
+		rightClick.add(actions.get(Command.LoadEvents));
+		rightClick.add(actions.get(Command.SaveEvents));
+		rightClick.add(actions.get(Command.CleanEvents));
+		JMenu subMenu = new JMenu("Add template");
+		rightClick.add(subMenu);
 
-					@Override
-					public void actionPerformed(ActionEvent e) {
-						switch(s){
-						case("New RR Junction"):{
-							eventsEditor.insert(s, eventsEditor.getCaretPosition());
-						}
-						break;
-						case("New MC Junction"):{
-							eventsEditor.insert(s, eventsEditor.getCaretPosition());
-						}
-						break;
-						case("New Junction"):{
-							eventsEditor.insert(newJunctionTemplate(), eventsEditor.getCaretPosition());
-						}
-						break;
-						case("New Dirt Road"):{
-							eventsEditor.insert(s, eventsEditor.getCaretPosition());
-						}
-						break;
-						case("New Lanes Road"):{
-							eventsEditor.insert(s, eventsEditor.getCaretPosition());
-						}
-						break;
-						case("New Road"):{
-							eventsEditor.insert(newRoadTemplate(), eventsEditor.getCaretPosition());
-						}
-						break;
-						case("New Bike"):{
-							eventsEditor.insert(s, eventsEditor.getCaretPosition());
-						}
-						break;
-						case("New Car"):{
-							eventsEditor.insert(s, eventsEditor.getCaretPosition());
-						}
-						break;
-						case("New Vehicle"):{
-							eventsEditor.insert(s, eventsEditor.getCaretPosition());
-						}
-						break;
-						case("New Vehicle Faulty"):{
-							eventsEditor.insert(s, eventsEditor.getCaretPosition());
-						}
-						break;
-						}
-						
+		String[] templates = { "New RR Junction", "New MC Junction", "New Junction",
+				"New Dirt Road", "New Lanes Road", "New Road", "New Bike", "New Car", "New Vehicle",
+				"New Vehicle Faulty" };
+
+		for (String s : templates) {
+			JMenuItem menuItem = new JMenuItem(s);
+			menuItem.addActionListener(new ActionListener() {
+
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					switch (s) {
+					case ("New RR Junction"): {
+						eventsEditor.insert(s, eventsEditor.getCaretPosition());
 					}
-				});
-				subMenu.add(menuItem);
-			}
-			
-			// connect the popup menu to the text area _editor
-			eventsEditor.addMouseListener(new MouseListener() {
-
-				@Override
-				public void mousePressed(MouseEvent e) {
-					showPopup(e);
-				}
-
-				@Override
-				public void mouseReleased(MouseEvent e) {
-					showPopup(e);
-				}
-
-				private void showPopup(MouseEvent e) {
-					if (e.isPopupTrigger() && rightClick.isEnabled()) {
-						rightClick.show(e.getComponent(), e.getX(), e.getY());
+						break;
+					case ("New MC Junction"): {
+						eventsEditor.insert(s, eventsEditor.getCaretPosition());
 					}
-				}
+						break;
+					case ("New Junction"): {
+						eventsEditor.insert(newJunctionTemplate(), eventsEditor.getCaretPosition());
+					}
+						break;
+					case ("New Dirt Road"): {
+						eventsEditor.insert(s, eventsEditor.getCaretPosition());
+					}
+						break;
+					case ("New Lanes Road"): {
+						eventsEditor.insert(s, eventsEditor.getCaretPosition());
+					}
+						break;
+					case ("New Road"): {
+						eventsEditor.insert(newRoadTemplate(), eventsEditor.getCaretPosition());
+					}
+						break;
+					case ("New Bike"): {
+						eventsEditor.insert(s, eventsEditor.getCaretPosition());
+					}
+						break;
+					case ("New Car"): {
+						eventsEditor.insert(s, eventsEditor.getCaretPosition());
+					}
+						break;
+					case ("New Vehicle"): {
+						eventsEditor.insert(s, eventsEditor.getCaretPosition());
+					}
+						break;
+					case ("New Vehicle Faulty"): {
+						eventsEditor.insert(s, eventsEditor.getCaretPosition());
+					}
+						break;
+					}
 
-				@Override
-				public void mouseExited(MouseEvent e) {
-				}
-
-				@Override
-				public void mouseEntered(MouseEvent e) {
-				}
-
-				@Override
-				public void mouseClicked(MouseEvent e) {
 				}
 			});
+			subMenu.add(menuItem);
+		}
+
+		// connect the popup menu to the text area _editor
+		eventsEditor.addMouseListener(new MouseListener() {
+
+			@Override
+			public void mousePressed(MouseEvent e) {
+				showPopup(e);
+			}
+
+			@Override
+			public void mouseReleased(MouseEvent e) {
+				showPopup(e);
+			}
+
+			private void showPopup(MouseEvent e) {
+				if (e.isPopupTrigger() && rightClick.isEnabled()) {
+					rightClick.show(e.getComponent(), e.getX(), e.getY());
+				}
+			}
+
+			@Override
+			public void mouseExited(MouseEvent e) {
+			}
+
+			@Override
+			public void mouseEntered(MouseEvent e) {
+			}
+
+			@Override
+			public void mouseClicked(MouseEvent e) {
+			}
+		});
 	}
 
-	public void loadEvents(){
+	public void loadEvents() {
 		int returnVal = fc.showOpenDialog(this);
 
-        if (returnVal == JFileChooser.APPROVE_OPTION) {
-            File file = fc.getSelectedFile();
-            eventsEditor.setText(readFile(file));
-        }
+		if (returnVal == JFileChooser.APPROVE_OPTION) {
+			File file = fc.getSelectedFile();
+			eventsEditor.setText(readFile(file));
+		}
 	}
-	
+
 	public static String readFile(File file) {
 		String s = "";
 		try {
@@ -174,16 +170,16 @@ public class TextPanel extends JPanel{
 
 		return s;
 	}
-	
+
 	public void saveEvents() {
 		int returnVal = fc.showSaveDialog(this);
 
 		if (returnVal == JFileChooser.APPROVE_OPTION) {
 			File file = fc.getSelectedFile();
 			writeFile(file, eventsEditor.getText());
-		}  
+		}
 	}
-	
+
 	private void writeFile(File file, String content) {
 		try {
 			PrintWriter pw = new PrintWriter(file);
@@ -193,26 +189,26 @@ public class TextPanel extends JPanel{
 			e.printStackTrace();
 		}
 	}
-	
+
 	public void clearEvents() {
 		eventsEditor.setText("");
 	}
-	
+
 	public String getText() {
 		return eventsEditor.getText();
 	}
-	
+
 	public void setText(String text) {
 		eventsEditor.setText(text);
 	}
-	
+
 	private String newJunctionTemplate() {
 		String s = "[new_junction]\n";
 		s += "time =\n";
 		s += "id =\n";
 		return s;
 	}
-	
+
 	private String newRoadTemplate() {
 		String s = "[new_road]\n";
 		s += "time =\n";
@@ -224,8 +220,8 @@ public class TextPanel extends JPanel{
 		s += "lanes =\n";
 		return s;
 	}
-	
-	//faltan templates
+
+	// faltan templates
 	private String newVehicleTemplate() {
 		String s = "[new_vehicle]\n";
 		s += "time =\n";

@@ -16,8 +16,7 @@ public class RoadMap {
 	private List<Junction> junctionsRO;
 	private List<Road> roadsRO;
 	private List<Vehicle> vehiclesRO;
-	
-	
+
 	public RoadMap() {
 		simObjects = new HashMap<String, SimObject>();
 		junctions = new ArrayList<Junction>();
@@ -27,86 +26,84 @@ public class RoadMap {
 		junctionsRO = Collections.unmodifiableList(junctions);
 		roadsRO = Collections.unmodifiableList(roads);
 		vehiclesRO = Collections.unmodifiableList(vehicles);
-		
+
 	}
-	
+
 	// búsqueda por ids, unicidad
 	public SimObject getSimObject(String id) {
-		if(simObjects.get(id) != null)
+		if (simObjects.get(id) != null)
 			return simObjects.get(id);
-		else throw new SimulationException("Se ha intentado llamar al objeto " + id + " inexistente.");
+		else
+			throw new SimulationException(
+					"Se ha intentado llamar al objeto " + id + " inexistente.");
 	}
-	
-	public Junction getJunction(String id){
-		if(simObjects.get(id) instanceof Junction) return (Junction) simObjects.get(id);
-		else throw new SimulationException("Se ha intentado llamar al cruze: " + id + " inexistente.");
+
+	public Junction getJunction(String id) {
+		if (simObjects.get(id) instanceof Junction)
+			return (Junction) simObjects.get(id);
+		else
+			throw new SimulationException(
+					"Se ha intentado llamar al cruze: " + id + " inexistente.");
 	}
-	
-	public Road getRoad(String id){
-		if(simObjects.get(id) instanceof Road) return (Road) simObjects.get(id);
-		else throw new SimulationException("Se ha intentado llamar a la carretera: " + id + " inexistente.");
+
+	public Road getRoad(String id) {
+		if (simObjects.get(id) instanceof Road)
+			return (Road) simObjects.get(id);
+		else
+			throw new SimulationException(
+					"Se ha intentado llamar a la carretera: " + id + " inexistente.");
 	}
-	
-	public Vehicle getVehicle(String id){
-		if(simObjects.get(id) instanceof Vehicle) return (Vehicle) simObjects.get(id);
-		else throw new SimulationException("Se ha intentado llamar al vehiculo: " + id + " inexistente.");
+
+	public Vehicle getVehicle(String id) {
+		if (simObjects.get(id) instanceof Vehicle)
+			return (Vehicle) simObjects.get(id);
+		else
+			throw new SimulationException(
+					"Se ha intentado llamar al vehiculo: " + id + " inexistente.");
 	}
-	
+
 	// listado (sólo lectura)
-	public List<Junction> getJunctions(){
+	public List<Junction> getJunctions() {
 		return junctionsRO;
 	}
-	
-	public List<Road> getRoads(){
+
+	public List<Road> getRoads() {
 		return roadsRO;
 	}
-	
-	public List<Vehicle> getVehicles(){
+
+	public List<Vehicle> getVehicles() {
 		return vehiclesRO;
 	}
-	
+
 	// inserción de objetos (solo se deben llamar desde execute)
 	public void addJunction(Junction j) {
-		if(!simObjects.containsKey(j.getId())) {
+		if (!simObjects.containsKey(j.getId())) {
 			simObjects.put(j.getId(), j);
 			junctions.add(j);
 		} else {
 			idDuplicado(j.getId());
 		}
 	}
-	
+
 	public void addRoad(Road r) {
-		if(!simObjects.containsKey(r.getId())) {
+		if (!simObjects.containsKey(r.getId())) {
 			simObjects.put(r.getId(), r);
 			roads.add(r);
-			r.getSrc().añadirCarreteraSaliente(r,r.getDest());
-			r.getDest().añadirCarreteraEntrante(r);
 		} else {
 			idDuplicado(r.getId());
 		}
 	}
-	
+
 	public void addVehicle(Vehicle v) {
-		if(!simObjects.containsKey(v.getId())) {
+		if (!simObjects.containsKey(v.getId())) {
 			simObjects.put(v.getId(), v);
 			vehicles.add(v);
 		} else {
 			idDuplicado(v.getId());
 		}
 	}
-	
+
 	private void idDuplicado(String id) {
 		throw new SimulationException("El id: " + id + " esta duplicado.");
 	}
-	
-	//Metodo para averiar coches
-	public void averiar(String id, int t) {
-		if(getVehicle(id) != null) {
-			getVehicle(id).setTiempoAveria(t);
-		} else {
-			throw new SimulationException("Se ha intentado averiar un coche no existente con id: " + id + ".");
-		}
-	}
-	
-	
 }

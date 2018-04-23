@@ -21,18 +21,20 @@ public class NewMostCrowded extends NewRoundRobin {
 		checkParameters();
 		simObjects.addJunction(new MostCrowded(id, maxTimeSlice, minTimeSlice));
 	}
-	
+
 	@Override
 	public void describe(Map<String, String> out) {
 		super.describe(out);
 		out.put("Tipo", "New MostCrowded " + id);
 	}
-	
-	public class Builder implements Event.Builder{
+
+	public class Builder implements Event.Builder {
 		@Override
 		public Event parse(IniSection sec) {
-			if(!sec.getTag().equals("new_junction") || !"mc".equals(sec.getValue("type"))) return null;
-			return new NewMostCrowded(parseInt(sec, "time", 0), isValidId(sec.getValue("id")), parseInt(sec, "max_time_slice", 0), parseInt(sec, "min_time_slice", 0));
+			if (!sec.getTag().equals("new_junction") || !"mc".equals(sec.getValue("type")))
+				return null;
+			return new NewMostCrowded(parseInt(sec, "time", 0), isValidId(sec.getValue("id")),
+					parseInt(sec, "max_time_slice", 0), parseInt(sec, "min_time_slice", 0));
 		}
 	}
 }

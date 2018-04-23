@@ -47,8 +47,8 @@ public class Main {
 		try {
 			CommandLine line = parser.parse(cmdLineOptions, args);
 			parseHelpOption(line, cmdLineOptions);
-			parseInFileOption(line);
 			parseModeOption(line);
+			parseInFileOption(line);
 			parseOutFileOption(line);
 			parseStepsOption(line);
 
@@ -74,21 +74,25 @@ public class Main {
 	private static Options buildOptions() {
 		Options cmdLineOptions = new Options();
 
-		cmdLineOptions.addOption(Option.builder("h").longOpt("help").desc("Print this message").build());
-		cmdLineOptions.addOption(Option.builder("i").longOpt("input").hasArg().desc("Events input file").build());
-		cmdLineOptions.addOption(Option.builder("m").longOpt("mode").hasArg().desc("'batch' for batch mode and 'gui' for GUI mode (default value is 'batch'").build());
+		cmdLineOptions
+				.addOption(Option.builder("h").longOpt("help").desc("Print this message").build());
 		cmdLineOptions.addOption(
-				Option.builder("o").longOpt("output").hasArg().desc("Output file, where reports are written.").build());
-		cmdLineOptions.addOption(Option.builder("t").longOpt("ticks").hasArg()
-				.desc("Ticks to execute the simulator's main loop (default value is " + _timeLimitDefaultValue + ").")
+				Option.builder("i").longOpt("input").hasArg().desc("Events input file").build());
+		cmdLineOptions.addOption(Option.builder("m").longOpt("mode").hasArg()
+				.desc("'batch' for batch mode and 'gui' for GUI mode (default value is 'batch'")
 				.build());
-		
+		cmdLineOptions.addOption(Option.builder("o").longOpt("output").hasArg()
+				.desc("Output file, where reports are written.").build());
+		cmdLineOptions.addOption(Option.builder("t").longOpt("ticks").hasArg()
+				.desc("Ticks to execute the simulator's main loop (default value is "
+						+ _timeLimitDefaultValue + ").")
+				.build());
 
 		return cmdLineOptions;
 	}
 
 	private static void parseHelpOption(CommandLine line, Options cmdLineOptions) {
-		if (line.hasOption("h")) {
+		if ("batch".equals(line.getOptionValue("m")) && line.hasOption("h")) {
 			HelpFormatter formatter = new HelpFormatter();
 			formatter.printHelp(Main.class.getCanonicalName(), cmdLineOptions, true);
 			System.exit(0);
@@ -101,9 +105,9 @@ public class Main {
 			throw new ParseException("An events file is missing");
 		}
 	}
-	
+
 	private static void parseModeOption(CommandLine line) throws ParseException {
-		if("gui".equals(line.getOptionValue("m"))) 
+		if ("gui".equals(line.getOptionValue("m")))
 			_GUI = true;
 	}
 
@@ -122,44 +126,46 @@ public class Main {
 	}
 
 	/**
-	 * This method run the simulator on all files that ends with .ini if the given
-	 * path, and compares that output to the expected output. It assumes that for
-	 * example "example.ini" the expected output is stored in "example.ini.eout".
-	 * The simulator's output will be stored in "example.ini.out"
+	 * This method run the simulator on all files that ends with .ini if the given path, and
+	 * compares that output to the expected output. It assumes that for example "example.ini" the
+	 * expected output is stored in "example.ini.eout". The simulator's output will be stored in
+	 * "example.ini.out"
 	 * 
 	 * @throws IOException
 	 */
-	static boolean test(String path) throws IOException, SimulationException{
+	static boolean test(String path) throws IOException, SimulationException {
 
 		File dir = new File(path);
 
-		if ( !dir.exists() ) {
+		if (!dir.exists()) {
 			throw new FileNotFoundException(path);
 		}
-		
+
 		File[] files = dir.listFiles(new FilenameFilter() {
 			@Override
 			public boolean accept(File dir, String name) {
 				return name.endsWith(".ini");
 			}
 		});
-		
+
 		boolean result = true;
 		for (File file : files) {
-			result = result && test(file.getAbsolutePath(), file.getAbsolutePath() + ".out", file.getAbsolutePath() + ".eout",10);
+			result = result && test(file.getAbsolutePath(), file.getAbsolutePath() + ".out",
+					file.getAbsolutePath() + ".eout", 10);
 		}
-		
+
 		return result;
 	}
 
-	private static boolean test(String inFile, String outFile, String expectedOutFile, int timeLimit) throws IOException {
+	private static boolean test(String inFile, String outFile, String expectedOutFile,
+			int timeLimit) throws IOException {
 		_outFile = outFile;
 		_inFile = inFile;
 		_timeLimit = timeLimit;
 		startBatchMode();
 		boolean equalOutput = (new Ini(_outFile)).equals(new Ini(expectedOutFile));
-		System.out.println("Result for: '" + _inFile + "' : "
-				+ (equalOutput ? "OK!" : ("not equal to expected output +'" + expectedOutFile + "'")));
+		System.out.println("Result for: '" + _inFile + "' : " + (equalOutput ? "OK!"
+				: ("not equal to expected output +'" + expectedOutFile + "'")));
 		return equalOutput;
 	}
 
@@ -171,39 +177,38 @@ public class Main {
 	private static void startBatchMode() throws IOException {
 		// Add your code here. Note that the input argument where parsed and stored into
 		// corresponding fields.
-		
-		//Leemos el fichero .ini
+
+		// Leemos el fichero .ini
 		File file = new File(_inFile);
 		InputStream s = new FileInputStream(file);
 		Ini ini = new Ini(s);
-		
-		//Insertamos todos los eventos
+
+		// Insertamos todos los eventos
 		TrafficSimulator tf = new TrafficSimulator();
-		for(IniSection sec : ini.getSections()) {
-			Event e = Controller.parseSec(sec);
-			tf.insertaEvento(e);
-		}
-		
-		tf.ejecuta(_timeLimit, new FileOutputStream(_outFile));
+		Controller controller = new Controller(tf);
+		controller.insertarEventos(ini);
+
+		controller.ejecuta(_timeLimit, new FileOutputStream(_outFile));
 	}
-	
+
 	private static void startGUIMode() throws IOException {
 		TrafficSimulator tf = new TrafficSimulator();
 		Controller controller = new Controller(tf);
-		
+
 		SwingUtilities.invokeLater(() -> new MainWindow(controller, _inFile, _timeLimit));
 	}
 
 	private static void start(String[] args) throws IOException {
 		parseArgs(args);
-		if(_GUI) {
+		if (_GUI) {
 			startGUIMode();
 		} else {
 			startBatchMode();
 		}
 	}
 
-	public static void main(String[] args) throws IOException, InvocationTargetException, InterruptedException{
+	public static void main(String[] args)
+			throws IOException, InvocationTargetException, InterruptedException {
 
 		// example command lines:
 		//
@@ -216,10 +221,10 @@ public class Main {
 
 		// Call test in order to test the simulator on all examples in a directory.
 		//
-	    //	test("resources/examples/events/basic");
+		// test("resources/examples/events/basic");
 
 		// Call start to start the simulator from command line, etc.
-		//test("/Users/Daniel/git/Pr4Local/Pr4/src/main/resources/examples/basic");
+		// test("/Users/Daniel/git/Pr4Local/Pr4/src/main/resources/examples/basic");
 		start(args);
 	}
 

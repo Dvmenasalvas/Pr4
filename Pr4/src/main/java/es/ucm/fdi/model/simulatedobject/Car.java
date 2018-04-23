@@ -10,8 +10,9 @@ public class Car extends Vehicle {
 	private double faultProbability;
 	private int maxFaultDuration;
 	private Random randomNumber;
-	
-	public Car(String id, int maxSpeed, List<Junction> itinerary, double faultProbability, int resistance, int maxFaultDuration, long seed) {
+
+	public Car(String id, int maxSpeed, List<Junction> itinerary, double faultProbability,
+			int resistance, int maxFaultDuration, long seed) {
 		super(id, maxSpeed, itinerary);
 		this.resistance = resistance;
 		ultAveria = 0;
@@ -19,10 +20,10 @@ public class Car extends Vehicle {
 		this.maxFaultDuration = maxFaultDuration;
 		randomNumber = new Random(seed);
 	}
-	
+
 	@Override
 	public void avanza() {
-		if(!averiado() && ultAveria > resistance && randomNumber.nextDouble() < faultProbability) {
+		if (!averiado() && ultAveria > resistance && randomNumber.nextDouble() < faultProbability) {
 			setTiempoAveria(randomNumber.nextInt(maxFaultDuration) + 1);
 			ultAveria = 0;
 		}
@@ -30,7 +31,7 @@ public class Car extends Vehicle {
 		super.avanza();
 		ultAveria += kilometrage - aux;
 	}
-	
+
 	@Override
 	protected void fillReportDetails(Map<String, String> out) {
 		out.put("type", "car");

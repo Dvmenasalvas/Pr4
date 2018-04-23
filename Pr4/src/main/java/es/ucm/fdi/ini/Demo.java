@@ -44,7 +44,8 @@ public class Demo {
 	public static void read() throws Exception {
 		System.out.println("-> read test");
 
-		File file = new File("/Users/Daniel/git/Pr4Local/Pr4/src/main/resources/examples/basic/00_helloWorld.ini");
+		File file = new File(
+				"/Users/Daniel/git/Pr4Local/Pr4/src/main/resources/examples/basic/00_helloWorld.ini");
 		InputStream s = new FileInputStream(file);
 		Ini ini = new Ini(s);
 
@@ -78,19 +79,22 @@ public class Demo {
 		Ini[] ini = new Ini[5];
 
 		for (int i = 0; i < ini.length; i++) {
-			ini[i] = new Ini(new FileInputStream(new File("/Users/Daniel/git/Pr4Local/Pr4/src/main/resources/examples/ini/input" + i + ".ini")));
+			ini[i] = new Ini(new FileInputStream(
+					new File("/Users/Daniel/git/Pr4Local/Pr4/src/main/resources/examples/ini/input"
+							+ i + ".ini")));
 		}
 
 		for (int i = 0; i < ini.length; i++) {
 			for (int j = i + 1; j < ini.length; j++)
-				System.out.println("are input" + i + ".ini and input" + j + ".ini equal? " + ini[i].equals(ini[j]));
+				System.out.println("are input" + i + ".ini and input" + j + ".ini equal? "
+						+ ini[i].equals(ini[j]));
 		}
 		System.out.println();
 	}
 
 	public static void main(String[] args) throws Exception {
 		read();
-		//compare();
+		// compare();
 		write();
 	}
 }
