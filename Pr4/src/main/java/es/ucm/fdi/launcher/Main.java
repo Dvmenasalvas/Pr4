@@ -191,7 +191,7 @@ public class Main {
 		TrafficSimulator tf = new TrafficSimulator();
 		Controller controller = new Controller(tf);
 		
-		SwingUtilities.invokeLater(() -> new MainWindow(controller, _inFile));
+		SwingUtilities.invokeLater(() -> new MainWindow(controller, _inFile, _timeLimit));
 	}
 
 	private static void start(String[] args) throws IOException {

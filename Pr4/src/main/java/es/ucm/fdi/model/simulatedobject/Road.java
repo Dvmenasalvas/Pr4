@@ -2,10 +2,11 @@ package es.ucm.fdi.model.simulatedobject;
 
 import java.util.List;
 import java.util.Map;
+import es.ucm.fdi.view.SimulatorTablePanel;
 
 import es.ucm.fdi.util.MultiTreeMap;
 
-public class Road extends SimObject{
+public class Road extends SimObject implements SimulatorTablePanel.Describable{
 	private int length;
 	protected int maxSpeed;
 	protected MultiTreeMap<Integer, Vehicle> vehicles;
@@ -86,19 +87,40 @@ public class Road extends SimObject{
 
 	@Override
 	protected void fillReportDetails(Map<String, String> out) {
-		String state = "";
+		StringBuilder state = new StringBuilder();
 		for(Vehicle v : vehicles.innerValues()) {
-			state += "(" + v.getId() + "," + v.getLocation() + "),";
+			state.append("(" + v.getId() + "," + v.getLocation() + "),");
 		}
 		if(vehicles.size() > 0) {
-			
-			state = state.substring(0, state.length() - 1);
+			state.deleteCharAt(state.length() - 1);
 		}
-		out.put("state", state);
+		out.put("state", state.toString());
 	}
 
 	@Override
 	protected String getReportHeader() {
 		return "road_report";
+	}
+	
+	@Override
+	public void describe(Map<String, String> out) {
+		out.put("ID", id);
+		out.put("Inicio", src.id);
+		out.put("Final", dest.id);
+		out.put("Longitud", Integer.toString(length));
+		out.put("Maxima Velocidad",  Integer.toString(maxSpeed));
+		
+		
+		StringBuilder vehiclesOut = new StringBuilder();
+		vehiclesOut.append("[");
+		for(Vehicle v : vehicles.valuesList()) {
+			vehiclesOut.append(v.id + ",");
+		}
+		if(vehicles.size() != 0) {
+			vehiclesOut.deleteCharAt(vehiclesOut.length() - 1);
+		}
+		vehiclesOut.append("]");
+		
+		out.put("Vehiculos", vehiclesOut.toString());
 	}
 }
