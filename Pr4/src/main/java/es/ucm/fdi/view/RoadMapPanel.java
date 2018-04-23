@@ -47,18 +47,19 @@ public class RoadMapPanel extends JPanel {
 
 		int i = 0;
 		for (Road r : rm.getRoads()) {
-			Edge e = new Edge("e" + i, g.getNodes().get(g.getNodes().indexOf(r.getSrc())),
-					g.getNodes().get(g.getNodes().indexOf(r.getDest())), r.getLength());
+			Edge e = 
+			     new Edge("e"+i, 
+			    		 js.get(r.getSrc()),
+			    		 js.get(r.getDest()), 
+			    		 r.getLength());
 			List<Integer> p = r.vehiclesPosition();
-			for (int j = 0; j < p.size(); j++) {
-				e.addDot(new Dot("d" + j, p.get(j)));
+			for(int h = 0; h < p.size(); ++h) {
+			e.addDot( new Dot("d"+h, p.get(h)));
 			}
 			g.addEdge(e);
 			++i;
 		}
+		
+		_graphComp.setGraph(g);
 	}
-	/*
-	 * public static void main(String[] args) { SwingUtilities.invokeLater(new Runnable() { public
-	 * void run() { new RoadMapPanel(rm); } }); }
-	 */
 }
