@@ -3,6 +3,7 @@ package es.ucm.fdi.view;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.BufferedWriter;
@@ -18,6 +19,7 @@ import java.util.HashMap;
 import java.util.Scanner;
 
 import javax.swing.JFileChooser;
+import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
@@ -27,6 +29,7 @@ import javax.swing.border.TitledBorder;
 
 import es.ucm.fdi.control.SimulatorAction;
 import es.ucm.fdi.ini.Ini;
+import es.ucm.fdi.model.RoadMap;
 
 public class TextPanel extends JPanel{
 	private JTextArea eventsEditor; // editor de eventos
@@ -56,8 +59,68 @@ public class TextPanel extends JPanel{
 			rightClick.add(actions.get(Command.LoadEvents));
 			rightClick.add(actions.get(Command.SaveEvents));
 			rightClick.add(actions.get(Command.CleanEvents));
+			JMenu subMenu = new JMenu("Add template");
+			rightClick.add(subMenu);
+
+			String[] templates = { "New RR Junction", 
+					"New MC Junction", "New Junction",
+					"New Dirt Road", "New Lanes Road",
+					"New Road", "New Bike", "New Car",
+					"New Vehicle", "New Vehicle Faulty"};
 			
-			//Falta añadir los templates
+			for (String s : templates) {
+				JMenuItem menuItem = new JMenuItem(s);
+				menuItem.addActionListener(new ActionListener() {
+
+					@Override
+					public void actionPerformed(ActionEvent e) {
+						switch(s){
+						case("New RR Junction"):{
+							eventsEditor.insert(s, eventsEditor.getCaretPosition());
+						}
+						break;
+						case("New MC Junction"):{
+							eventsEditor.insert(s, eventsEditor.getCaretPosition());
+						}
+						break;
+						case("New Junction"):{
+							eventsEditor.insert(newJunctionTemplate(), eventsEditor.getCaretPosition());
+						}
+						break;
+						case("New Dirt Road"):{
+							eventsEditor.insert(s, eventsEditor.getCaretPosition());
+						}
+						break;
+						case("New Lanes Road"):{
+							eventsEditor.insert(s, eventsEditor.getCaretPosition());
+						}
+						break;
+						case("New Road"):{
+							eventsEditor.insert(newRoadTemplate(), eventsEditor.getCaretPosition());
+						}
+						break;
+						case("New Bike"):{
+							eventsEditor.insert(s, eventsEditor.getCaretPosition());
+						}
+						break;
+						case("New Car"):{
+							eventsEditor.insert(s, eventsEditor.getCaretPosition());
+						}
+						break;
+						case("New Vehicle"):{
+							eventsEditor.insert(s, eventsEditor.getCaretPosition());
+						}
+						break;
+						case("New Vehicle Faulty"):{
+							eventsEditor.insert(s, eventsEditor.getCaretPosition());
+						}
+						break;
+						}
+						
+					}
+				});
+				subMenu.add(menuItem);
+			}
 			
 			// connect the popup menu to the text area _editor
 			eventsEditor.addMouseListener(new MouseListener() {
@@ -141,5 +204,32 @@ public class TextPanel extends JPanel{
 	
 	public void setText(String text) {
 		eventsEditor.setText(text);
+	}
+	
+	private String newJunctionTemplate() {
+		String s = "[new_junction]\n";
+		s += "time =\n";
+		s += "id =\n";
+		return s;
+	}
+	
+	private String newRoadTemplate() {
+		String s = "[new_road]\n";
+		s += "time =\n";
+		s += "id =\n";
+		s += "src =\n";
+		s += "dest =\n";
+		s += "max_speed =\n";
+		s += "length =\n";
+		s += "lanes =\n";
+		return s;
+	}
+	
+	//faltan templates
+	private String newVehicleTemplate() {
+		String s = "[new_vehicle]\n";
+		s += "time =\n";
+		s += "id =\n";
+		return s;
 	}
 }
