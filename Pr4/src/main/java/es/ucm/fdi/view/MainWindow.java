@@ -291,6 +291,7 @@ public class MainWindow extends JFrame implements SimulatorListener {
 	
 	private void refreshInfo(UpdateEvent ue) {
 		map.setRoadMap(ue.getRoadMap());
+		map.generateGraph();
 		eventsTable.setElements(ue.getEventsQueue());
 		vehiclesTable.setElements(ue.getRoadMap().getVehicles());
 		roadsTable.setElements(ue.getRoadMap().getRoads());

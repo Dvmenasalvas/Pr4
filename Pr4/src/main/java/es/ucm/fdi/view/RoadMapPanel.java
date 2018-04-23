@@ -38,19 +38,8 @@ public class RoadMapPanel extends JPanel{
 	}
 
 	private void initGUI() {
-		
 		_graphComp = new GraphComponent();
 		add(_graphComp, BorderLayout.CENTER);
-
-		JButton newGraph = new JButton("New Graph");
-		newGraph.addActionListener( new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				generateGraph();
-			}
-		});
-		
-		add(newGraph,BorderLayout.PAGE_START);
 	}
 	
 	protected void generateGraph() {
