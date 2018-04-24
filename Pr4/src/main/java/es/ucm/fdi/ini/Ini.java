@@ -146,8 +146,7 @@ public class Ini {
 	 * Write the INI structure to an {@link OutputStream}
 	 * 
 	 * @param outStream
-	 *            An {@link OutputStream} to which the INI structure should be
-	 *            written
+	 *            An {@link OutputStream} to which the INI structure should be written
 	 * @throws IOException
 	 *             Exceptions thrown by the output stream
 	 */
@@ -159,9 +158,8 @@ public class Ini {
 	}
 
 	/**
-	 * Two INI structure are equal if they have the same the same number of
-	 * sections, and the i-th section in both are equal. Note that sections are
-	 * equal up to key-value reordering.
+	 * Two INI structure are equal if they have the same the same number of sections, and the i-th
+	 * section in both are equal. Note that sections are equal up to key-value reordering.
 	 */
 	@Override
 	public boolean equals(Object obj) {

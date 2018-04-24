@@ -12,32 +12,27 @@ import es.ucm.fdi.model.event.*;
 
 public class Controller {
 	private TrafficSimulator ts;
-	
+
 	public Controller(TrafficSimulator ts) {
 		this.ts = ts;
 	}
-	
+
 	private final static Event.Builder[] bs = new Event.Builder[] {
-			new MakeVehicleFaulty().new Builder(), 
-			new NewRoundRobin().new Builder(),
-			new NewMostCrowded().new Builder(),
-			new NewJunction().new Builder(), 
-			new NewLanes().new Builder(), 
-			new NewDirt().new Builder(),
-			new NewRoad().new Builder(), 
-			new NewCar().new Builder(), 
-			new NewBike().new Builder(), 
-			new NewVehicle().new Builder()
-			};
-	
+			new MakeVehicleFaulty().new Builder(), new NewRoundRobin().new Builder(),
+			new NewMostCrowded().new Builder(), new NewJunction().new Builder(),
+			new NewLanes().new Builder(), new NewDirt().new Builder(), new NewRoad().new Builder(),
+			new NewCar().new Builder(), new NewBike().new Builder(),
+			new NewVehicle().new Builder() };
+
 	public static Event parseSec(IniSection sec) throws IOException {
 		Event e = null;
-		for(Event.Builder eb : bs) {
-			if((e = eb.parse(sec)) != null) break;
+		for (Event.Builder eb : bs) {
+			if ((e = eb.parse(sec)) != null)
+				break;
 		}
 		return e;
 	}
-	
+
 	public void ejecuta(int pasos, OutputStream out) {
 		try {
 			ts.ejecuta(pasos, out);
@@ -47,11 +42,9 @@ public class Controller {
 		}
 	}
 	
-	public void insertarEventos(String eventos) {
-		Ini ini;
+	public void insertarEventos(Ini ini) {
 		try {
-			ini = new Ini(new ByteArrayInputStream(eventos.getBytes()));
-			for(IniSection sec : ini.getSections()) {
+			for (IniSection sec : ini.getSections()) {
 				Event e;
 				e = Controller.parseSec(sec);
 				ts.insertaEvento(e);
@@ -62,6 +55,17 @@ public class Controller {
 		}
 	}
 	
+	public void insertarEventos(String eventos) {
+		Ini ini;
+		try {
+			ini = new Ini(new ByteArrayInputStream(eventos.getBytes()));
+			insertarEventos(ini);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
 	public void addSimulatorListener(SimulatorListener l) {
 		ts.addSimulatorListener(l);
 	}
@@ -71,6 +75,6 @@ public class Controller {
 	}
 
 	public String generateReports() {
-			return ts.stringReport();
+		return ts.stringReport();
 	}
 }

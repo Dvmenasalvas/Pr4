@@ -9,11 +9,12 @@ import es.ucm.fdi.model.simulatedobject.Car;
 
 public class NewCar extends NewVehicle {
 	private double faultProbability;
-	private int resistance; 
+	private int resistance;
 	private int maxFaultDuration;
 	private long seed;
-	
-	public NewCar(int time, String id, int maxSpeed, List<String> itinerary, double faultProbability, int resistance, int maxFaultDuration, long seed) {
+
+	public NewCar(int time, String id, int maxSpeed, List<String> itinerary,
+			double faultProbability, int resistance, int maxFaultDuration, long seed) {
 		super(time, id, maxSpeed, itinerary);
 		this.faultProbability = faultProbability;
 		this.resistance = resistance;
@@ -23,25 +24,31 @@ public class NewCar extends NewVehicle {
 
 	public NewCar() {
 	}
-	
+
 	public void execute(RoadMap simObjects) {
 		checkParameters();
-		simObjects.addVehicle(new Car(id, maxSpeed, toJunction(itinerary, simObjects), faultProbability, resistance, maxFaultDuration, seed));
+		simObjects.addVehicle(new Car(id, maxSpeed, toJunction(itinerary, simObjects),
+				faultProbability, resistance, maxFaultDuration, seed));
 	}
-	
+
 	@Override
 	public void describe(Map<String, String> out) {
 		super.describe(out);
 		out.put("Tipo", "New Car " + id);
 	}
-	
-	public class Builder implements Event.Builder{
+
+	public class Builder implements Event.Builder {
 
 		@Override
 		public Event parse(IniSection sec) {
-			if(!sec.getTag().equals("new_vehicle") || !"car".equals(sec.getValue("type"))) return null;
-			return new NewCar(parseInt(sec, "time", 0), isValidId(sec.getValue("id")), parseInt(sec, "max_speed", 0), parseIdList(sec, "itinerary"), parseDouble(sec,"fault_probability", 0), parseInt(sec, "resistance", 0),parseInt(sec, "max_fault_duration", 0), parseLong(sec, "seed", System.currentTimeMillis()));
+			if (!sec.getTag().equals("new_vehicle") || !"car".equals(sec.getValue("type")))
+				return null;
+			return new NewCar(parseInt(sec, "time", 0), isValidId(sec.getValue("id")),
+					parseInt(sec, "max_speed", 0), parseIdList(sec, "itinerary"),
+					parseDouble(sec, "fault_probability", 0), parseInt(sec, "resistance", 0),
+					parseInt(sec, "max_fault_duration", 0),
+					parseLong(sec, "seed", System.currentTimeMillis()));
 		}
-		
+
 	}
 }

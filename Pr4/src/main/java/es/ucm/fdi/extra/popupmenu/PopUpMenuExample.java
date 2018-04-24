@@ -21,8 +21,7 @@ public class PopUpMenuExample extends JFrame {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	
-	
+
 	private JPanel _mainPanel;
 	private JTextArea _editor;
 
@@ -43,7 +42,8 @@ public class PopUpMenuExample extends JFrame {
 	}
 
 	private void addEditor() {
-		_mainPanel.add(new JLabel("Right click over the text-area to get the popup menu."),BorderLayout.PAGE_START);
+		_mainPanel.add(new JLabel("Right click over the text-area to get the popup menu."),
+				BorderLayout.PAGE_START);
 
 		_editor = new JTextArea(20, 20);
 
@@ -52,7 +52,7 @@ public class PopUpMenuExample extends JFrame {
 
 		// create the events pop-up menu
 		JPopupMenu _editorPopupMenu = new JPopupMenu();
-		
+
 		JMenuItem clearOption = new JMenuItem("Clear");
 		clearOption.addActionListener(new ActionListener() {
 
@@ -86,7 +86,6 @@ public class PopUpMenuExample extends JFrame {
 			subMenu.add(menuItem);
 		}
 
-		
 		_editorPopupMenu.add(subMenu);
 		_editorPopupMenu.addSeparator();
 		_editorPopupMenu.add(clearOption);
@@ -125,10 +124,10 @@ public class PopUpMenuExample extends JFrame {
 		});
 
 	}
-	
+
 	public static void main(String[] args) {
-		SwingUtilities.invokeLater( new Runnable() {
-			
+		SwingUtilities.invokeLater(new Runnable() {
+
 			@Override
 			public void run() {
 				new PopUpMenuExample();
