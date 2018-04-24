@@ -60,53 +60,6 @@ public class TextPanel extends JPanel {
 		JMenu subMenu = new JMenu("Add template");
 		rightClick.add(subMenu);
 
-<<<<<<< HEAD
-					@Override
-					public void actionPerformed(ActionEvent e) {
-						switch(s){
-						case("New RR Junction"):{
-							eventsEditor.insert(newRRJunctionTemplate(), eventsEditor.getCaretPosition());
-						}
-						break;
-						case("New MC Junction"):{
-							eventsEditor.insert(newMCJunctionTemplate(), eventsEditor.getCaretPosition());
-						}
-						break;
-						case("New Junction"):{
-							eventsEditor.insert(newJunctionTemplate(), eventsEditor.getCaretPosition());
-						}
-						break;
-						case("New Dirt Road"):{
-							eventsEditor.insert(s, eventsEditor.getCaretPosition());
-						}
-						break;
-						case("New Lanes Road"):{
-							eventsEditor.insert(newLanesRoadTemplate(), eventsEditor.getCaretPosition());
-						}
-						break;
-						case("New Road"):{
-							eventsEditor.insert(newRoadTemplate(), eventsEditor.getCaretPosition());
-						}
-						break;
-						case("New Bike"):{
-							eventsEditor.insert(newBikeTemplate(), eventsEditor.getCaretPosition());
-						}
-						break;
-						case("New Car"):{
-							eventsEditor.insert(newCarTemplate(), eventsEditor.getCaretPosition());
-						}
-						break;
-						case("New Vehicle"):{
-							eventsEditor.insert(newVehicleTemplate(), eventsEditor.getCaretPosition());
-						}
-						break;
-						case("New Vehicle Faulty"):{
-							eventsEditor.insert(newVehicleFaultyTemplate(), eventsEditor.getCaretPosition());
-						}
-						break;
-						}
-						
-=======
 		String[] templates = { "New RR Junction", "New MC Junction", "New Junction",
 				"New Dirt Road", "New Lanes Road", "New Road", "New Bike", "New Car", "New Vehicle",
 				"New Vehicle Faulty" };
@@ -120,7 +73,6 @@ public class TextPanel extends JPanel {
 					switch (s) {
 					case ("New RR Junction"): {
 						eventsEditor.insert(s, eventsEditor.getCaretPosition());
->>>>>>> branch 'master' of https://github.com/Dvmenasalvas/Pr4.git
 					}
 						break;
 					case ("New MC Junction"): {
@@ -256,7 +208,6 @@ public class TextPanel extends JPanel {
 		s += "id =\n";
 		return s;
 	}
-<<<<<<< HEAD
 	
 	private String newMCJunctionTemplate() {
 		String s = "[new_junction]\n";
@@ -274,9 +225,6 @@ public class TextPanel extends JPanel {
 		return s;
 	}
 	
-=======
-
->>>>>>> branch 'master' of https://github.com/Dvmenasalvas/Pr4.git
 	private String newRoadTemplate() {
 		String s = "[new_road]\n";
 		s += "time =\n";
@@ -299,12 +247,7 @@ public class TextPanel extends JPanel {
 		s += "lanes =\n";
 		return s;
 	}
-<<<<<<< HEAD
-	
-=======
 
-	// faltan templates
->>>>>>> branch 'master' of https://github.com/Dvmenasalvas/Pr4.git
 	private String newVehicleTemplate() {
 		String s = "[new_vehicle]\n";
 		s += "time =\n";
