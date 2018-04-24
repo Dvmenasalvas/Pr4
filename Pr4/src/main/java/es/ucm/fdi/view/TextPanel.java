@@ -76,11 +76,11 @@ public class TextPanel extends JPanel{
 					public void actionPerformed(ActionEvent e) {
 						switch(s){
 						case("New RR Junction"):{
-							eventsEditor.insert(s, eventsEditor.getCaretPosition());
+							eventsEditor.insert(newRRJunctionTemplate(), eventsEditor.getCaretPosition());
 						}
 						break;
 						case("New MC Junction"):{
-							eventsEditor.insert(s, eventsEditor.getCaretPosition());
+							eventsEditor.insert(newMCJunctionTemplate(), eventsEditor.getCaretPosition());
 						}
 						break;
 						case("New Junction"):{
@@ -92,7 +92,7 @@ public class TextPanel extends JPanel{
 						}
 						break;
 						case("New Lanes Road"):{
-							eventsEditor.insert(s, eventsEditor.getCaretPosition());
+							eventsEditor.insert(newLanesRoadTemplate(), eventsEditor.getCaretPosition());
 						}
 						break;
 						case("New Road"):{
@@ -100,19 +100,19 @@ public class TextPanel extends JPanel{
 						}
 						break;
 						case("New Bike"):{
-							eventsEditor.insert(s, eventsEditor.getCaretPosition());
+							eventsEditor.insert(newBikeTemplate(), eventsEditor.getCaretPosition());
 						}
 						break;
 						case("New Car"):{
-							eventsEditor.insert(s, eventsEditor.getCaretPosition());
+							eventsEditor.insert(newCarTemplate(), eventsEditor.getCaretPosition());
 						}
 						break;
 						case("New Vehicle"):{
-							eventsEditor.insert(s, eventsEditor.getCaretPosition());
+							eventsEditor.insert(newVehicleTemplate(), eventsEditor.getCaretPosition());
 						}
 						break;
 						case("New Vehicle Faulty"):{
-							eventsEditor.insert(s, eventsEditor.getCaretPosition());
+							eventsEditor.insert(newVehicleFaultyTemplate(), eventsEditor.getCaretPosition());
 						}
 						break;
 						}
@@ -213,7 +213,34 @@ public class TextPanel extends JPanel{
 		return s;
 	}
 	
+	private String newMCJunctionTemplate() {
+		String s = "[new_junction]\n";
+		s += "time =\n";
+		s += "id =\n";
+		s += "type = mc\n";
+		return s;
+	}
+	
+	private String newRRJunctionTemplate() {
+		String s = "[new_junction]\n";
+		s += "time =\n";
+		s += "id =\n";
+		s += "type = rr\n";
+		return s;
+	}
+	
 	private String newRoadTemplate() {
+		String s = "[new_road]\n";
+		s += "time =\n";
+		s += "id =\n";
+		s += "src =\n";
+		s += "dest =\n";
+		s += "max_speed =\n";
+		s += "length =\n";
+		return s;
+	}
+	
+	private String newLanesRoadTemplate() {
 		String s = "[new_road]\n";
 		s += "time =\n";
 		s += "id =\n";
@@ -225,11 +252,40 @@ public class TextPanel extends JPanel{
 		return s;
 	}
 	
-	//faltan templates
 	private String newVehicleTemplate() {
 		String s = "[new_vehicle]\n";
 		s += "time =\n";
 		s += "id =\n";
+		s += "itinerary =\n";
+		s += "max_speed =\n";
+		return s;
+	}
+	
+	private String newBikeTemplate() {
+		String s = "[new_vehicle]\n";
+		s += "time =\n";
+		s += "id =\n";
+		s += "itinerary =\n";
+		s += "max_speed =\n";
+		 s+= "type = bike\n";
+		return s;
+	}
+	
+	private String newCarTemplate() {
+		String s = "[new_vehicle]\n";
+		s += "time =\n";
+		s += "id =\n";
+		s += "itinerary =\n";
+		s += "max_speed =\n";
+		 s+= "type = car\n";
+		return s;
+	}
+	
+	private String newVehicleFaultyTemplate() {
+		String s = "[make_vehicle_faulty]\n";
+		s += "time =\n";
+		s += "vehicles =\n";
+		s += "duration =\n";
 		return s;
 	}
 }
