@@ -23,6 +23,14 @@ public class Junction extends SimObject implements SimulatorTablePanel.Describab
 		carreterasSalientes = new HashMap<Junction, Road>();
 		verde = -1;
 	}
+	
+	public int getVerde() {
+		return verde;
+	}
+	
+	public List<IncomingRoad> getIncomingRoad(){
+		return semaforos;
+	}
 
 	public void entraVehiculo(Vehicle v) {
 		carreterasEntrantes.get(v.getRoad()).entraVehiculo(v);
@@ -121,6 +129,10 @@ public class Junction extends SimObject implements SimulatorTablePanel.Describab
 	protected String getReportHeader() {
 		return "junction_report";
 	}
+	
+	public boolean getConcreteSemaforo(Road r) {
+		return carreterasEntrantes.get(r).getSemaforo();
+	}
 
 	public class IncomingRoad {
 		Queue<Vehicle> vehicles;
@@ -141,7 +153,14 @@ public class Junction extends SimObject implements SimulatorTablePanel.Describab
 				return "red";
 			}
 		}
-
+		
+		public Road getRoad() {
+			return road;
+		}
+		
+		public boolean getSemaforo() {
+			return semaforo;
+		}
 		public void cambiarSemaforo() {
 			semaforo = !semaforo;
 		}
