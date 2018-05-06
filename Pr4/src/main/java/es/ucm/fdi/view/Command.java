@@ -1,5 +1,10 @@
 package es.ucm.fdi.view;
 
+/**
+ * Clase enumerada con los comandos correspondinetes
+ * a cada botón de la toolbar de la ventana principal
+ */
+
 public enum Command {
 	LoadEvents("Cargar Eventos"), 
 	SaveEvents("Guardar Eventos"), 

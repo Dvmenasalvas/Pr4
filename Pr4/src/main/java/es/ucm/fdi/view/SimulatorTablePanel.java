@@ -10,6 +10,10 @@ import javax.swing.JTable;
 import javax.swing.border.TitledBorder;
 import javax.swing.table.AbstractTableModel;
 
+/**
+ * SimulatorTablePanel es utilizado para crear las tablas
+ */
+
 public class SimulatorTablePanel extends JPanel {
 	ListOfMapsTableModel tableModel;
 	JTable eventsTable;

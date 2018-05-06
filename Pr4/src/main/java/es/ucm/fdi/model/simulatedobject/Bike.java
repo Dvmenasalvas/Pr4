@@ -3,6 +3,11 @@ package es.ucm.fdi.model.simulatedobject;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Hereda de Vehicle, cambia en la forma de averiarse, solo se avería su
+ * velocidad es mayor que la mitad de la máxima velocidad que puede alcanzar
+ * */
+
 public class Bike extends Vehicle {
 
 	public Bike(String id, int maxSpeed, List<Junction> itinerary) {

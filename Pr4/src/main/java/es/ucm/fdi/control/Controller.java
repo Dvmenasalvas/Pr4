@@ -10,6 +10,12 @@ import es.ucm.fdi.model.TrafficSimulator;
 import es.ucm.fdi.model.TrafficSimulator.SimulatorListener;
 import es.ucm.fdi.model.event.*;
 
+/**
+ * Controller es una clase por encima del simulador que parsea
+ * los eventos relacionados con nuevo vehiculos o carreteras y ejecuta 
+ * el propio simulador, también se instancia una sola vez
+ * */
+
 public class Controller {
 	private TrafficSimulator ts;
 

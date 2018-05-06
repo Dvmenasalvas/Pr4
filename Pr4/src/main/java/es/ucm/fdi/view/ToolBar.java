@@ -12,6 +12,10 @@ import javax.swing.SpinnerNumberModel;
 
 import es.ucm.fdi.control.SimulatorAction;
 
+/**
+ * 
+ */
+
 public class ToolBar extends JToolBar {
 	private HashMap<Command, SimulatorAction> actions;
 	private JSpinner stepsSpinner;
