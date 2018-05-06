@@ -261,7 +261,8 @@ public class MainWindow extends JFrame implements SimulatorListener, ItemListene
 	}
 	
 	private void initGUIReportPanel() {
-        RoadMap rm = controller.getTrafficSimulator().getRoadMap();
+        RoadMap rm = new RoadMap();
+        
 		reportWindow = new ReportWindow(this, rm);
 		reportWindow.setData();
 		
@@ -269,20 +270,21 @@ public class MainWindow extends JFrame implements SimulatorListener, ItemListene
 		if (status == 0) {
 			setReportsAreaPanel("Canceled");
 		} else {
+			reportWindow.setRoadMap(controller.getTrafficSimulator().getRoadMap());
 		    String s = "";
 		    List<Vehicle> vehicleList = new ArrayList<Vehicle>();
             for(String v : reportWindow.getSelectedVehicles()) {
-            	vehicleList.add(controller.getTrafficSimulator().getRoadMap().getVehicle(v));
+            	vehicleList.add(rm.getVehicle(v));
             }
             s += controller.getTrafficSimulator().report(vehicleList).toString();
             List<Road> roadList = new ArrayList<Road>();
             for(String r : reportWindow.getSelectedRoads()) {
-            	roadList.add(controller.getTrafficSimulator().getRoadMap().getRoad(r));
+            	roadList.add(rm.getRoad(r));
             }
             s += controller.getTrafficSimulator().report(roadList).toString();
             List<Junction> junctionList = new ArrayList<Junction>();
             for(String j : reportWindow.getSelectedJunctions()) {
-            	junctionList.add(controller.getTrafficSimulator().getRoadMap().getJunction(j));
+            	junctionList.add(rm.getJunction(j));
             }
             s += controller.getTrafficSimulator().report(junctionList).toString();
 			setReportsAreaPanel(s);
