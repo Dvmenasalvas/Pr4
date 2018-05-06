@@ -12,6 +12,13 @@ import javax.swing.table.AbstractTableModel;
 
 /**
  * SimulatorTablePanel es utilizado para crear las tablas
+ * de la ventana principal, para ello utiliza un array fieldNames
+ * en el que se ubicarán los nombres identificadores de lo que va a 
+ * haber en cada columna de la tabla y un Describable que lo que hace es
+ * pedir a un objeto cualquiera que describa sus parámetros para así 
+ * poderlos imprimir en las casillas correspondientes de la tabla(en la
+ * misma fila que el identificador del objeto que se está describiendo y 
+ * en la misma columna del nombre del atributo que se se está describiendo)
  */
 
 public class SimulatorTablePanel extends JPanel {

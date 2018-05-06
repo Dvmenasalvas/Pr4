@@ -13,7 +13,11 @@ import javax.swing.SpinnerNumberModel;
 import es.ucm.fdi.control.SimulatorAction;
 
 /**
- * 
+ * Es la barra de herramientas arriba en la ventana principal
+ * consta de varios botones asociados a distintas acciones que 
+ * puede realizar el simulador, un JTextFiel en el que se imprime el turno 
+ * del simulador y un JSpinner en el que se configura el numero de pasos
+ * que va a dar el simulador cada vez que se ejecute el comando execute
  */
 
 public class ToolBar extends JToolBar {
