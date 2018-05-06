@@ -20,7 +20,7 @@ public class DialogWindowExample extends JFrame {
 
 	private void initGUI() {
 
-		// initialize lists;
+		// initialize lists
 		_names = new ArrayList<>();
 		_ages = new ArrayList<>();
 		for (int i = 0; i < 10; i++) {

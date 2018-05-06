@@ -35,6 +35,7 @@ import es.ucm.fdi.model.TrafficSimulator.SimulatorListener;
 import es.ucm.fdi.model.TrafficSimulator.UpdateEvent;
 import es.ucm.fdi.model.simulatedobject.Junction;
 import es.ucm.fdi.model.simulatedobject.Road;
+import es.ucm.fdi.model.simulatedobject.SimObject;
 import es.ucm.fdi.model.simulatedobject.Vehicle;
 import es.ucm.fdi.view.SimulatorTablePanel.Describable;
 
@@ -58,6 +59,7 @@ public class MainWindow extends JFrame
 	private JPanel bottomLeftPanel;
 
 	private ToolBar toolBar;
+	private ReportWindow reportsSelector;
 	private TextPanel eventsEditor;
 	private SimulatorTablePanel eventsTable;
 	private TextPanel reportsAreaPanel;
@@ -67,7 +69,6 @@ public class MainWindow extends JFrame
 	private SimulatorTablePanel junctionsTable;
 	private RoadMapPanel map;
 	private StatusBar statusBar;
-	private ReportWindow reportWindow;
 
 	private JMenuBar menu;
 	private JCheckBoxMenuItem autoReports;
@@ -114,6 +115,7 @@ public class MainWindow extends JFrame
 		// ToolBar
 		toolBar = new ToolBar(actions, timeLimit);
 		add(toolBar, BorderLayout.NORTH);
+		reportsSelector = new ReportWindow(this);
 
 		// Menu
 		addMenu();
@@ -230,9 +232,7 @@ public class MainWindow extends JFrame
 		// Reports related actions
 		actions.put(Command.GenerateReports, new SimulatorAction("Generar",
 				"report.png", "Generar informes", KeyEvent.VK_P, "control P",
-				() -> initGUIReportPanel()));
-		// reportsAreaPanel.setText(controller.generateReports())
-
+				() -> generateReports()));
 		actions.put(Command.CleanReports,
 				new SimulatorAction("Limpiar", "delete_report.png",
 						"Limpiar informes", KeyEvent.VK_L, "control L",
@@ -254,6 +254,24 @@ public class MainWindow extends JFrame
 				new SimulatorAction("Salir", "exit.png",
 						"Salir de la aplicacion", KeyEvent.VK_A,
 						"control shift X", () -> System.exit(0)));
+	}
+
+	private void generateReports() {
+		int status = reportsSelector.open();
+		if (status != 0) {
+		    List<SimObject> so = new ArrayList<SimObject>();
+            for(String v : reportsSelector.getSelectedVehicles()) {
+            	so.add(controller.getTrafficSimulator().getRoadMap().getSimObject(v));
+            }
+            for(String r : reportsSelector.getSelectedRoads()) {
+            	so.add(controller.getTrafficSimulator().getRoadMap().getSimObject(r));
+            }
+            for(String j : reportsSelector.getSelectedJunctions()) {
+            	so.add(controller.getTrafficSimulator().getRoadMap().getSimObject(j));
+            }
+           
+            reportsAreaPanel.setText(controller.getTrafficSimulator().report(so).toString());
+		}
 	}
 
 	private void addMenu() {
@@ -284,37 +302,6 @@ public class MainWindow extends JFrame
 		setJMenuBar(menu);
 	}
 
-	
-	private void initGUIReportPanel() {
-        RoadMap rm = new RoadMap();
-        
-		reportWindow = new ReportWindow(this, rm);
-		reportWindow.setData();
-		
-		int status = reportWindow.open();
-		if (status == 0) {
-			setReportsAreaPanel("Canceled");
-		} else {
-			reportWindow.setRoadMap(controller.getTrafficSimulator().getRoadMap());
-		    String s = "";
-		    List<Vehicle> vehicleList = new ArrayList<Vehicle>();
-            for(String v : reportWindow.getSelectedVehicles()) {
-            	vehicleList.add(rm.getVehicle(v));
-            }
-            s += controller.getTrafficSimulator().report(vehicleList).toString();
-            List<Road> roadList = new ArrayList<Road>();
-            for(String r : reportWindow.getSelectedRoads()) {
-            	roadList.add(rm.getRoad(r));
-            }
-            s += controller.getTrafficSimulator().report(roadList).toString();
-            List<Junction> junctionList = new ArrayList<Junction>();
-            for(String j : reportWindow.getSelectedJunctions()) {
-            	junctionList.add(rm.getJunction(j));
-            }
-            s += controller.getTrafficSimulator().report(junctionList).toString();
-			setReportsAreaPanel(s);
-		}
-	}
 	
 	public void itemStateChanged(ItemEvent e) {
 		if (e.getSource() == autoReports) {
@@ -387,10 +374,7 @@ public class MainWindow extends JFrame
 		junctionsTable.setElements(ue.getRoadMap().getJunctions());
 		toolBar.setTimeValue(ue.getCurrentTime());
 		statusBar.setStatusBar(ue.getEvent());
-	}
-	
-	public void setReportsAreaPanel(String s) {
-		reportsAreaPanel.setText(s);
+		reportsSelector.setData(ue.getRoadMap().getVehicles(), ue.getRoadMap().getRoads(), ue.getRoadMap().getJunctions());
 	}
 
 	@Override
