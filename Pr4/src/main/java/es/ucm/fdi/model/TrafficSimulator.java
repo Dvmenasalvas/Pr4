@@ -83,7 +83,7 @@ public class TrafficSimulator {
 	}
 
 	public void insertaEvento(Event e) {
-		if (e.getTime() >= time && e != null) {
+		if (e != null && e.getTime() >= time) {
 			events.putValue(e.getTime(), e);
 			fireUpdateEvent(EventType.NEW_EVENT, "");
 		}
