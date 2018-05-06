@@ -11,10 +11,9 @@ import es.ucm.fdi.model.TrafficSimulator.SimulatorListener;
 import es.ucm.fdi.model.event.*;
 
 /**
- * Controller es una clase por encima del simulador que parsea
- * los eventos relacionados con nuevo vehiculos o carreteras y ejecuta 
- * el propio simulador, también se instancia una sola vez
- * */
+ * Controller es una clase por encima del simulador que parsea los eventos relacionados con nuevo
+ * vehiculos o carreteras y ejecuta el propio simulador, también se instancia una sola vez
+ */
 
 public class Controller {
 	private TrafficSimulator ts;
@@ -49,15 +48,16 @@ public class Controller {
 	}
 
 	public void insertarEventos(Ini ini) throws IOException {
-			for (IniSection sec : ini.getSections()) {
-				Event e;
-				try {
-					e = Controller.parseSec(sec);
-					ts.insertaEvento(e);
-				} catch (IOException e1) {
-					throw new IOException("Error perseando el evento: \n" + sec, e1);
-				}
+		for (IniSection sec : ini.getSections()) {
+			Event e;
+			try {
+				e = Controller.parseSec(sec);
+				ts.insertaEvento(e);
+			} catch (IOException e1) {
+				throw new IOException("Error perseando el evento: \n" + sec,
+						e1);
 			}
+		}
 	}
 
 	public void insertarEventos(String eventos) throws IOException {
@@ -65,9 +65,10 @@ public class Controller {
 		try {
 			ini = new Ini(new ByteArrayInputStream(eventos.getBytes()));
 		} catch (IOException e) {
-			throw new IOException("Error al convertir el fichero: " + eventos + " a .ini", e);
+			throw new IOException(
+					"Error al convertir el fichero: " + eventos + " a .ini", e);
 		}
-		if(ini != null) {
+		if (ini != null) {
 			insertarEventos(ini);
 		}
 	}

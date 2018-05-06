@@ -21,18 +21,15 @@ import es.ucm.fdi.util.MultiTreeMap;
 import es.ucm.fdi.view.SimulatorTablePanel;
 
 /**
- * TrafficSimulator se instancia solo una vez y es el encargado de 
- * invocar a los métodos avanza correspondientes en cada nuevo turno,
- * gestiona también los pasos de la simulación y a su vez se encarga
- * de la gestión de eventos del tipo EventType, para ello posee una 
- * clase interna, UpdateEvent, descrita posteriormente y una interfaz
- * SimulatorListener que deben implementar todos los listneres que 
- * estén escuchando los eventos. Cuando ocurre un nuevo evento 
- * TrafficSimulator se lo hace saber a todos los listeners de una lista
- * que tiene como atributo, lanzándolos mediante el método fireUpdateEvent
- * que básicamente pide a cada listener que haga lo que tenga que hacer
- * para gestionar el nuevo evento que ha sucedido
- * */
+ * TrafficSimulator se instancia solo una vez y es el encargado de invocar a los métodos avanza
+ * correspondientes en cada nuevo turno, gestiona también los pasos de la simulación y a su vez se
+ * encarga de la gestión de eventos del tipo EventType, para ello posee una clase interna,
+ * UpdateEvent, descrita posteriormente y una interfaz SimulatorListener que deben implementar todos
+ * los listneres que estén escuchando los eventos. Cuando ocurre un nuevo evento TrafficSimulator se
+ * lo hace saber a todos los listeners de una lista que tiene como atributo, lanzándolos mediante el
+ * método fireUpdateEvent que básicamente pide a cada listener que haga lo que tenga que hacer para
+ * gestionar el nuevo evento que ha sucedido
+ */
 
 public class TrafficSimulator {
 	private MultiTreeMap<Integer, Event> events;
@@ -103,40 +100,42 @@ public class TrafficSimulator {
 		fireUpdateEvent(EventType.RESET, "");
 	}
 
-	public void ejecuta(int pasosSimulacion, OutputStream out) throws IOException {
+	public void ejecuta(int pasosSimulacion, OutputStream out)
+			throws IOException {
 		int limiteTiempo = time + pasosSimulacion;
 		while (time < limiteTiempo) {
 			if (events.containsKey(time)) {
 				// Ejecuta eventos correspondientes a este tiempo
-				for (Event e : events.get(time)) { 
+				for (Event e : events.get(time)) {
 					try {
 						e.execute(simObjects);
 					} catch (SimulationException se) {
-						fireUpdateEvent(EventType.ERROR,"Error en la ejecucion del evento " + e.toString()
-								+ " en el tiempo " + time + "\n"
-								+ se.getMessage() + '\n'
-								+ "Este evento no se ejecutara.");
+						fireUpdateEvent(EventType.ERROR,
+								"Error en la ejecucion del evento "
+										+ e.toString() + " en el tiempo " + time
+										+ "\n" + se.getMessage() + '\n'
+										+ "Este evento no se ejecutara.");
 					}
 				}
 			}
 
-			for (Road r : simObjects.getRoads()) { 
+			for (Road r : simObjects.getRoads()) {
 				r.avanza();
 			}
 
-			for (Junction j : simObjects.getJunctions()) { 
+			for (Junction j : simObjects.getJunctions()) {
 				j.avanza();
 			}
 
 			time++;
 
 			try {
-				writeObjects(simObjects.getJunctions(), out); 
+				writeObjects(simObjects.getJunctions(), out);
 				writeObjects(simObjects.getRoads(), out);
-				writeObjects(simObjects.getVehicles(), out); 
+				writeObjects(simObjects.getVehicles(), out);
 			} catch (IOException e1) {
 				throw new IOException(
-						"Excepcion de escritura de objetos en tiempo: " + time ,
+						"Excepcion de escritura de objetos en tiempo: " + time,
 						e1);
 			}
 			fireUpdateEvent(EventType.ADVANCED, "");
@@ -150,8 +149,8 @@ public class TrafficSimulator {
 
 	}
 
-	private void writeObjects(List<? extends SimObject> objects, OutputStream out)
-			throws IOException {
+	private void writeObjects(List<? extends SimObject> objects,
+			OutputStream out) throws IOException {
 		if (out != null) {
 			Ini rep = report(objects);
 			try {
@@ -196,8 +195,8 @@ public class TrafficSimulator {
 	}
 
 	/**
-	 * Esta clase implementa los métodos que puede ser que utilice el listener para gestionar
-	 * un determinado evento tales como pedirle al simulador el roadmap, pedirle una cola de
+	 * Esta clase implementa los métodos que puede ser que utilice el listener para gestionar un
+	 * determinado evento tales como pedirle al simulador el roadmap, pedirle una cola de
 	 * eventos(newVehicle, newRoad, etc) o pedirle el turno en el que está
 	 */
 	public class UpdateEvent {

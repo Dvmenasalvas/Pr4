@@ -183,14 +183,15 @@ public class IniSection {
 
 		s += "[" + _tag + "]" + System.lineSeparator();
 		for (String key : _keys) {
+			if (!"_".equals(key.substring(0, 1))) {
+				// key comments
+				for (String c : _comments.get(key)) {
+					s += ";" + c + System.lineSeparator();
+					;
+				}
 
-			// key comments
-			for (String c : _comments.get(key)) {
-				s += ";" + c + System.lineSeparator();
-				;
+				s += key + " = " + _attr.get(key) + System.lineSeparator();
 			}
-
-			s += key + " = " + _attr.get(key) + System.lineSeparator();
 		}
 		return s;
 	}

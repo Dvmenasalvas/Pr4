@@ -1,5 +1,6 @@
 package es.ucm.fdi.view;
 
+import java.awt.BorderLayout;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -11,14 +12,12 @@ import javax.swing.border.TitledBorder;
 import javax.swing.table.AbstractTableModel;
 
 /**
- * SimulatorTablePanel es utilizado para crear las tablas
- * de la ventana principal, para ello utiliza un array fieldNames
- * en el que se ubicarán los nombres identificadores de lo que va a 
- * haber en cada columna de la tabla y un Describable que lo que hace es
- * pedir a un objeto cualquiera que describa sus parámetros para así 
- * poderlos imprimir en las casillas correspondientes de la tabla(en la
- * misma fila que el identificador del objeto que se está describiendo y 
- * en la misma columna del nombre del atributo que se se está describiendo)
+ * SimulatorTablePanel es utilizado para crear las tablas de la ventana principal, para ello utiliza
+ * un array fieldNames en el que se ubicarán los nombres identificadores de lo que va a haber en
+ * cada columna de la tabla y un Describable que lo que hace es pedir a un objeto cualquiera que
+ * describa sus parámetros para así poderlos imprimir en las casillas correspondientes de la
+ * tabla(en la misma fila que el identificador del objeto que se está describiendo y en la misma
+ * columna del nombre del atributo que se se está describiendo)
  */
 
 public class SimulatorTablePanel extends JPanel {
@@ -31,25 +30,18 @@ public class SimulatorTablePanel extends JPanel {
 
 	public SimulatorTablePanel(List<? extends Describable> elements,
 			String[] fieldNames) {
-		super();
+		super(new BorderLayout());
 		this.elements = elements;
 		this.fieldNames = fieldNames;
 
-		TitledBorder controlBorder = new TitledBorder("Cola de eventos");
-		this.setBorder(controlBorder);
-
-		initTable();
+		tableModel = new ListOfMapsTableModel();
+		eventsTable = new JTable(tableModel);
+		add(new JScrollPane(eventsTable,JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED));
 	}
 
 	public void setElements(List<? extends Describable> elements) {
 		this.elements = elements;
 		tableModel.fireTableDataChanged();
-	}
-
-	private void initTable() {
-		tableModel = new ListOfMapsTableModel();
-		eventsTable = new JTable(tableModel);
-		this.add(new JScrollPane(eventsTable));
 	}
 
 	private class ListOfMapsTableModel extends AbstractTableModel {
@@ -73,7 +65,7 @@ public class SimulatorTablePanel extends JPanel {
 			if (fieldNames[columnIndex] == "#") {
 				return rowIndex;
 			}
-			if(rowIndex != lastRow) {
+			if (rowIndex != lastRow) {
 				lastRow = rowIndex;
 				lastDescription = new HashMap<String, String>();
 				elements.get(rowIndex).describe(lastDescription);

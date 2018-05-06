@@ -10,10 +10,11 @@ import java.util.Queue;
 import es.ucm.fdi.view.SimulatorTablePanel;
 
 /**
- *comentar
+ * comentar
  **/
 
-public class Junction extends SimObject implements SimulatorTablePanel.Describable {
+public class Junction extends SimObject
+		implements SimulatorTablePanel.Describable {
 	// Mapa y lista ordenada para carreteras entrantes
 	Map<Road, IncomingRoad> carreterasEntrantes;
 	protected List<IncomingRoad> semaforos;
@@ -27,12 +28,12 @@ public class Junction extends SimObject implements SimulatorTablePanel.Describab
 		carreterasSalientes = new HashMap<Junction, Road>();
 		verde = -1;
 	}
-	
+
 	public int getVerde() {
 		return verde;
 	}
-	
-	public List<IncomingRoad> getIncomingRoad(){
+
+	public List<IncomingRoad> getIncomingRoad() {
 		return semaforos;
 	}
 
@@ -116,7 +117,6 @@ public class Junction extends SimObject implements SimulatorTablePanel.Describab
 		}
 		incomingRoad.append("]),");
 
-		
 		return incomingRoad.toString();
 	}
 
@@ -133,7 +133,7 @@ public class Junction extends SimObject implements SimulatorTablePanel.Describab
 	protected String getReportHeader() {
 		return "junction_report";
 	}
-	
+
 	public boolean getConcreteSemaforo(Road r) {
 		return carreterasEntrantes.get(r).getSemaforo();
 	}
@@ -157,14 +157,15 @@ public class Junction extends SimObject implements SimulatorTablePanel.Describab
 				return "red";
 			}
 		}
-		
+
 		public Road getRoad() {
 			return road;
 		}
-		
+
 		public boolean getSemaforo() {
 			return semaforo;
 		}
+
 		public void cambiarSemaforo() {
 			semaforo = !semaforo;
 		}

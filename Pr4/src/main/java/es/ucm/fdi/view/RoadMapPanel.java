@@ -17,10 +17,9 @@ import es.ucm.fdi.model.simulatedobject.Junction;
 import es.ucm.fdi.model.simulatedobject.Road;
 
 /**
- * RoadMapPanel es el JPanel que se ubica abajo a la derecha 
- * en la ventana principal, consta de un grafo que se dibuja
- * ateniéndose a los parámetros de cada objeto(vehiculos, carreteras
- * y cruces) del roadmap
+ * RoadMapPanel es el JPanel que se ubica abajo a la derecha en la ventana principal, consta de un
+ * grafo que se dibuja ateniéndose a los parámetros de cada objeto(vehiculos, carreteras y cruces)
+ * del roadmap
  */
 
 public class RoadMapPanel extends JPanel {
@@ -48,21 +47,19 @@ public class RoadMapPanel extends JPanel {
 		Map<Junction, Node> js = new HashMap<>();
 		for (Junction j : rm.getJunctions()) {
 			Node n = new Node(j.getId());
-			js.put(j, n); // <-- para convertir Junction a Node en aristas
+			// <-- para convertir Junction a Node en aristas
+			js.put(j, n); 
 			g.addNode(n);
 		}
 
 		int i = 0;
 		for (Road r : rm.getRoads()) {
 			boolean v = r.getDest().getConcreteSemaforo(r);
-			Edge e = 
-			     new Edge("e"+i, 
-			    		 js.get(r.getSrc()),
-			    		 js.get(r.getDest()), 
-			    		 r.getLength(), v);
+			Edge e = new Edge("e" + i, js.get(r.getSrc()), js.get(r.getDest()),
+					r.getLength(), v);
 			List<Integer> p = r.vehiclesPosition();
-			for(int h = 0; h < p.size(); ++h) {
-			e.addDot( new Dot("d"+h, p.get(h)));
+			for (int h = 0; h < p.size(); ++h) {
+				e.addDot(new Dot("d" + h, p.get(h)));
 			}
 			g.addEdge(e);
 			++i;

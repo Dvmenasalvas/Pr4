@@ -11,7 +11,8 @@ public class Edge {
 	private List<Dot> _dots;
 	private boolean _green;
 
-	public Edge(String id, Node source, Node target, int length, boolean green) {
+	public Edge(String id, Node source, Node target, int length,
+			boolean green) {
 		_source = source;
 		_target = target;
 		_id = id;
@@ -27,7 +28,7 @@ public class Edge {
 	public boolean getGreen() {
 		return _green;
 	}
-	
+
 	public String getId() {
 		return _id;
 	}

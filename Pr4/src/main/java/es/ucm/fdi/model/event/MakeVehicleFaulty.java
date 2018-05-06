@@ -49,7 +49,8 @@ public class MakeVehicleFaulty extends Event {
 	@Override
 	protected void checkParameters() {
 		if (duration < 0) {
-			throw new SimulationException("La duracion de la averia ha de ser estrictamente positiva.");
+			throw new SimulationException(
+					"La duracion de la averia ha de ser estrictamente positiva.");
 		}
 
 	}
@@ -59,7 +60,7 @@ public class MakeVehicleFaulty extends Event {
 		out.put("Tiempo", Integer.toString(time));
 		out.put("Tipo", this.toString());
 	}
-	
+
 	public String toString() {
 		StringBuilder lAveriar = new StringBuilder();
 		lAveriar.append("Break Vehicles [");
@@ -70,7 +71,7 @@ public class MakeVehicleFaulty extends Event {
 			lAveriar.deleteCharAt(lAveriar.length() - 1);
 		}
 		lAveriar.append("]");
-		
+
 		return lAveriar.toString();
 	}
 

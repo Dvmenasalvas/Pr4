@@ -112,9 +112,12 @@ public class GraphComponent extends JComponent {
 
 			// draw the edge
 			Color arrowColor;
-			if(e.getGreen()) arrowColor = Color.GREEN;
-			else arrowColor = Color.RED;
-			drawArrowLine(g, p1.cX, p1.cY, p2.cX, p2.cY, 15, 5, Color.BLACK, arrowColor);
+			if (e.getGreen())
+				arrowColor = Color.GREEN;
+			else
+				arrowColor = Color.RED;
+			drawArrowLine(g, p1.cX, p1.cY, p2.cX, p2.cY, 15, 5, Color.BLACK,
+					arrowColor);
 
 			// draw dots as circles. Dots at the same location are drawn with circles of
 			// different diameter.

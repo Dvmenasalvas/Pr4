@@ -31,7 +31,7 @@ public class NewLanes extends NewRoad {
 		super.describe(out);
 		out.put("Tipo", this.toString());
 	}
-	
+
 	public String toString() {
 		return "New Lanes " + id;
 	}
