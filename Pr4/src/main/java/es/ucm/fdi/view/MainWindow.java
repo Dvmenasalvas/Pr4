@@ -230,12 +230,9 @@ public class MainWindow extends JFrame
 		// Reports related actions
 		actions.put(Command.GenerateReports, new SimulatorAction("Generar",
 				"report.png", "Generar informes", KeyEvent.VK_P, "control P",
-<<<<<<< HEAD
 				() -> initGUIReportPanel()));
 		// reportsAreaPanel.setText(controller.generateReports())
-=======
-				() -> reportsAreaPanel.append(controller.generateReports())));
->>>>>>> branch 'master' of https://github.com/Dvmenasalvas/Pr4.git
+
 		actions.put(Command.CleanReports,
 				new SimulatorAction("Limpiar", "delete_report.png",
 						"Limpiar informes", KeyEvent.VK_L, "control L",
@@ -286,7 +283,7 @@ public class MainWindow extends JFrame
 		menu.add(reportsMenu);
 		setJMenuBar(menu);
 	}
-<<<<<<< HEAD
+
 	
 	private void initGUIReportPanel() {
         RoadMap rm = new RoadMap();
@@ -319,9 +316,6 @@ public class MainWindow extends JFrame
 		}
 	}
 	
-=======
-
->>>>>>> branch 'master' of https://github.com/Dvmenasalvas/Pr4.git
 	public void itemStateChanged(ItemEvent e) {
 		if (e.getSource() == autoReports) {
 			if (e.getStateChange() == 1) {
