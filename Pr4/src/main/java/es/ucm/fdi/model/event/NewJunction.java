@@ -28,7 +28,7 @@ public class NewJunction extends Event {
 		out.put("Tiempo", Integer.toString(time));
 		out.put("Tipo", this.toString());
 	}
-	
+
 	public String toString() {
 		return "New Junction " + id;
 	}

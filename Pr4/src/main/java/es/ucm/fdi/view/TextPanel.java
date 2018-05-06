@@ -35,12 +35,12 @@ import es.ucm.fdi.ini.IniSection;
 import es.ucm.fdi.model.RoadMap;
 
 /**
- * TextPanel es utilizado para los JPanel arriba a la derecha y a la izquierda de la
- * ventana principal. Arriba a la derecha se cargan los eventos y arriba a la izquierda 
- * se imprimen los informes, para ello se dan varias opciones al usuario mediante
- * el click derecho sobre cualquiera de las dos ventanas: cargar los eventos desde un fichero,
- * guardar los eventos en un fichero, limpiar de texto la ventana y añadir una plantilla
- * en formato ini donde solo haga falta completar los parámetros para introducir un nuevo evento 
+ * TextPanel es utilizado para los JPanel arriba a la derecha y a la izquierda de la ventana
+ * principal. Arriba a la derecha se cargan los eventos y arriba a la izquierda se imprimen los
+ * informes, para ello se dan varias opciones al usuario mediante el click derecho sobre cualquiera
+ * de las dos ventanas: cargar los eventos desde un fichero, guardar los eventos en un fichero,
+ * limpiar de texto la ventana y añadir una plantilla en formato ini donde solo haga falta completar
+ * los parámetros para introducir un nuevo evento
  */
 public class TextPanel extends JPanel {
 	private JTextArea eventsEditor; // editor de eventos
@@ -73,17 +73,18 @@ public class TextPanel extends JPanel {
 		rightClick.add(actions.get(Command.CleanEvents));
 		JMenu subMenu = new JMenu("Add template");
 		rightClick.add(subMenu);
-		//Leemos fichero .ini
+		// Leemos fichero .ini
 		File file = new File(TEMPLATES);
 		InputStream s = new FileInputStream(file);
 		Ini templates = new Ini(s);
-		
+
 		for (IniSection sec : templates.getSections()) {
 			JMenuItem menuItem = new JMenuItem(sec.getValue("_name"));
 			menuItem.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
-					eventsEditor.insert(sec.toString(), eventsEditor.getCaretPosition());
+					eventsEditor.insert(sec.toString(),
+							eventsEditor.getCaretPosition());
 				}
 			});
 			subMenu.add(menuItem);
@@ -130,7 +131,9 @@ public class TextPanel extends JPanel {
 			try {
 				eventsEditor.setText(readFile(file));
 			} catch (FileNotFoundException e) {
-				throw new FileNotFoundException("No se ha encontrado el archivo: " + file.getAbsolutePath());
+				throw new FileNotFoundException(
+						"No se ha encontrado el archivo: "
+								+ file.getAbsolutePath());
 			}
 		}
 	}
@@ -140,13 +143,14 @@ public class TextPanel extends JPanel {
 		try {
 			s = new Scanner(file).useDelimiter("\\A").next();
 		} catch (FileNotFoundException e) {
-			throw new FileNotFoundException("No se ha encontrado el archivo " + file.getAbsolutePath());
+			throw new FileNotFoundException(
+					"No se ha encontrado el archivo " + file.getAbsolutePath());
 		}
 
 		return s;
 	}
 
-	public void saveEvents() throws FileNotFoundException{
+	public void saveEvents() throws FileNotFoundException {
 		int returnVal = fc.showSaveDialog(this);
 
 		if (returnVal == JFileChooser.APPROVE_OPTION) {
@@ -154,12 +158,15 @@ public class TextPanel extends JPanel {
 			try {
 				writeFile(file, eventsEditor.getText());
 			} catch (FileNotFoundException e) {
-				throw new FileNotFoundException("No se ha podido encontrar el archivo: " + file.getAbsolutePath());
+				throw new FileNotFoundException(
+						"No se ha podido encontrar el archivo: "
+								+ file.getAbsolutePath());
 			}
 		}
 	}
 
-	private void writeFile(File file, String content) throws FileNotFoundException {
+	private void writeFile(File file, String content)
+			throws FileNotFoundException {
 		PrintWriter pw = new PrintWriter(file);
 		pw.print(content);
 		pw.close();
@@ -176,7 +183,7 @@ public class TextPanel extends JPanel {
 	public void setText(String text) {
 		eventsEditor.setText(text);
 	}
-	
+
 	public void append(String text) {
 		eventsEditor.append(text);
 	}

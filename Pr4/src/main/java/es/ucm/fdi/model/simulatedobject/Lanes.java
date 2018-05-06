@@ -3,14 +3,15 @@ package es.ucm.fdi.model.simulatedobject;
 import java.util.Map;
 
 /**
- * Hereda de Road, la particulariedad que tiene es que es una carretera con un número de carriles
- * y existen nuevas reglas para determinar el factor de reducción de velocidad, pero el método
- * avanza es el mismo que el de Road
- * */
+ * Hereda de Road, la particulariedad que tiene es que es una carretera con un número de carriles y
+ * existen nuevas reglas para determinar el factor de reducción de velocidad, pero el método avanza
+ * es el mismo que el de Road
+ */
 public class Lanes extends Road {
 	int lanes;
 
-	public Lanes(String id, Junction src, Junction dest, int maxSpeed, int length, int numLanes) {
+	public Lanes(String id, Junction src, Junction dest, int maxSpeed,
+			int length, int numLanes) {
 		super(id, src, dest, maxSpeed, length);
 		this.lanes = numLanes;
 	}

@@ -8,13 +8,12 @@ import es.ucm.fdi.view.SimulatorTablePanel;
 import es.ucm.fdi.util.MultiTreeMap;
 
 /**
- * La clase Road hereda de SimObject, una carretera posee un treemap en el que 
- * los vehículos que están recorriéndola en un determinado momento de tiempo
- * están asignados a su velocidad, una carretera avanza en cada turno del simulador
- * invocando el método avanza para cada vehículo contenido en su treemap bajo
- * otras condiciones añadidas como el número de vehículos averiados o la velocidad 
- * máxima de la carretera
- * */
+ * La clase Road hereda de SimObject, una carretera posee un treemap en el que los vehículos que
+ * están recorriéndola en un determinado momento de tiempo están asignados a su velocidad, una
+ * carretera avanza en cada turno del simulador invocando el método avanza para cada vehículo
+ * contenido en su treemap bajo otras condiciones añadidas como el número de vehículos averiados o
+ * la velocidad máxima de la carretera
+ */
 
 public class Road extends SimObject implements SimulatorTablePanel.Describable {
 	private int length;
@@ -23,7 +22,8 @@ public class Road extends SimObject implements SimulatorTablePanel.Describable {
 	private Junction src;
 	private Junction dest;
 
-	public Road(String id, Junction src, Junction dest, int maxSpeed, int length) {
+	public Road(String id, Junction src, Junction dest, int maxSpeed,
+			int length) {
 		this.id = id;
 		this.src = src;
 		this.dest = dest;
@@ -49,10 +49,10 @@ public class Road extends SimObject implements SimulatorTablePanel.Describable {
 	public int numVehicles() {
 		return vehicles.size();
 	}
-	
-	public List<Integer> vehiclesPosition(){
+
+	public List<Integer> vehiclesPosition() {
 		List<Integer> p = new ArrayList<Integer>();
-		for(Vehicle v : vehicles.innerValues()) {
+		for (Vehicle v : vehicles.innerValues()) {
 			p.add(v.getLocation());
 		}
 		return p;
@@ -99,7 +99,8 @@ public class Road extends SimObject implements SimulatorTablePanel.Describable {
 	}
 
 	int velocidadBase() {
-		return (int) Math.min(maxSpeed, maxSpeed / Math.max(vehicles.sizeOfValues(), 1) + 1);
+		return (int) Math.min(maxSpeed,
+				maxSpeed / Math.max(vehicles.sizeOfValues(), 1) + 1);
 	}
 
 	@Override

@@ -32,7 +32,7 @@ public class NewRoundRobin extends NewJunction {
 		super.describe(out);
 		out.put("Tipo", this.toString());
 	}
-	
+
 	public String toString() {
 		return "New RoundRobin " + id;
 	}

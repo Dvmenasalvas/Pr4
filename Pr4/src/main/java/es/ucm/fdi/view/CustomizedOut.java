@@ -5,15 +5,15 @@ import java.io.OutputStream;
 
 public class CustomizedOut extends OutputStream {
 	TextPanel textPanel;
-	
+
 	public CustomizedOut(TextPanel tp) {
 		super();
 		textPanel = tp;
 	}
-	
+
 	@Override
 	public void write(int arg0) throws IOException {
-		int[] bytes = {arg0};
+		int[] bytes = { arg0 };
 		textPanel.append(new String(bytes, 0, bytes.length));
 	}
 

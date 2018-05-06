@@ -6,12 +6,11 @@ import es.ucm.fdi.exceptions.SimulationException;
 import es.ucm.fdi.model.simulatedobject.*;
 
 /**
- * RoadMap es un mapa en el que se almacenan todos las instancias de
- * simObject del progrma, se almacenan en distintas estructuras de 
- * datos, una lista para cada hijo directo de SimObject y un mapa
- * en el que se almacenan todos identificados por su id, se implementan
- * distintos métodos para añadir nuevos SimObject o para buscarlos en el RoadMap
- * */
+ * RoadMap es un mapa en el que se almacenan todos las instancias de simObject del progrma, se
+ * almacenan en distintas estructuras de datos, una lista para cada hijo directo de SimObject y un
+ * mapa en el que se almacenan todos identificados por su id, se implementan distintos métodos para
+ * añadir nuevos SimObject o para buscarlos en el RoadMap
+ */
 
 public class RoadMap {
 	// búsqueda por ids, unicidad
@@ -59,15 +58,16 @@ public class RoadMap {
 			return (Road) simObjects.get(id);
 		else
 			throw new SimulationException(
-					"Se ha intentado llamar a la carretera: " + id + " inexistente.");
+					"Se ha intentado llamar a la carretera: " + id
+							+ " inexistente.");
 	}
 
 	public Vehicle getVehicle(String id) {
 		if (simObjects.get(id) instanceof Vehicle)
 			return (Vehicle) simObjects.get(id);
 		else
-			throw new SimulationException(
-					"Se ha intentado llamar al vehiculo: " + id + " inexistente.");
+			throw new SimulationException("Se ha intentado llamar al vehiculo: "
+					+ id + " inexistente.");
 	}
 
 	// listado (sólo lectura)

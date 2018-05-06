@@ -27,7 +27,7 @@ public class NewBike extends NewVehicle {
 		super.describe(out);
 		out.put("Tipo", this.toString());
 	}
-	
+
 	public String toString() {
 		return "New Bike " + id;
 	}

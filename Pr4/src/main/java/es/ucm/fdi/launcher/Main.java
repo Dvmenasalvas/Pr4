@@ -195,8 +195,8 @@ public class Main {
 		TrafficSimulator tf = new TrafficSimulator();
 		Controller controller = new Controller(tf);
 		controller.insertarEventos(ini);
-		
-		//Añadimos un listener para mostrar errores
+
+		// Añadimos un listener para mostrar errores
 		controller.addSimulatorListener(new BatchErrorListener());
 
 		controller.ejecuta(_timeLimit, new FileOutputStream(_outFile));

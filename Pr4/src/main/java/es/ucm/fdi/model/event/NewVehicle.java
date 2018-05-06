@@ -41,7 +41,8 @@ public class NewVehicle extends Event {
 		}
 
 		if (itinerary.size() < 2) {
-			throw new SimulationException("El itinerario ha de tener, al menos, dos elementos.");
+			throw new SimulationException(
+					"El itinerario ha de tener, al menos, dos elementos.");
 		}
 	}
 
@@ -58,7 +59,7 @@ public class NewVehicle extends Event {
 		out.put("Tiempo", Integer.toString(time));
 		out.put("Tipo", this.toString());
 	}
-	
+
 	public String toString() {
 		return "New Vehicle " + id;
 	}

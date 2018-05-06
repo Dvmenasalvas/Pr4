@@ -40,7 +40,7 @@ public class NewRoad extends Event {
 	protected void checkParameters() {
 		if (maxSpeed <= 0) {
 			throw new SimulationException(
-							"La velocidad maxima ha de ser estrictamente positiva.");
+					"La velocidad maxima ha de ser estrictamente positiva.");
 		}
 
 		if (length <= 0) {
@@ -51,13 +51,11 @@ public class NewRoad extends Event {
 
 	protected void checkParameters(RoadMap simObjects) {
 		if (simObjects.getJunction(src) == null) {
-			throw new SimulationException(
-					"El cruce de salida es nulo.");
+			throw new SimulationException("El cruce de salida es nulo.");
 		}
 
 		if (simObjects.getJunction(dest) == null) {
-			throw new SimulationException(
-					"El cruce de llegada es nulo.");
+			throw new SimulationException("El cruce de llegada es nulo.");
 		}
 	}
 
@@ -66,7 +64,7 @@ public class NewRoad extends Event {
 		out.put("Tiempo", Integer.toString(time));
 		out.put("Tipo", this.toString());
 	}
-	
+
 	public String toString() {
 		return "New Road " + id;
 	}

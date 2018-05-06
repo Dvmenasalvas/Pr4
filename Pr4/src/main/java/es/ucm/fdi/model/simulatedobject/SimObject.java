@@ -1,12 +1,12 @@
 package es.ucm.fdi.model.simulatedobject;
 
 import java.util.Map;
+
 /**
- * Sim Object es una clase abstracta de la que luego heredaran Road, Vehicle
- * y Junction, cada SimObject posee una id única, un método para avanzar en
- * cada turno del simulador y un método para escribir un report de que valor
- * tienen los parámetros en un determinado turno del simulador
- * */
+ * Sim Object es una clase abstracta de la que luego heredaran Road, Vehicle y Junction, cada
+ * SimObject posee una id única, un método para avanzar en cada turno del simulador y un método para
+ * escribir un report de que valor tienen los parámetros en un determinado turno del simulador
+ */
 public abstract class SimObject {
 	String id;
 

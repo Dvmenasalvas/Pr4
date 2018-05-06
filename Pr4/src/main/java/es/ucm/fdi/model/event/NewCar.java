@@ -38,7 +38,7 @@ public class NewCar extends NewVehicle {
 		super.describe(out);
 		out.put("Tipo", this.toString());
 	}
-	
+
 	public String toString() {
 		return "New Car " + id;
 	}
