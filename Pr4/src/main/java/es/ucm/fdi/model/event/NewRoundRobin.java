@@ -11,7 +11,8 @@ public class NewRoundRobin extends NewJunction {
 	int maxTimeSlice;
 	int minTimeSlice;
 
-	public NewRoundRobin(int time, String id, int maxTimeSlice, int minTimeSlice) {
+	public NewRoundRobin(int time, String id, int maxTimeSlice,
+			int minTimeSlice) {
 		super(time, id);
 		this.maxTimeSlice = maxTimeSlice;
 		this.minTimeSlice = minTimeSlice;
@@ -35,10 +36,13 @@ public class NewRoundRobin extends NewJunction {
 	public class Builder implements Event.Builder {
 		@Override
 		public Event parse(IniSection sec) {
-			if (!sec.getTag().equals("new_junction") || !"rr".equals(sec.getValue("type")))
+			if (!sec.getTag().equals("new_junction")
+					|| !"rr".equals(sec.getValue("type")))
 				return null;
-			return new NewRoundRobin(parseInt(sec, "time", 0), isValidId(sec.getValue("id")),
-					parseInt(sec, "max_time_slice", 0), parseInt(sec, "min_time_slice", 0));
+			return new NewRoundRobin(parseInt(sec, "time", 0),
+					isValidId(sec.getValue("id")),
+					parseInt(sec, "max_time_slice", 0),
+					parseInt(sec, "min_time_slice", 0));
 		}
 	}
 }

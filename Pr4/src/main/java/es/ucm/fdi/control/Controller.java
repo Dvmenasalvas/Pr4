@@ -18,11 +18,12 @@ public class Controller {
 	}
 
 	private final static Event.Builder[] bs = new Event.Builder[] {
-			new MakeVehicleFaulty().new Builder(), new NewRoundRobin().new Builder(),
+			new MakeVehicleFaulty().new Builder(),
+			new NewRoundRobin().new Builder(),
 			new NewMostCrowded().new Builder(), new NewJunction().new Builder(),
-			new NewLanes().new Builder(), new NewDirt().new Builder(), new NewRoad().new Builder(),
-			new NewCar().new Builder(), new NewBike().new Builder(),
-			new NewVehicle().new Builder() };
+			new NewLanes().new Builder(), new NewDirt().new Builder(),
+			new NewRoad().new Builder(), new NewCar().new Builder(),
+			new NewBike().new Builder(), new NewVehicle().new Builder() };
 
 	public static Event parseSec(IniSection sec) throws IOException {
 		Event e = null;
@@ -41,7 +42,7 @@ public class Controller {
 			e.printStackTrace();
 		}
 	}
-	
+
 	public void insertarEventos(Ini ini) {
 		try {
 			for (IniSection sec : ini.getSections()) {
@@ -54,7 +55,7 @@ public class Controller {
 			e2.printStackTrace();
 		}
 	}
-	
+
 	public void insertarEventos(String eventos) {
 		Ini ini;
 		try {

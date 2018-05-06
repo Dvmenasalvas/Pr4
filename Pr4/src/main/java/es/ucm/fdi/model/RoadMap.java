@@ -51,15 +51,16 @@ public class RoadMap {
 			return (Road) simObjects.get(id);
 		else
 			throw new SimulationException(
-					"Se ha intentado llamar a la carretera: " + id + " inexistente.");
+					"Se ha intentado llamar a la carretera: " + id
+							+ " inexistente.");
 	}
 
 	public Vehicle getVehicle(String id) {
 		if (simObjects.get(id) instanceof Vehicle)
 			return (Vehicle) simObjects.get(id);
 		else
-			throw new SimulationException(
-					"Se ha intentado llamar al vehiculo: " + id + " inexistente.");
+			throw new SimulationException("Se ha intentado llamar al vehiculo: "
+					+ id + " inexistente.");
 	}
 
 	// listado (sólo lectura)

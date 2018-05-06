@@ -40,8 +40,8 @@ public class MultiTreeMap<K, V> extends TreeMap<K, ArrayList<V>> {
 	 * @param key
 	 *            to look into
 	 * @param value
-	 *            within the list found at that key to remove. The first element that is equals to
-	 *            this one will be removed.
+	 *            within the list found at that key to remove. The first element that is equals to this
+	 *            one will be removed.
 	 * @return true if removed, false if not found
 	 */
 	public boolean removeValue(K key, V value) {
@@ -68,8 +68,8 @@ public class MultiTreeMap<K, V> extends TreeMap<K, ArrayList<V>> {
 	}
 
 	/**
-	 * Returns the values as a read-only list. Changes to this structure will be immediately
-	 * reflected in the list.
+	 * Returns the values as a read-only list. Changes to this structure will be immediately reflected
+	 * in the list.
 	 */
 	public List<V> valuesList() {
 		return new InnerList();
@@ -84,7 +84,8 @@ public class MultiTreeMap<K, V> extends TreeMap<K, ArrayList<V>> {
 		public V get(int index) {
 
 			if (index < 0 || isEmpty()) {
-				throw new IndexOutOfBoundsException("Index " + index + " is out of bounds");
+				throw new IndexOutOfBoundsException(
+						"Index " + index + " is out of bounds");
 			}
 
 			Iterator<ArrayList<V>> it = values().iterator();
@@ -93,7 +94,8 @@ public class MultiTreeMap<K, V> extends TreeMap<K, ArrayList<V>> {
 
 			while (index >= (start + current.size())) {
 				if (!it.hasNext()) {
-					throw new IndexOutOfBoundsException("Index " + index + " is out of bounds");
+					throw new IndexOutOfBoundsException(
+							"Index " + index + " is out of bounds");
 				}
 				start += current.size();
 				current = it.next();

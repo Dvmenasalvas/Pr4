@@ -33,20 +33,22 @@ public class SimWindow extends JFrame {
 		// split window
 		Component componenteIzquierdo = null;
 		Component componenteDerecho = null;
-		JSplitPane bottomSplit = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, componenteIzquierdo,
-				componenteDerecho);
+		JSplitPane bottomSplit = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,
+				componenteIzquierdo, componenteDerecho);
 		Component componenteDeArriba = null;
 		Component componenteDeAbajo = null;
-		JSplitPane topSplit = new JSplitPane(JSplitPane.VERTICAL_SPLIT, componenteDeArriba,
-				componenteDeAbajo);
+		JSplitPane topSplit = new JSplitPane(JSplitPane.VERTICAL_SPLIT,
+				componenteDeArriba, componenteDeAbajo);
 		// da posición inicial a los componentes
 		setVisible(true);
 		bottomSplit.setDividerLocation(.5); // = 50% para cada lado
 		// instantiate actions
-		SimulatorAction salir = new SimulatorAction("Salir", "exit.png", "Salir de la aplicacion",
-				KeyEvent.VK_A, "control shift X", () -> System.exit(0));
-		SimulatorAction guardar = new SimulatorAction("Guardar", "save.png", "Guardar cosas",
-				KeyEvent.VK_S, "control S", () -> System.err.println("guardando..."));
+		SimulatorAction salir = new SimulatorAction("Salir", "exit.png",
+				"Salir de la aplicacion", KeyEvent.VK_A, "control shift X",
+				() -> System.exit(0));
+		SimulatorAction guardar = new SimulatorAction("Guardar", "save.png",
+				"Guardar cosas", KeyEvent.VK_S, "control S",
+				() -> System.err.println("guardando..."));
 
 		// add actions to toolbar, and bar to window
 		JToolBar bar = new JToolBar();

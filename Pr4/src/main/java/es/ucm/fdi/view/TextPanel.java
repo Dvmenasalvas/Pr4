@@ -36,7 +36,8 @@ public class TextPanel extends JPanel {
 	private JFileChooser fc;
 	private HashMap<Command, SimulatorAction> actions;
 
-	public TextPanel(HashMap<Command, SimulatorAction> actions, boolean editable) {
+	public TextPanel(HashMap<Command, SimulatorAction> actions,
+			boolean editable) {
 		super();
 		fc = new JFileChooser();
 		eventsEditor = new JTextArea(24, 30);
@@ -60,9 +61,9 @@ public class TextPanel extends JPanel {
 		JMenu subMenu = new JMenu("Add template");
 		rightClick.add(subMenu);
 
-		String[] templates = { "New RR Junction", "New MC Junction", "New Junction",
-				"New Dirt Road", "New Lanes Road", "New Road", "New Bike", "New Car", "New Vehicle",
-				"New Vehicle Faulty" };
+		String[] templates = { "New RR Junction", "New MC Junction",
+				"New Junction", "New Dirt Road", "New Lanes Road", "New Road",
+				"New Bike", "New Car", "New Vehicle", "New Vehicle Faulty" };
 
 		for (String s : templates) {
 			JMenuItem menuItem = new JMenuItem(s);
@@ -80,7 +81,8 @@ public class TextPanel extends JPanel {
 					}
 						break;
 					case ("New Junction"): {
-						eventsEditor.insert(newJunctionTemplate(), eventsEditor.getCaretPosition());
+						eventsEditor.insert(newJunctionTemplate(),
+								eventsEditor.getCaretPosition());
 					}
 						break;
 					case ("New Dirt Road"): {
@@ -92,7 +94,8 @@ public class TextPanel extends JPanel {
 					}
 						break;
 					case ("New Road"): {
-						eventsEditor.insert(newRoadTemplate(), eventsEditor.getCaretPosition());
+						eventsEditor.insert(newRoadTemplate(),
+								eventsEditor.getCaretPosition());
 					}
 						break;
 					case ("New Bike"): {

@@ -56,8 +56,6 @@ public class MainWindow extends JFrame implements SimulatorListener {
 		super("Traffic Simulator");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-		// ctrl.setOutputStream(reportsOutputStream); // ver sección 8
-
 		this.controller = controller;
 		initGUI(timeLimit, inFileName);
 		controller.addSimulatorListener(this);
@@ -69,7 +67,7 @@ public class MainWindow extends JFrame implements SimulatorListener {
 	}
 
 	private void initGUI(int timeLimit, String inFileName) {
-		// Split de ventanas
+		//Windows split
 		topPanel = new JPanel();
 		topPanel.setLayout(new BoxLayout(topPanel, BoxLayout.X_AXIS));
 
@@ -77,25 +75,56 @@ public class MainWindow extends JFrame implements SimulatorListener {
 		bottomPanel.setLayout(new BoxLayout(bottomPanel, BoxLayout.X_AXIS));
 
 		bottomLeftPanel = new JPanel();
-		bottomLeftPanel.setLayout(new BoxLayout(bottomLeftPanel, BoxLayout.Y_AXIS));
+		bottomLeftPanel
+				.setLayout(new BoxLayout(bottomLeftPanel, BoxLayout.Y_AXIS));
 
 		bottomPanel.add(bottomLeftPanel);
 
-		mainPanel = new JSplitPane(JSplitPane.VERTICAL_SPLIT, topPanel, bottomPanel);
+		mainPanel = new JSplitPane(JSplitPane.VERTICAL_SPLIT, topPanel,
+				bottomPanel);
 		add(mainPanel);
-
+		
+		//Inicialice commands
 		addCommands();
 
+		//ToolBar
 		toolBar = new ToolBar(actions, timeLimit);
 		add(toolBar, BorderLayout.NORTH);
 
+		//Menu
 		addMenu();
-		addEventsEditor(inFileName);
-		addEventsView();
-		addReportsArea();
-		addVehiclesTable();
-		addRoadsTable();
-		addJunctionsTable();
+		
+		//EventsEditor
+		eventsEditor = new TextPanel(actions, true);
+		addTextArea(eventsEditor, "Editor de eventos", inFileName, topPanel);
+		
+		//Events table
+		List<Describable> events = new ArrayList<Describable>();
+		String[] cEvents = { "#", "Tiempo", "Tipo" };
+		eventsTable = new SimulatorTablePanel(events, cEvents);
+		addTable(eventsTable, "Editor de eventos", topPanel);
+		
+		//ReportArea
+		reportsAreaPanel = new TextPanel(actions, true);
+		addTextArea(reportsAreaPanel, "Informe", null, topPanel);
+
+		// Junctions table
+		String[] cJunctions = { "ID", "Verde", "Rojo" };
+		junctionsTable = new SimulatorTablePanel(events, cJunctions);
+		addTable(junctionsTable, "Cruces", bottomLeftPanel);
+
+		// Vehicles table
+		String[] cVehicles = { "ID", "Carretera", "Localizacion", "Velocidad",
+				"Km", "Unidades de averia", "Itinerario" };
+		vehiclesTable = new SimulatorTablePanel(events, cVehicles);
+		addTable(vehiclesTable, "Vehiculos", bottomLeftPanel);
+
+		// Roads table
+		String[] cRoads = { "ID", "Inicio", "Final", "Longitud",
+				"Maxima Velocidad", "Vehiculos" };
+		roadsTable = new SimulatorTablePanel(events, cRoads);
+		addTable(roadsTable, "Carreteras", bottomLeftPanel);
+
 		addMap();
 		addStatusBar();
 	}
@@ -104,34 +133,43 @@ public class MainWindow extends JFrame implements SimulatorListener {
 		actions = new HashMap<Command, SimulatorAction>();
 
 		actions.put(Command.LoadEvents,
-				new SimulatorAction("Cargar Eventos", "open.png", "Cargar eventos de un fichero",
-						KeyEvent.VK_L, "control L", () -> eventsEditor.loadEvents()));
+				new SimulatorAction("Cargar Eventos", "open.png",
+						"Cargar eventos de un fichero", KeyEvent.VK_L,
+						"control L", () -> eventsEditor.loadEvents()));
 		actions.put(Command.SaveEvents,
-				new SimulatorAction("Guardar Eventos", "save.png", "Guardar eventos en un fichero",
-						KeyEvent.VK_S, "control S", () -> eventsEditor.saveEvents()));
+				new SimulatorAction("Guardar Eventos", "save.png",
+						"Guardar eventos en un fichero", KeyEvent.VK_S,
+						"control S", () -> eventsEditor.saveEvents()));
 		actions.put(Command.CleanEvents,
-				new SimulatorAction("Limpiar Eventos", "clear.png", "Limpiar la lista de eventos",
-						KeyEvent.VK_C, "control C", () -> eventsEditor.clearEvents()));
-		actions.put(Command.InsertEvents,
-				new SimulatorAction("Insertar Eventos", "events.png",
-						"Insertar eventos en el simulador", KeyEvent.VK_I, "control I",
-						() -> controller.insertarEventos(eventsEditor.getText())));
-		actions.put(Command.Execute,
-				new SimulatorAction("Ejecutar", "play.png", "Ejecutar el simulador", KeyEvent.VK_E,
-						"control E", () -> controller.ejecuta(toolBar.getSpinnerValue(), null)));
-		actions.put(Command.Reset, new SimulatorAction("Reiniciar", "reset.png",
-				"Reiniciar el simulador", KeyEvent.VK_R, "control R", () -> controller.reset()));
-		actions.put(Command.GenerateReports,
-				new SimulatorAction("Generar", "report.png", "Generar informes", KeyEvent.VK_P,
-						"control P", () -> reportsAreaPanel.setText(controller.generateReports())));
+				new SimulatorAction("Limpiar Eventos", "clear.png",
+						"Limpiar la lista de eventos", KeyEvent.VK_C,
+						"control C", () -> eventsEditor.clearEvents()));
+		actions.put(Command.InsertEvents, new SimulatorAction(
+				"Insertar Eventos", "events.png",
+				"Insertar eventos en el simulador", KeyEvent.VK_I, "control I",
+				() -> controller.insertarEventos(eventsEditor.getText())));
+		actions.put(Command.Execute, new SimulatorAction("Ejecutar", "play.png",
+				"Ejecutar el simulador", KeyEvent.VK_E, "control E",
+				() -> controller.ejecuta(toolBar.getSpinnerValue(), null)));
+		actions.put(Command.Reset,
+				new SimulatorAction("Reiniciar", "reset.png",
+						"Reiniciar el simulador", KeyEvent.VK_R, "control R",
+						() -> controller.reset()));
+		actions.put(Command.GenerateReports, new SimulatorAction("Generar",
+				"report.png", "Generar informes", KeyEvent.VK_P, "control P",
+				() -> reportsAreaPanel.setText(controller.generateReports())));
 		actions.put(Command.CleanReports,
-				new SimulatorAction("Limpiar", "delete_report.png", "Limpiar informes",
-						KeyEvent.VK_L, "control L", () -> reportsAreaPanel.clearEvents()));
+				new SimulatorAction("Limpiar", "delete_report.png",
+						"Limpiar informes", KeyEvent.VK_L, "control L",
+						() -> reportsAreaPanel.clearEvents()));
 		actions.put(Command.SaveReports,
-				new SimulatorAction("Guardar", "save_report.png", "Guardar informes", KeyEvent.VK_A,
-						"control A", () -> reportsAreaPanel.saveEvents()));
-		actions.put(Command.Exit, new SimulatorAction("Salir", "exit.png", "Salir de la aplicacion",
-				KeyEvent.VK_A, "control shift X", () -> System.exit(0)));
+				new SimulatorAction("Guardar", "save_report.png",
+						"Guardar informes", KeyEvent.VK_A, "control A",
+						() -> reportsAreaPanel.saveEvents()));
+		actions.put(Command.Exit,
+				new SimulatorAction("Salir", "exit.png",
+						"Salir de la aplicacion", KeyEvent.VK_A,
+						"control shift X", () -> System.exit(0)));
 	}
 
 	private void addMenu() {
@@ -158,82 +196,31 @@ public class MainWindow extends JFrame implements SimulatorListener {
 		menu.add(reportsMenu);
 		setJMenuBar(menu);
 	}
+	
+	private void addTextArea(TextPanel textArea, String borderName, String inFileName, JPanel container) {
+		textArea.setBorder(new TitledBorder(borderName));
 
-	private void addEventsEditor(String inFileName) {
-		eventsEditor = new TextPanel(actions, true);
-
-		eventsEditor.setBorder(new TitledBorder("Informe"));
-
-		topPanel.add(new JScrollPane(eventsEditor, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
-				JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED), BorderLayout.CENTER);
-
+		container.add(
+				new JScrollPane(textArea,
+						JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
+						JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED),
+				BorderLayout.CENTER);
+		
 		if (inFileName != null) {
-			eventsEditor.setText(TextPanel.readFile(new File(inFileName)));
+			textArea.setText(TextPanel.readFile(new File(inFileName)));
 		}
 	}
 
-	private void addEventsView() {
-		String[] columnas = { "#", "Tiempo", "Tipo" };
-		List<Describable> events = new ArrayList<Describable>();
-		eventsTable = new SimulatorTablePanel(events, columnas);
+	private void addTable(SimulatorTablePanel sPanel,
+			String borderName, JPanel container) {
+		TitledBorder controlBorder = new TitledBorder(borderName);
+		sPanel.setBorder(controlBorder);
 
-		TitledBorder controlBorder = new TitledBorder("Editor de eventos");
-		eventsTable.setBorder(controlBorder);
-
-		topPanel.add(new JScrollPane(eventsTable, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
-				JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED), BorderLayout.CENTER);
-	}
-
-	private void addReportsArea() {
-		reportsAreaPanel = new TextPanel(actions, false);
-
-		TitledBorder border = new TitledBorder("Informe");
-		reportsAreaPanel.setBorder(border);
-
-		topPanel.add(new JScrollPane(reportsAreaPanel, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
-				JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED), BorderLayout.CENTER);
-
-	}
-
-	private void addVehiclesTable() {
-		String[] columnas = { "ID", "Carretera", "Localizacion", "Velocidad", "Km",
-				"Unidades de averia", "Itinerario" };
-		List<Describable> events = new ArrayList<Describable>();
-		vehiclesTable = new SimulatorTablePanel(events, columnas);
-
-		TitledBorder controlBorder = new TitledBorder("Vehiculos");
-		vehiclesTable.setBorder(controlBorder);
-
-		bottomLeftPanel.add(new JScrollPane(vehiclesTable, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
-				JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED), BorderLayout.CENTER);
-
-	}
-
-	private void addRoadsTable() {
-		String[] columnas = { "ID", "Inicio", "Final", "Longitud", "Maxima Velocidad",
-				"Vehiculos" };
-		List<Describable> events = new ArrayList<Describable>();
-		roadsTable = new SimulatorTablePanel(events, columnas);
-
-		TitledBorder controlBorder = new TitledBorder("Carreteras");
-		roadsTable.setBorder(controlBorder);
-
-		bottomLeftPanel.add(new JScrollPane(roadsTable, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
-				JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED), BorderLayout.CENTER);
-	}
-
-	private void addJunctionsTable() {
-		String[] columnas = { "ID", "Verde", "Rojo" };
-		List<Describable> events = new ArrayList<Describable>();
-		junctionsTable = new SimulatorTablePanel(events, columnas);
-
-		TitledBorder controlBorder = new TitledBorder("Cruces");
-		junctionsTable.setBorder(controlBorder);
-
-		bottomLeftPanel
-				.add(new JScrollPane(junctionsTable, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
-						JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED), BorderLayout.CENTER);
-
+		container.add(
+				new JScrollPane(sPanel,
+						JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
+						JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED),
+				BorderLayout.CENTER);
 	}
 
 	private void addMap() {
@@ -242,17 +229,20 @@ public class MainWindow extends JFrame implements SimulatorListener {
 
 		map.setBorder(new TitledBorder("RoadMap"));
 
-		bottomPanel.add(new JScrollPane(map, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
-				JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED), BorderLayout.CENTER);
+		bottomPanel.add(
+				new JScrollPane(map, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
+						JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED),
+				BorderLayout.CENTER);
 	}
-	
+
 	private void addStatusBar() {
-		 JPanel statusBar = new JPanel();
-		 statusBar.setBorder(BorderFactory.createLineBorder(Color.black));
-		 JLabel statusBarText = new JLabel("Welcome to the simulator!");
-		 statusBar.add(statusBarText);
-		 add(statusBar,BorderLayout.SOUTH);
-		}
+		JPanel statusBar = new JPanel();
+		statusBar.setBorder(BorderFactory.createLineBorder(Color.black));
+		JLabel statusBarText = new JLabel("¡Bienvenido al simulador!");
+
+		statusBar.add(statusBarText);
+		add(statusBar, BorderLayout.SOUTH);
+	}
 
 	private void refreshInfo(UpdateEvent ue) {
 		map.setRoadMap(ue.getRoadMap());

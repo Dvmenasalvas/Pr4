@@ -22,8 +22,8 @@ public class IniSection {
 	private Map<String, String> _attr;
 
 	/**
-	 * The list of keys. We could get it from field {@code _attr}, but keep another list of keys in
-	 * the order in which they where added. This is mainly used when writing the INI structure.
+	 * The list of keys. We could get it from field {@code _attr}, but keep another list of keys in the
+	 * order in which they where added. This is mainly used when writing the INI structure.
 	 */
 	private List<String> _keys;
 
@@ -144,8 +144,8 @@ public class IniSection {
 	}
 
 	/**
-	 * To be equal they must have the same keys, the order is not important, and value of all keys
-	 * are equal.
+	 * To be equal they must have the same keys, the order is not important, and value of all keys are
+	 * equal.
 	 */
 	@Override
 	public boolean equals(Object obj) {

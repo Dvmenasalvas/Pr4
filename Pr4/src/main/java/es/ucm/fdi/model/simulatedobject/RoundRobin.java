@@ -56,7 +56,8 @@ public class RoundRobin extends Junction {
 	@Override
 	protected String semaforo(Junction.IncomingRoad ir) {
 		if (ir.semaforo) {
-			return "green:" + (((IncomingRoad) ir).timeSlice - ((IncomingRoad) ir).pastTime);
+			return "green:" + (((IncomingRoad) ir).timeSlice
+					- ((IncomingRoad) ir).pastTime);
 		} else {
 			return "red";
 		}

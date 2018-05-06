@@ -24,7 +24,8 @@ public class ToolBar extends JToolBar {
 	}
 
 	private void initToolBar(int timeLimit) {
-		stepsSpinner = new JSpinner(new SpinnerNumberModel(timeLimit, 1, 100, 1));
+		stepsSpinner = new JSpinner(
+				new SpinnerNumberModel(timeLimit, 1, 100, 1));
 		timeViewer = new JTextField();
 		timeViewer.setText("0");
 		timeViewer.setEditable(false);
@@ -42,8 +43,9 @@ public class ToolBar extends JToolBar {
 
 		add(new JLabel("Pasos: "));
 		add(stepsSpinner);
-		stepsSpinner.setToolTipText(
-				"<html>Determina el numero de pasos que se <br>" + "dan en la simulacion");
+		stepsSpinner
+				.setToolTipText("<html>Determina el numero de pasos que se <br>"
+						+ "dan en la simulacion");
 
 		add(new JLabel("Tiempo: "));
 		add(timeViewer);

@@ -18,7 +18,8 @@ public class NewBike extends NewVehicle {
 
 	public void execute(RoadMap simObjects) {
 		checkParameters();
-		simObjects.addVehicle(new Bike(id, maxSpeed, toJunction(itinerary, simObjects)));
+		simObjects.addVehicle(
+				new Bike(id, maxSpeed, toJunction(itinerary, simObjects)));
 	}
 
 	@Override
@@ -31,10 +32,13 @@ public class NewBike extends NewVehicle {
 
 		@Override
 		public Event parse(IniSection sec) {
-			if (!sec.getTag().equals("new_vehicle") || !"bike".equals(sec.getValue("type")))
+			if (!sec.getTag().equals("new_vehicle")
+					|| !"bike".equals(sec.getValue("type")))
 				return null;
-			return new NewBike(parseInt(sec, "time", 0), isValidId(sec.getValue("id")),
-					parseInt(sec, "max_speed", 0), parseIdList(sec, "itinerary"));
+			return new NewBike(parseInt(sec, "time", 0),
+					isValidId(sec.getValue("id")),
+					parseInt(sec, "max_speed", 0),
+					parseIdList(sec, "itinerary"));
 		}
 
 	}

@@ -9,7 +9,8 @@ import java.util.Queue;
 
 import es.ucm.fdi.view.SimulatorTablePanel;
 
-public class Junction extends SimObject implements SimulatorTablePanel.Describable {
+public class Junction extends SimObject
+		implements SimulatorTablePanel.Describable {
 	// Mapa y lista ordenada para carreteras entrantes
 	Map<Road, IncomingRoad> carreterasEntrantes;
 	protected List<IncomingRoad> semaforos;
@@ -104,7 +105,6 @@ public class Junction extends SimObject implements SimulatorTablePanel.Describab
 		}
 		incomingRoad.append("]),");
 
-		
 		return incomingRoad.toString();
 	}
 

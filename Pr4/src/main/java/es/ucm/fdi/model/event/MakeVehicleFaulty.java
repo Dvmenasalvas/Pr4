@@ -30,9 +30,10 @@ public class MakeVehicleFaulty extends Event {
 				simObjects.getVehicle(id).setTiempoAveria(duration);
 			} else {
 				throw new SimulationException(
-						"Se ha intentado averiar un coche no existente con id: " + id + ".");
+						"Se ha intentado averiar un coche no existente con id: "
+								+ id + ".");
 			}
-		}	
+		}
 	}
 
 	public class Builder implements Event.Builder {
@@ -40,15 +41,16 @@ public class MakeVehicleFaulty extends Event {
 		public Event parse(IniSection sec) {
 			if (!sec.getTag().equals("make_vehicle_faulty"))
 				return null;
-			return new MakeVehicleFaulty(parseInt(sec, "time", 0), parseIdList(sec, "vehicles"),
-					parseInt(sec, "duration", 0));
+			return new MakeVehicleFaulty(parseInt(sec, "time", 0),
+					parseIdList(sec, "vehicles"), parseInt(sec, "duration", 0));
 		}
 	}
 
 	@Override
 	protected void checkParameters() {
 		if (duration < 0) {
-			throw new SimulationException("Error en la ejecucion del evento " + this
+			throw new SimulationException("Error en la ejecucion del evento "
+					+ this
 					+ " la duracion de la averia ha de ser estrictamente positiva.");
 		}
 

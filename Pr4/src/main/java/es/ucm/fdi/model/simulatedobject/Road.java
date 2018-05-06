@@ -14,7 +14,8 @@ public class Road extends SimObject implements SimulatorTablePanel.Describable {
 	private Junction src;
 	private Junction dest;
 
-	public Road(String id, Junction src, Junction dest, int maxSpeed, int length) {
+	public Road(String id, Junction src, Junction dest, int maxSpeed,
+			int length) {
 		this.id = id;
 		this.src = src;
 		this.dest = dest;
@@ -40,10 +41,10 @@ public class Road extends SimObject implements SimulatorTablePanel.Describable {
 	public int numVehicles() {
 		return vehicles.size();
 	}
-	
-	public List<Integer> vehiclesPosition(){
+
+	public List<Integer> vehiclesPosition() {
 		List<Integer> p = new ArrayList<Integer>();
-		for(Vehicle v : vehicles.innerValues()) {
+		for (Vehicle v : vehicles.innerValues()) {
 			p.add(v.getLocation());
 		}
 		return p;
@@ -90,7 +91,8 @@ public class Road extends SimObject implements SimulatorTablePanel.Describable {
 	}
 
 	int velocidadBase() {
-		return (int) Math.min(maxSpeed, maxSpeed / Math.max(vehicles.sizeOfValues(), 1) + 1);
+		return (int) Math.min(maxSpeed,
+				maxSpeed / Math.max(vehicles.sizeOfValues(), 1) + 1);
 	}
 
 	@Override

@@ -74,10 +74,10 @@ public class Main {
 	private static Options buildOptions() {
 		Options cmdLineOptions = new Options();
 
-		cmdLineOptions
-				.addOption(Option.builder("h").longOpt("help").desc("Print this message").build());
-		cmdLineOptions.addOption(
-				Option.builder("i").longOpt("input").hasArg().desc("Events input file").build());
+		cmdLineOptions.addOption(Option.builder("h").longOpt("help")
+				.desc("Print this message").build());
+		cmdLineOptions.addOption(Option.builder("i").longOpt("input").hasArg()
+				.desc("Events input file").build());
 		cmdLineOptions.addOption(Option.builder("m").longOpt("mode").hasArg()
 				.desc("'batch' for batch mode and 'gui' for GUI mode (default value is 'batch'")
 				.build());
@@ -91,31 +91,37 @@ public class Main {
 		return cmdLineOptions;
 	}
 
-	private static void parseHelpOption(CommandLine line, Options cmdLineOptions) {
+	private static void parseHelpOption(CommandLine line,
+			Options cmdLineOptions) {
 		if ("batch".equals(line.getOptionValue("m")) && line.hasOption("h")) {
 			HelpFormatter formatter = new HelpFormatter();
-			formatter.printHelp(Main.class.getCanonicalName(), cmdLineOptions, true);
+			formatter.printHelp(Main.class.getCanonicalName(), cmdLineOptions,
+					true);
 			System.exit(0);
 		}
 	}
 
-	private static void parseInFileOption(CommandLine line) throws ParseException {
+	private static void parseInFileOption(CommandLine line)
+			throws ParseException {
 		_inFile = line.getOptionValue("i");
 		if (_inFile == null) {
 			throw new ParseException("An events file is missing");
 		}
 	}
 
-	private static void parseModeOption(CommandLine line) throws ParseException {
+	private static void parseModeOption(CommandLine line)
+			throws ParseException {
 		if ("gui".equals(line.getOptionValue("m")))
 			_GUI = true;
 	}
 
-	private static void parseOutFileOption(CommandLine line) throws ParseException {
+	private static void parseOutFileOption(CommandLine line)
+			throws ParseException {
 		_outFile = line.getOptionValue("o");
 	}
 
-	private static void parseStepsOption(CommandLine line) throws ParseException {
+	private static void parseStepsOption(CommandLine line)
+			throws ParseException {
 		String t = line.getOptionValue("t", _timeLimitDefaultValue.toString());
 		try {
 			_timeLimit = Integer.parseInt(t);
@@ -126,10 +132,9 @@ public class Main {
 	}
 
 	/**
-	 * This method run the simulator on all files that ends with .ini if the given path, and
-	 * compares that output to the expected output. It assumes that for example "example.ini" the
-	 * expected output is stored in "example.ini.eout". The simulator's output will be stored in
-	 * "example.ini.out"
+	 * This method run the simulator on all files that ends with .ini if the given path, and compares
+	 * that output to the expected output. It assumes that for example "example.ini" the expected output
+	 * is stored in "example.ini.eout". The simulator's output will be stored in "example.ini.out"
 	 * 
 	 * @throws IOException
 	 */
@@ -150,21 +155,24 @@ public class Main {
 
 		boolean result = true;
 		for (File file : files) {
-			result = result && test(file.getAbsolutePath(), file.getAbsolutePath() + ".out",
+			result = result && test(file.getAbsolutePath(),
+					file.getAbsolutePath() + ".out",
 					file.getAbsolutePath() + ".eout", 10);
 		}
 
 		return result;
 	}
 
-	private static boolean test(String inFile, String outFile, String expectedOutFile,
-			int timeLimit) throws IOException {
+	private static boolean test(String inFile, String outFile,
+			String expectedOutFile, int timeLimit) throws IOException {
 		_outFile = outFile;
 		_inFile = inFile;
 		_timeLimit = timeLimit;
 		startBatchMode();
-		boolean equalOutput = (new Ini(_outFile)).equals(new Ini(expectedOutFile));
-		System.out.println("Result for: '" + _inFile + "' : " + (equalOutput ? "OK!"
+		boolean equalOutput = (new Ini(_outFile))
+				.equals(new Ini(expectedOutFile));
+		System.out.println("Result for: '" + _inFile + "' : " + (equalOutput
+				? "OK!"
 				: ("not equal to expected output +'" + expectedOutFile + "'")));
 		return equalOutput;
 	}
@@ -195,7 +203,8 @@ public class Main {
 		TrafficSimulator tf = new TrafficSimulator();
 		Controller controller = new Controller(tf);
 
-		SwingUtilities.invokeLater(() -> new MainWindow(controller, _inFile, _timeLimit));
+		SwingUtilities.invokeLater(
+				() -> new MainWindow(controller, _inFile, _timeLimit));
 	}
 
 	private static void start(String[] args) throws IOException {
@@ -207,8 +216,8 @@ public class Main {
 		}
 	}
 
-	public static void main(String[] args)
-			throws IOException, InvocationTargetException, InterruptedException {
+	public static void main(String[] args) throws IOException,
+			InvocationTargetException, InterruptedException {
 
 		// example command lines:
 		//

@@ -16,7 +16,8 @@ public class SimulatorTablePanel extends JPanel {
 	List<? extends Describable> elements;
 	String[] fieldNames;
 
-	public SimulatorTablePanel(List<? extends Describable> elements, String[] fieldNames) {
+	public SimulatorTablePanel(List<? extends Describable> elements,
+			String[] fieldNames) {
 		super();
 		this.elements = elements;
 		this.fieldNames = fieldNames;
@@ -36,7 +37,6 @@ public class SimulatorTablePanel extends JPanel {
 		tableModel = new ListOfMapsTableModel();
 		eventsTable = new JTable(tableModel);
 		this.add(new JScrollPane(eventsTable));
-		eventsTable.setFillsViewportHeight(true);
 	}
 
 	private class ListOfMapsTableModel extends AbstractTableModel {

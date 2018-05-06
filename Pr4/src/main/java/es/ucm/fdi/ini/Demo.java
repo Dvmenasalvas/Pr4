@@ -33,7 +33,8 @@ public class Demo {
 
 		ini.addsection(sec);
 
-		File file = new File("/Users/Daniel/git/Pr4Local/Pr4/src/main/resources/output.ini");
+		File file = new File(
+				"/Users/Daniel/git/Pr4Local/Pr4/src/main/resources/output.ini");
 		OutputStream s = new FileOutputStream(file);
 		ini.store(s);
 		s.close();
@@ -79,15 +80,15 @@ public class Demo {
 		Ini[] ini = new Ini[5];
 
 		for (int i = 0; i < ini.length; i++) {
-			ini[i] = new Ini(new FileInputStream(
-					new File("/Users/Daniel/git/Pr4Local/Pr4/src/main/resources/examples/ini/input"
+			ini[i] = new Ini(new FileInputStream(new File(
+					"/Users/Daniel/git/Pr4Local/Pr4/src/main/resources/examples/ini/input"
 							+ i + ".ini")));
 		}
 
 		for (int i = 0; i < ini.length; i++) {
 			for (int j = i + 1; j < ini.length; j++)
-				System.out.println("are input" + i + ".ini and input" + j + ".ini equal? "
-						+ ini[i].equals(ini[j]));
+				System.out.println("are input" + i + ".ini and input" + j
+						+ ".ini equal? " + ini[i].equals(ini[j]));
 		}
 		System.out.println();
 	}

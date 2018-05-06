@@ -34,7 +34,8 @@ public class NewJunction extends Event {
 		public Event parse(IniSection sec) {
 			if (!sec.getTag().equals("new_junction"))
 				return null;
-			return new NewJunction(parseInt(sec, "time", 0), isValidId(sec.getValue("id")));
+			return new NewJunction(parseInt(sec, "time", 0),
+					isValidId(sec.getValue("id")));
 		}
 	}
 

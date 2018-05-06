@@ -4,7 +4,8 @@ import java.util.List;
 import es.ucm.fdi.view.SimulatorTablePanel;
 import java.util.Map;
 
-public class Vehicle extends SimObject implements SimulatorTablePanel.Describable {
+public class Vehicle extends SimObject
+		implements SimulatorTablePanel.Describable {
 	protected int maxSpeed;
 	protected int actSpeed;
 	private Road road; // No necesitamos booleano arrive, ya que road sera igual a null si y solo si
@@ -82,7 +83,8 @@ public class Vehicle extends SimObject implements SimulatorTablePanel.Describabl
 		road.saleVehiculo(this, location);
 		if (posItinerary < itinerary.size() - 1) {
 			location = 0;
-			road = itinerary.get(posItinerary).carreteraSaliente(itinerary.get(posItinerary + 1));
+			road = itinerary.get(posItinerary)
+					.carreteraSaliente(itinerary.get(posItinerary + 1));
 			road.entraVehiculo(this);
 		} else {
 			road = null;
@@ -97,7 +99,8 @@ public class Vehicle extends SimObject implements SimulatorTablePanel.Describabl
 		if (road == null) {
 			out.put("location", "arrived");
 		} else {
-			out.put("location", "(" + road.getId() + "," + String.valueOf(location) + ")");
+			out.put("location",
+					"(" + road.getId() + "," + String.valueOf(location) + ")");
 		}
 	}
 

@@ -23,11 +23,13 @@ public abstract class Event implements SimulatorTablePanel.Describable {
 	public interface Builder {
 		public Event parse(IniSection sec) throws IOException;
 
-		public default String isValidId(String id) throws IllegalArgumentException {
+		public default String isValidId(String id)
+				throws IllegalArgumentException {
 			if (id.matches("[a-zA-Z0-9_]+"))
 				return id;
 			else
-				throw new IllegalArgumentException("El id: " + id + " no es valido.");
+				throw new IllegalArgumentException(
+						"El id: " + id + " no es valido.");
 		}
 
 		public default int parseInt(IniSection sec, String key, int def) {
@@ -38,7 +40,8 @@ public abstract class Event implements SimulatorTablePanel.Describable {
 			}
 		}
 
-		public default double parseDouble(IniSection sec, String key, double def) {
+		public default double parseDouble(IniSection sec, String key,
+				double def) {
 			if (sec.getValue(key) == null) {
 				return def;
 			} else {

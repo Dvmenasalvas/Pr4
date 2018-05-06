@@ -4,7 +4,8 @@ import java.util.Map;
 
 public class Dirt extends Road {
 
-	public Dirt(String id, Junction src, Junction dest, int maxSpeed, int length) {
+	public Dirt(String id, Junction src, Junction dest, int maxSpeed,
+			int length) {
 		super(id, src, dest, maxSpeed, length);
 	}
 

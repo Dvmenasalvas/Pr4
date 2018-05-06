@@ -5,7 +5,8 @@ import java.util.Map;
 public class Lanes extends Road {
 	int lanes;
 
-	public Lanes(String id, Junction src, Junction dest, int maxSpeed, int length, int numLanes) {
+	public Lanes(String id, Junction src, Junction dest, int maxSpeed,
+			int length, int numLanes) {
 		super(id, src, dest, maxSpeed, length);
 		this.lanes = numLanes;
 	}

@@ -31,11 +31,11 @@ public class SimulatorAction extends AbstractAction {
 	 *            KeyEvent.VK_A is an 'a', ...
 	 * @param accelerator
 	 *            for calling the action without using the mouse at all. See
-	 *            https://docs.oracle.com/javase/8/docs/api/index.html for details. Examples
-	 *            include: "control DELETE" or "alt shift X"
+	 *            https://docs.oracle.com/javase/8/docs/api/index.html for details. Examples include:
+	 *            "control DELETE" or "alt shift X"
 	 */
-	public SimulatorAction(Object name, String iconName, String tooltip, Integer mnemonic,
-			String accelerator, Runnable callback) {
+	public SimulatorAction(Object name, String iconName, String tooltip,
+			Integer mnemonic, String accelerator, Runnable callback) {
 		super("" + name);
 		putValue(Action.SHORT_DESCRIPTION, tooltip);
 		putValue(Action.MNEMONIC_KEY, mnemonic);
@@ -48,13 +48,16 @@ public class SimulatorAction extends AbstractAction {
 	}
 
 	// adapted from https://stackoverflow.com/a/35637914/15472
-	private static BufferedImage scaleImage(BufferedImage original, int w, int h) {
+	private static BufferedImage scaleImage(BufferedImage original, int w,
+			int h) {
 		BufferedImage scaled = new BufferedImage(w, h, original.getType());
 		Graphics2D g2d = scaled.createGraphics();
 		g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
 				RenderingHints.VALUE_INTERPOLATION_BILINEAR);
-		g2d.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
-		g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+		g2d.setRenderingHint(RenderingHints.KEY_RENDERING,
+				RenderingHints.VALUE_RENDER_QUALITY);
+		g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
+				RenderingHints.VALUE_ANTIALIAS_ON);
 		g2d.drawImage(original, 0, 0, w, h, null);
 		g2d.dispose();
 		return scaled;
@@ -66,7 +69,8 @@ public class SimulatorAction extends AbstractAction {
 					.getResourceAsStream(ICON_BASE + iconName);
 			return ImageIO.read(is);
 		} catch (Exception e) {
-			throw new IllegalArgumentException("No such image: '" + ICON_BASE + iconName + "'");
+			throw new IllegalArgumentException(
+					"No such image: '" + ICON_BASE + iconName + "'");
 		}
 	}
 

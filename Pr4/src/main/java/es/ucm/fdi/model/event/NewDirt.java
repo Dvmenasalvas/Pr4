@@ -8,7 +8,8 @@ import es.ucm.fdi.model.simulatedobject.Dirt;
 
 public class NewDirt extends NewRoad {
 
-	public NewDirt(int time, String id, String src, String dest, int maxSpeed, int length) {
+	public NewDirt(int time, String id, String src, String dest, int maxSpeed,
+			int length) {
 		super(time, id, src, dest, maxSpeed, length);
 	}
 
@@ -19,8 +20,8 @@ public class NewDirt extends NewRoad {
 	public void execute(RoadMap simObjects) {
 		checkParameters();
 		checkParameters(simObjects);
-		simObjects.addRoad(new Dirt(id, simObjects.getJunction(src), simObjects.getJunction(dest),
-				maxSpeed, length));
+		simObjects.addRoad(new Dirt(id, simObjects.getJunction(src),
+				simObjects.getJunction(dest), maxSpeed, length));
 	}
 
 	@Override
@@ -32,10 +33,12 @@ public class NewDirt extends NewRoad {
 	public class Builder implements Event.Builder {
 		@Override
 		public Event parse(IniSection sec) {
-			if (!sec.getTag().equals("new_road") || !"dirt".equals(sec.getValue("type")))
+			if (!sec.getTag().equals("new_road")
+					|| !"dirt".equals(sec.getValue("type")))
 				return null;
-			return new NewDirt(parseInt(sec, "time", 0), isValidId(sec.getValue("id")),
-					sec.getValue("src"), sec.getValue("dest"), parseInt(sec, "max_speed", 0),
+			return new NewDirt(parseInt(sec, "time", 0),
+					isValidId(sec.getValue("id")), sec.getValue("src"),
+					sec.getValue("dest"), parseInt(sec, "max_speed", 0),
 					parseInt(sec, "length", 0));
 		}
 	}
