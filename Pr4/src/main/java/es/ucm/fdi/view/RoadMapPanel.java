@@ -47,7 +47,8 @@ public class RoadMapPanel extends JPanel {
 		Map<Junction, Node> js = new HashMap<>();
 		for (Junction j : rm.getJunctions()) {
 			Node n = new Node(j.getId());
-			js.put(j, n); // <-- para convertir Junction a Node en aristas
+			// <-- para convertir Junction a Node en aristas
+			js.put(j, n); 
 			g.addNode(n);
 		}
 

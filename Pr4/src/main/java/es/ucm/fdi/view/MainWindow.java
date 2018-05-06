@@ -72,8 +72,6 @@ public class MainWindow extends JFrame
 	private JMenu reportsMenu;
 	private HashMap<Command, SimulatorAction> actions;
 
-	// private ReportDialog reportDialog; // opcional
-
 	public MainWindow(Controller controller, String inFileName, int timeLimit) {
 		super("Traffic Simulator");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
