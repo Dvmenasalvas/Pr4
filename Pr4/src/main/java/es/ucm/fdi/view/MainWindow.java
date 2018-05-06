@@ -22,6 +22,7 @@ import javax.swing.border.TitledBorder;
 
 import es.ucm.fdi.control.Controller;
 import es.ucm.fdi.control.SimulatorAction;
+import es.ucm.fdi.model.EventType;
 import es.ucm.fdi.model.RoadMap;
 import es.ucm.fdi.model.TrafficSimulator.SimulatorListener;
 import es.ucm.fdi.model.TrafficSimulator.UpdateEvent;
@@ -43,6 +44,7 @@ public class MainWindow extends JFrame implements SimulatorListener {
 	private SimulatorTablePanel roadsTable; // tabla de carreteras
 	private SimulatorTablePanel junctionsTable; // tabla de cruces
 	private RoadMapPanel map;
+	private StatusBar statusBar;
 
 	private JMenuBar menu;
 	private JMenu fileMenu;
@@ -236,12 +238,10 @@ public class MainWindow extends JFrame implements SimulatorListener {
 	}
 
 	private void addStatusBar() {
-		JPanel statusBar = new JPanel();
-		statusBar.setBorder(BorderFactory.createLineBorder(Color.black));
-		JLabel statusBarText = new JLabel("¡Bienvenido al simulador!");
-
-		statusBar.add(statusBarText);
-		add(statusBar, BorderLayout.SOUTH);
+		 statusBar = 
+				 new StatusBar();
+		 statusBar.setBorder(BorderFactory.createLineBorder(Color.black));
+		 add(statusBar,BorderLayout.SOUTH);
 	}
 
 	private void refreshInfo(UpdateEvent ue) {
@@ -252,6 +252,7 @@ public class MainWindow extends JFrame implements SimulatorListener {
 		roadsTable.setElements(ue.getRoadMap().getRoads());
 		junctionsTable.setElements(ue.getRoadMap().getJunctions());
 		toolBar.setTimeValue(ue.getCurrentTime());
+		statusBar.setStatusBar(ue.getEvent());
 	}
 
 	@Override
