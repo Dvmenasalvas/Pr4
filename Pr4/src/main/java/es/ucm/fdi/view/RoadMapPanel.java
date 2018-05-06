@@ -16,6 +16,13 @@ import es.ucm.fdi.model.RoadMap;
 import es.ucm.fdi.model.simulatedobject.Junction;
 import es.ucm.fdi.model.simulatedobject.Road;
 
+/**
+ * RoadMapPanel es el JPanel que se ubica abajo a la derecha 
+ * en la ventana principal, consta de un grafo que se dibuja
+ * ateniéndose a los parámetros de cada objeto(vehiculos, carreteras
+ * y cruces) del roadmap
+ */
+
 public class RoadMapPanel extends JPanel {
 	private GraphComponent _graphComp;
 	private RoadMap rm;

@@ -20,6 +20,20 @@ import es.ucm.fdi.model.EventType;
 import es.ucm.fdi.util.MultiTreeMap;
 import es.ucm.fdi.view.SimulatorTablePanel;
 
+/**
+ * TrafficSimulator se instancia solo una vez y es el encargado de 
+ * invocar a los métodos avanza correspondientes en cada nuevo turno,
+ * gestiona también los pasos de la simulación y a su vez se encarga
+ * de la gestión de eventos del tipo EventType, para ello posee una 
+ * clase interna, UpdateEvent, descrita posteriormente y una interfaz
+ * SimulatorListener que deben implementar todos los listneres que 
+ * estén escuchando los eventos. Cuando ocurre un nuevo evento 
+ * TrafficSimulator se lo hace saber a todos los listeners de una lista
+ * que tiene como atributo, lanzándolos mediante el método fireUpdateEvent
+ * que básicamente pide a cada listener que haga lo que tenga que hacer
+ * para gestionar el nuevo evento que ha sucedido
+ * */
+
 public class TrafficSimulator {
 	private MultiTreeMap<Integer, Event> events;
 	private RoadMap simObjects;
@@ -85,8 +99,7 @@ public class TrafficSimulator {
 		fireUpdateEvent(EventType.RESET, "");
 	}
 
-	public void ejecuta(int pasosSimulacion, OutputStream out)
-			throws IOException {
+	public void ejecuta(int pasosSimulacion, OutputStream out) throws IOException {
 		int limiteTiempo = time + pasosSimulacion;
 		while (time < limiteTiempo) {
 			if (events.containsKey(time)) {
@@ -133,8 +146,8 @@ public class TrafficSimulator {
 
 	}
 
-	private void writeObjects(List<? extends SimObject> objects,
-			OutputStream out) throws IOException {
+	private void writeObjects(List<? extends SimObject> objects, OutputStream out)
+			throws IOException {
 		if (out != null) {
 			Ini rep = report(objects);
 			try {
@@ -178,6 +191,11 @@ public class TrafficSimulator {
 		void error(UpdateEvent ue, String error);
 	}
 
+	/**
+	 * Esta clase implementa los métodos que puede ser que utilice el listener para gestionar
+	 * un determinado evento tales como pedirle al simulador el roadmap, pedirle una cola de
+	 * eventos(newVehicle, newRoad, etc) o pedirle el turno en el que está
+	 */
 	public class UpdateEvent {
 		private EventType et;
 

@@ -31,6 +31,9 @@ import es.ucm.fdi.control.SimulatorAction;
 import es.ucm.fdi.ini.Ini;
 import es.ucm.fdi.model.RoadMap;
 
+/**
+ * 
+ */
 public class TextPanel extends JPanel {
 	private JTextArea eventsEditor; // editor de eventos
 	private JFileChooser fc;
