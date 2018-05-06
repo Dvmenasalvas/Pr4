@@ -181,23 +181,23 @@ public class TextPanel extends JPanel {
 		return s;
 	}
 
-	public void saveEvents() {
+	public void saveEvents() throws FileNotFoundException{
 		int returnVal = fc.showSaveDialog(this);
 
 		if (returnVal == JFileChooser.APPROVE_OPTION) {
 			File file = fc.getSelectedFile();
-			writeFile(file, eventsEditor.getText());
+			try {
+				writeFile(file, eventsEditor.getText());
+			} catch (FileNotFoundException e) {
+				throw new FileNotFoundException("No se ha podido encontrar el archivo: " + file.getAbsolutePath());
+			}
 		}
 	}
 
-	private void writeFile(File file, String content) {
-		try {
-			PrintWriter pw = new PrintWriter(file);
-			pw.print(content);
-			pw.close();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+	private void writeFile(File file, String content) throws FileNotFoundException {
+		PrintWriter pw = new PrintWriter(file);
+		pw.print(content);
+		pw.close();
 	}
 
 	public void clearEvents() {

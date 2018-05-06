@@ -40,36 +40,31 @@ public class Controller {
 		return e;
 	}
 
-	public void ejecuta(int pasos, OutputStream out) {
-		try {
-			ts.ejecuta(pasos, out);
-		} catch (IOException e) {
-			System.err.println(e.getMessage());
-			e.printStackTrace();
-		}
+	public void ejecuta(int pasos, OutputStream out) throws IOException {
+		ts.ejecuta(pasos, out);
 	}
 
-	public void insertarEventos(Ini ini) {
+	public void insertarEventos(Ini ini) throws IOException {
 			for (IniSection sec : ini.getSections()) {
 				Event e;
 				try {
 					e = Controller.parseSec(sec);
 					ts.insertaEvento(e);
 				} catch (IOException e1) {
-					System.err.println("Error perseando el evento: \n" + sec);
-					e1.printStackTrace();
+					throw new IOException("Error perseando el evento: \n" + sec, e1);
 				}
 			}
 	}
 
-	public void insertarEventos(String eventos) {
-		Ini ini;
+	public void insertarEventos(String eventos) throws IOException {
+		Ini ini = null;
 		try {
 			ini = new Ini(new ByteArrayInputStream(eventos.getBytes()));
-			insertarEventos(ini);
 		} catch (IOException e) {
-			System.err.println("Error al convertir el fichero: " + eventos + " a .ini");
-			e.printStackTrace();
+			throw new IOException("Error al convertir el fichero: " + eventos + " a .ini", e);
+		}
+		if(ini != null) {
+			insertarEventos(ini);
 		}
 	}
 

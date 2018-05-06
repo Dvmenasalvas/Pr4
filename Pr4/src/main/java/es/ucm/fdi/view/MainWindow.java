@@ -6,6 +6,8 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.KeyEvent;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -18,6 +20,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
@@ -153,6 +156,7 @@ public class MainWindow extends JFrame implements SimulatorListener, ItemListene
 	private void addCommands() {
 		actions = new HashMap<Command, SimulatorAction>();
 
+		//Events related actions
 		actions.put(Command.LoadEvents,
 				new SimulatorAction("Cargar Eventos", "open.png",
 						"Cargar eventos de un fichero", KeyEvent.VK_L,
@@ -160,7 +164,13 @@ public class MainWindow extends JFrame implements SimulatorListener, ItemListene
 		actions.put(Command.SaveEvents,
 				new SimulatorAction("Guardar Eventos", "save.png",
 						"Guardar eventos en un fichero", KeyEvent.VK_S,
-						"control S", () -> eventsEditor.saveEvents()));
+						"control S", () -> {
+							try {
+								eventsEditor.saveEvents();
+							} catch (FileNotFoundException e2) {
+								JOptionPane.showMessageDialog(this, e2.getMessage(), "Error de escritura", JOptionPane.ERROR_MESSAGE);
+							}
+						}));
 		actions.put(Command.CleanEvents,
 				new SimulatorAction("Limpiar Eventos", "clear.png",
 						"Limpiar la lista de eventos", KeyEvent.VK_C,
@@ -168,14 +178,30 @@ public class MainWindow extends JFrame implements SimulatorListener, ItemListene
 		actions.put(Command.InsertEvents, new SimulatorAction(
 				"Insertar Eventos", "events.png",
 				"Insertar eventos en el simulador", KeyEvent.VK_I, "control I",
-				() -> controller.insertarEventos(eventsEditor.getText())));
+				() -> {
+					try {
+						controller.insertarEventos(eventsEditor.getText());
+					} catch (IOException e1) {
+						JOptionPane.showMessageDialog(this, e1.getMessage(), "Error de formato de evento", JOptionPane.ERROR_MESSAGE);
+					}
+				}));
+		
+		//Simulator related actions
 		actions.put(Command.Execute, new SimulatorAction("Ejecutar", "play.png",
 				"Ejecutar el simulador", KeyEvent.VK_E, "control E",
-				() -> controller.ejecuta(toolBar.getSpinnerValue(), out)));
+				() -> {
+					try {
+						controller.ejecuta(toolBar.getSpinnerValue(), out);
+					} catch (IOException e) {
+						JOptionPane.showMessageDialog(this, e.getMessage(), "Error de escritura", JOptionPane.ERROR_MESSAGE);
+					}
+				}));
 		actions.put(Command.Reset,
 				new SimulatorAction("Reiniciar", "reset.png",
 						"Reiniciar el simulador", KeyEvent.VK_R, "control R",
 						() -> controller.reset()));
+		
+		//Reports related actions
 		actions.put(Command.GenerateReports, new SimulatorAction("Generar",
 				"report.png", "Generar informes", KeyEvent.VK_P, "control P",
 				() -> reportsAreaPanel.setText(controller.generateReports())));
@@ -186,7 +212,15 @@ public class MainWindow extends JFrame implements SimulatorListener, ItemListene
 		actions.put(Command.SaveReports,
 				new SimulatorAction("Guardar", "save_report.png",
 						"Guardar informes", KeyEvent.VK_A, "control A",
-						() -> reportsAreaPanel.saveEvents()));
+						() -> {
+							try {
+								reportsAreaPanel.saveEvents();
+							} catch (FileNotFoundException e) {
+								JOptionPane.showMessageDialog(this, e.getMessage(), "Error de escritura", JOptionPane.ERROR_MESSAGE);
+							}
+						}));
+		
+		//Exit
 		actions.put(Command.Exit,
 				new SimulatorAction("Salir", "exit.png",
 						"Salir de la aplicacion", KeyEvent.VK_A,
@@ -309,7 +343,6 @@ public class MainWindow extends JFrame implements SimulatorListener, ItemListene
 
 	@Override
 	public void error(UpdateEvent ue, String error) {
-		// TODO Auto-generated method stub
-
+		JOptionPane.showMessageDialog(this, error, "Error", JOptionPane.ERROR_MESSAGE);
 	}
 }
