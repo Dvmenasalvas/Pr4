@@ -118,7 +118,11 @@ public class MainWindow extends JFrame implements SimulatorListener, ItemListene
 		addMenu();
 		
 		//EventsEditor
-		eventsEditor = new TextPanel(actions, true);
+		try {
+			eventsEditor = new TextPanel(actions, true);
+		} catch (IOException e1) {
+			JOptionPane.showMessageDialog(this, "No se ha podido leer correctamente el archivos de templates.", "Error de lectura", JOptionPane.ERROR_MESSAGE);
+		}
 		addTextArea(eventsEditor, "Editor de eventos", inFileName, topPanel);
 		
 		//Events table
@@ -128,7 +132,11 @@ public class MainWindow extends JFrame implements SimulatorListener, ItemListene
 		addTable(eventsTable, "Editor de eventos", topPanel);
 		
 		//ReportArea
-		reportsAreaPanel = new TextPanel(actions, true);
+		try {
+			reportsAreaPanel = new TextPanel(actions, true);
+		} catch (IOException e) {
+			//Esta excepcion nunca se lanza
+		}
 		addTextArea(reportsAreaPanel, "Informe", null, topPanel);
 		customizedOut = new CustomizedOut(reportsAreaPanel);
 		
@@ -160,7 +168,13 @@ public class MainWindow extends JFrame implements SimulatorListener, ItemListene
 		actions.put(Command.LoadEvents,
 				new SimulatorAction("Cargar Eventos", "open.png",
 						"Cargar eventos de un fichero", KeyEvent.VK_L,
-						"control L", () -> eventsEditor.loadEvents()));
+						"control L", () -> {
+							try {
+								eventsEditor.loadEvents();
+							} catch (FileNotFoundException e3) {
+								JOptionPane.showMessageDialog(this, e3.getMessage(), "Error de lectura", JOptionPane.ERROR_MESSAGE);
+							}
+						}));
 		actions.put(Command.SaveEvents,
 				new SimulatorAction("Guardar Eventos", "save.png",
 						"Guardar eventos en un fichero", KeyEvent.VK_S,
@@ -275,7 +289,11 @@ public class MainWindow extends JFrame implements SimulatorListener, ItemListene
 				BorderLayout.CENTER);
 		
 		if (inFileName != null) {
-			textArea.setText(TextPanel.readFile(new File(inFileName)));
+			try {
+				textArea.setText(TextPanel.readFile(new File(inFileName)));
+			} catch (FileNotFoundException e) {
+				JOptionPane.showMessageDialog(this, "No se ha podido encontrar el archivo: " + inFileName, "Error de lectura", JOptionPane.ERROR_MESSAGE);
+			}
 		}
 	}
 

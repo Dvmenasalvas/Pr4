@@ -9,9 +9,11 @@ import java.awt.event.MouseListener;
 import java.io.BufferedWriter;
 import java.io.ByteArrayInputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.nio.file.Files;
@@ -29,6 +31,7 @@ import javax.swing.border.TitledBorder;
 
 import es.ucm.fdi.control.SimulatorAction;
 import es.ucm.fdi.ini.Ini;
+import es.ucm.fdi.ini.IniSection;
 import es.ucm.fdi.model.RoadMap;
 
 /**
@@ -43,9 +46,11 @@ public class TextPanel extends JPanel {
 	private JTextArea eventsEditor; // editor de eventos
 	private JFileChooser fc;
 	private HashMap<Command, SimulatorAction> actions;
+	private JPopupMenu rightClick;
+	private final String TEMPLATES = "src/main/resources/templates.ini";
 
 	public TextPanel(HashMap<Command, SimulatorAction> actions,
-			boolean editable) {
+			boolean editable) throws IOException {
 		super();
 		fc = new JFileChooser();
 		eventsEditor = new JTextArea(24, 30);
@@ -60,69 +65,25 @@ public class TextPanel extends JPanel {
 		}
 	}
 
-	public void addRightClick() {
-		JPopupMenu rightClick = new JPopupMenu();
+	public void addRightClick() throws IOException {
+		rightClick = new JPopupMenu();
 
 		rightClick.add(actions.get(Command.LoadEvents));
 		rightClick.add(actions.get(Command.SaveEvents));
 		rightClick.add(actions.get(Command.CleanEvents));
 		JMenu subMenu = new JMenu("Add template");
 		rightClick.add(subMenu);
-		String[] templates = { "New RR Junction", "New MC Junction", "New Junction",
-				"New Dirt Road", "New Lanes Road", "New Road", "New Bike", "New Car", "New Vehicle",
-				"New Vehicle Faulty" };
-
-		for (String s : templates) {
-			JMenuItem menuItem = new JMenuItem(s);
+		//Leemos fichero .ini
+		File file = new File(TEMPLATES);
+		InputStream s = new FileInputStream(file);
+		Ini templates = new Ini(s);
+		
+		for (IniSection sec : templates.getSections()) {
+			JMenuItem menuItem = new JMenuItem(sec.getValue("_name"));
 			menuItem.addActionListener(new ActionListener() {
-
 				@Override
 				public void actionPerformed(ActionEvent e) {
-					switch (s) {
-					case ("New RR Junction"): {
-						eventsEditor.insert(s, eventsEditor.getCaretPosition());
-					}
-						break;
-					case ("New MC Junction"): {
-						eventsEditor.insert(s, eventsEditor.getCaretPosition());
-					}
-						break;
-					case ("New Junction"): {
-						eventsEditor.insert(newJunctionTemplate(),
-								eventsEditor.getCaretPosition());
-					}
-						break;
-					case ("New Dirt Road"): {
-						eventsEditor.insert(s, eventsEditor.getCaretPosition());
-					}
-						break;
-					case ("New Lanes Road"): {
-						eventsEditor.insert(s, eventsEditor.getCaretPosition());
-					}
-						break;
-					case ("New Road"): {
-						eventsEditor.insert(newRoadTemplate(),
-								eventsEditor.getCaretPosition());
-					}
-						break;
-					case ("New Bike"): {
-						eventsEditor.insert(s, eventsEditor.getCaretPosition());
-					}
-						break;
-					case ("New Car"): {
-						eventsEditor.insert(s, eventsEditor.getCaretPosition());
-					}
-						break;
-					case ("New Vehicle"): {
-						eventsEditor.insert(s, eventsEditor.getCaretPosition());
-					}
-						break;
-					case ("New Vehicle Faulty"): {
-						eventsEditor.insert(s, eventsEditor.getCaretPosition());
-					}
-						break;
-					}
-
+					eventsEditor.insert(sec.toString(), eventsEditor.getCaretPosition());
 				}
 			});
 			subMenu.add(menuItem);
@@ -161,21 +122,25 @@ public class TextPanel extends JPanel {
 		});
 	}
 
-	public void loadEvents() {
+	public void loadEvents() throws FileNotFoundException {
 		int returnVal = fc.showOpenDialog(this);
 
 		if (returnVal == JFileChooser.APPROVE_OPTION) {
 			File file = fc.getSelectedFile();
-			eventsEditor.setText(readFile(file));
+			try {
+				eventsEditor.setText(readFile(file));
+			} catch (FileNotFoundException e) {
+				throw new FileNotFoundException("No se ha encontrado el archivo: " + file.getAbsolutePath());
+			}
 		}
 	}
 
-	public static String readFile(File file) {
+	public static String readFile(File file) throws FileNotFoundException {
 		String s = "";
 		try {
 			s = new Scanner(file).useDelimiter("\\A").next();
 		} catch (FileNotFoundException e) {
-			e.printStackTrace();
+			throw new FileNotFoundException("No se ha encontrado el archivo " + file.getAbsolutePath());
 		}
 
 		return s;
@@ -214,88 +179,5 @@ public class TextPanel extends JPanel {
 	
 	public void append(String text) {
 		eventsEditor.append(text);
-	}
-
-	private String newJunctionTemplate() {
-		String s = "[new_junction]\n";
-		s += "time =\n";
-		s += "id =\n";
-		return s;
-	}
-	
-	private String newMCJunctionTemplate() {
-		String s = "[new_junction]\n";
-		s += "time =\n";
-		s += "id =\n";
-		s += "type = mc\n";
-		return s;
-	}
-	
-	private String newRRJunctionTemplate() {
-		String s = "[new_junction]\n";
-		s += "time =\n";
-		s += "id =\n";
-		s += "type = rr\n";
-		return s;
-	}
-	
-	private String newRoadTemplate() {
-		String s = "[new_road]\n";
-		s += "time =\n";
-		s += "id =\n";
-		s += "src =\n";
-		s += "dest =\n";
-		s += "max_speed =\n";
-		s += "length =\n";
-		return s;
-	}
-	
-	private String newLanesRoadTemplate() {
-		String s = "[new_road]\n";
-		s += "time =\n";
-		s += "id =\n";
-		s += "src =\n";
-		s += "dest =\n";
-		s += "max_speed =\n";
-		s += "length =\n";
-		s += "lanes =\n";
-		return s;
-	}
-
-	private String newVehicleTemplate() {
-		String s = "[new_vehicle]\n";
-		s += "time =\n";
-		s += "id =\n";
-		s += "itinerary =\n";
-		s += "max_speed =\n";
-		return s;
-	}
-	
-	private String newBikeTemplate() {
-		String s = "[new_vehicle]\n";
-		s += "time =\n";
-		s += "id =\n";
-		s += "itinerary =\n";
-		s += "max_speed =\n";
-		 s+= "type = bike\n";
-		return s;
-	}
-	
-	private String newCarTemplate() {
-		String s = "[new_vehicle]\n";
-		s += "time =\n";
-		s += "id =\n";
-		s += "itinerary =\n";
-		s += "max_speed =\n";
-		 s+= "type = car\n";
-		return s;
-	}
-	
-	private String newVehicleFaultyTemplate() {
-		String s = "[make_vehicle_faulty]\n";
-		s += "time =\n";
-		s += "vehicles =\n";
-		s += "duration =\n";
-		return s;
 	}
 }
