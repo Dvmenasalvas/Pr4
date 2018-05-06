@@ -4,12 +4,12 @@ import java.util.List;
 
 import javax.swing.DefaultListModel;
 
-class MyListModel<E> extends DefaultListModel<E> {
+public class MyListModel<E> extends DefaultListModel<E> {
 
 	private static final long serialVersionUID = 1L;
 	List<E> _list;
 
-	MyListModel() {
+	public MyListModel() {
 		_list = null;
 	}
 

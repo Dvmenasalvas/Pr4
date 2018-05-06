@@ -33,6 +33,9 @@ import es.ucm.fdi.model.EventType;
 import es.ucm.fdi.model.RoadMap;
 import es.ucm.fdi.model.TrafficSimulator.SimulatorListener;
 import es.ucm.fdi.model.TrafficSimulator.UpdateEvent;
+import es.ucm.fdi.model.simulatedobject.Junction;
+import es.ucm.fdi.model.simulatedobject.Road;
+import es.ucm.fdi.model.simulatedobject.Vehicle;
 import es.ucm.fdi.view.SimulatorTablePanel.Describable;
 
 /**
@@ -64,6 +67,7 @@ public class MainWindow extends JFrame implements SimulatorListener, ItemListene
 	private SimulatorTablePanel junctionsTable; 
 	private RoadMapPanel map;
 	private StatusBar statusBar;
+	private ReportWindow reportWindow;
 
 	private JMenuBar menu;
 	private JCheckBoxMenuItem autoReports;
@@ -204,7 +208,8 @@ public class MainWindow extends JFrame implements SimulatorListener, ItemListene
 		//Reports related actions
 		actions.put(Command.GenerateReports, new SimulatorAction("Generar",
 				"report.png", "Generar informes", KeyEvent.VK_P, "control P",
-				() -> reportsAreaPanel.setText(controller.generateReports())));
+				() -> initGUIReportPanel()));
+		// reportsAreaPanel.setText(controller.generateReports())
 		actions.put(Command.CleanReports,
 				new SimulatorAction("Limpiar", "delete_report.png",
 						"Limpiar informes", KeyEvent.VK_L, "control L",
@@ -253,6 +258,35 @@ public class MainWindow extends JFrame implements SimulatorListener, ItemListene
 		menu.add(simulatorMenu);
 		menu.add(reportsMenu);
 		setJMenuBar(menu);
+	}
+	
+	private void initGUIReportPanel() {
+        RoadMap rm = controller.getTrafficSimulator().getRoadMap();
+		reportWindow = new ReportWindow(this, rm);
+		reportWindow.setData();
+		
+		int status = reportWindow.open();
+		if (status == 0) {
+			setReportsAreaPanel("Canceled");
+		} else {
+		    String s = "";
+		    List<Vehicle> vehicleList = new ArrayList<Vehicle>();
+            for(String v : reportWindow.getSelectedVehicles()) {
+            	vehicleList.add(controller.getTrafficSimulator().getRoadMap().getVehicle(v));
+            }
+            s += controller.getTrafficSimulator().report(vehicleList).toString();
+            List<Road> roadList = new ArrayList<Road>();
+            for(String r : reportWindow.getSelectedRoads()) {
+            	roadList.add(controller.getTrafficSimulator().getRoadMap().getRoad(r));
+            }
+            s += controller.getTrafficSimulator().report(roadList).toString();
+            List<Junction> junctionList = new ArrayList<Junction>();
+            for(String j : reportWindow.getSelectedJunctions()) {
+            	junctionList.add(controller.getTrafficSimulator().getRoadMap().getJunction(j));
+            }
+            s += controller.getTrafficSimulator().report(junctionList).toString();
+			setReportsAreaPanel(s);
+		}
 	}
 	
 	public void itemStateChanged(ItemEvent e) {
@@ -312,6 +346,7 @@ public class MainWindow extends JFrame implements SimulatorListener, ItemListene
 
 	private void refreshInfo(UpdateEvent ue) {
 		map.setRoadMap(ue.getRoadMap());
+		//reportWindow.setRoadMap(ue.getRoadMap());
 		map.generateGraph();
 		eventsTable.setElements(ue.getEventsQueue());
 		vehiclesTable.setElements(ue.getRoadMap().getVehicles());
@@ -319,6 +354,10 @@ public class MainWindow extends JFrame implements SimulatorListener, ItemListene
 		junctionsTable.setElements(ue.getRoadMap().getJunctions());
 		toolBar.setTimeValue(ue.getCurrentTime());
 		statusBar.setStatusBar(ue.getEvent());
+	}
+	
+	public void setReportsAreaPanel(String s) {
+		reportsAreaPanel.setText(s);
 	}
 
 	@Override

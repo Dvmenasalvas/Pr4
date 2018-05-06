@@ -43,6 +43,10 @@ public class Controller {
 	public void ejecuta(int pasos, OutputStream out) throws IOException {
 		ts.ejecuta(pasos, out);
 	}
+	
+	public TrafficSimulator getTrafficSimulator() {
+		return ts;
+	}
 
 	public void insertarEventos(Ini ini) throws IOException {
 			for (IniSection sec : ini.getSections()) {

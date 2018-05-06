@@ -91,6 +91,10 @@ public class TrafficSimulator {
 			fireUpdateEvent(EventType.NEW_EVENT, "");
 		}
 	}
+	
+	public RoadMap getRoadMap(){
+		return simObjects;
+	}
 
 	public void reset() {
 		events = new MultiTreeMap<Integer, Event>();
@@ -158,7 +162,7 @@ public class TrafficSimulator {
 		}
 	}
 
-	private Ini report(List<? extends SimObject> objects) {
+	public Ini report(List<? extends SimObject> objects) {
 		Map<String, String> report;
 		Ini rep = new Ini();
 		for (SimObject o : objects) {

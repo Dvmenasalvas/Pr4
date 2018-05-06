@@ -18,7 +18,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.List;
 
-class DialogWindow extends JDialog {
+public class DialogWindow extends JDialog {
 
 	private static final long serialVersionUID = 1L;
 
