@@ -30,7 +30,11 @@ public class NewRoundRobin extends NewJunction {
 	@Override
 	public void describe(Map<String, String> out) {
 		super.describe(out);
-		out.put("Tipo", "New RoundRobin " + id);
+		out.put("Tipo", this.toString());
+	}
+	
+	public String toString() {
+		return "New RoundRobin " + id;
 	}
 
 	public class Builder implements Event.Builder {

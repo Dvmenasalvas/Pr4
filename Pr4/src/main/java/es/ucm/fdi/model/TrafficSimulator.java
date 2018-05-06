@@ -59,6 +59,8 @@ public class TrafficSimulator {
 				l.reset(ue);
 			}
 			break;
+		default:
+			break;
 		}
 
 	}
@@ -88,35 +90,36 @@ public class TrafficSimulator {
 		int limiteTiempo = time + pasosSimulacion;
 		while (time < limiteTiempo) {
 			if (events.containsKey(time)) {
-				for (Event e : events.get(time)) { // Ejecuta eventos correspondientes a este tiempo
+				// Ejecuta eventos correspondientes a este tiempo
+				for (Event e : events.get(time)) { 
 					try {
 						e.execute(simObjects);
 					} catch (SimulationException se) {
-						throw new SimulationException(
-								"Error en la ejecucion del evento " + e
-										+ " en el tiempo " + time + ".",
-								se);
+						fireUpdateEvent(EventType.ERROR,"Error en la ejecucion del evento " + e.toString()
+								+ " en el tiempo " + time + "\n"
+								+ se.getMessage() + '\n'
+								+ "Este evento no se ejecutara.");
 					}
 				}
 			}
 
-			for (Road r : simObjects.getRoads()) { // Invoca a avanzar en carreteras
+			for (Road r : simObjects.getRoads()) { 
 				r.avanza();
 			}
 
-			for (Junction j : simObjects.getJunctions()) { // Invoca a avanzar en cruzes
+			for (Junction j : simObjects.getJunctions()) { 
 				j.avanza();
 			}
 
 			time++;
 
 			try {
-				writeObjects(simObjects.getJunctions(), out); // Informe de cruzes
-				writeObjects(simObjects.getRoads(), out); // Informe de carreteras
-				writeObjects(simObjects.getVehicles(), out); // Informe de vehiculos
+				writeObjects(simObjects.getJunctions(), out); 
+				writeObjects(simObjects.getRoads(), out);
+				writeObjects(simObjects.getVehicles(), out); 
 			} catch (IOException e1) {
 				throw new IOException(
-						"Excepcion de escritura de objetos en tiempo: " + time,
+						"Excepcion de escritura de objetos en tiempo: " + time ,
 						e1);
 			}
 			fireUpdateEvent(EventType.ADVANCED, "");

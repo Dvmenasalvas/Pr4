@@ -26,7 +26,11 @@ public class NewJunction extends Event {
 	@Override
 	public void describe(Map<String, String> out) {
 		out.put("Tiempo", Integer.toString(time));
-		out.put("Tipo", "New Junction " + id);
+		out.put("Tipo", this.toString());
+	}
+	
+	public String toString() {
+		return "New Junction " + id;
 	}
 
 	public class Builder implements Event.Builder {

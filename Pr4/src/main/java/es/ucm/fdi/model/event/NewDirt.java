@@ -27,7 +27,11 @@ public class NewDirt extends NewRoad {
 	@Override
 	public void describe(Map<String, String> out) {
 		super.describe(out);
-		out.put("Tipo", "New Road " + id);
+		out.put("Tipo", this.toString());
+	}
+	
+	public String toString() {
+		return "New Road " + id;
 	}
 
 	public class Builder implements Event.Builder {

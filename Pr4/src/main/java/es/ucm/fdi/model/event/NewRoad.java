@@ -40,37 +40,35 @@ public class NewRoad extends Event {
 	protected void checkParameters() {
 		if (maxSpeed <= 0) {
 			throw new SimulationException(
-					"Error en la ejecucion del evento de creacion de la carretera "
-							+ id
-							+ " la velocidad maxima ha de ser estrictamente positiva.");
+							"La velocidad maxima ha de ser estrictamente positiva.");
 		}
 
 		if (length <= 0) {
 			throw new SimulationException(
-					"Error en la ejecucion del evento de creacion de la carretera "
-							+ id
-							+ " la longitud ha de ser estrictamente positiva.");
+					"La longitud ha de ser estrictamente positiva.");
 		}
 	}
 
 	protected void checkParameters(RoadMap simObjects) {
 		if (simObjects.getJunction(src) == null) {
 			throw new SimulationException(
-					"Error en la ejecucion del evento de creacion de la carretera "
-							+ id + " el cruce de salida es nulo.");
+					"El cruce de salida es nulo.");
 		}
 
 		if (simObjects.getJunction(dest) == null) {
 			throw new SimulationException(
-					"Error en la ejecucion del evento de creacion de la carretera "
-							+ id + " el cruce de llegada es nulo.");
+					"El cruce de llegada es nulo.");
 		}
 	}
 
 	@Override
 	public void describe(Map<String, String> out) {
 		out.put("Tiempo", Integer.toString(time));
-		out.put("Tipo", "New Road " + id);
+		out.put("Tipo", this.toString());
+	}
+	
+	public String toString() {
+		return "New Road " + id;
 	}
 
 	public class Builder implements Event.Builder {

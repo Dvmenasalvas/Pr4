@@ -1,3 +1,4 @@
+
 package es.ucm.fdi.model.event;
 
 import java.util.ArrayList;
@@ -36,15 +37,11 @@ public class NewVehicle extends Event {
 	protected void checkParameters() {
 		if (maxSpeed <= 0) {
 			throw new SimulationException(
-					"Error en la ejecucion del evento creador del vehiculo "
-							+ id
-							+ " la velocidad maxima ha de ser estrictamente positiva.");
+					"La velocidad maxima ha de ser estrictamente positiva.");
 		}
 
 		if (itinerary.size() < 2) {
-			throw new SimulationException("Error en la ejecucion del evento "
-					+ id
-					+ " el itinerario ha de tener, al menos, dos elementos.");
+			throw new SimulationException("El itinerario ha de tener, al menos, dos elementos.");
 		}
 	}
 
@@ -59,7 +56,11 @@ public class NewVehicle extends Event {
 	@Override
 	public void describe(Map<String, String> out) {
 		out.put("Tiempo", Integer.toString(time));
-		out.put("Tipo", "New Vehicle " + id);
+		out.put("Tipo", this.toString());
+	}
+	
+	public String toString() {
+		return "New Vehicle " + id;
 	}
 
 	public class Builder implements Event.Builder {

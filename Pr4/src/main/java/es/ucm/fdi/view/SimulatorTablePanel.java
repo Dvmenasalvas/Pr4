@@ -15,6 +15,8 @@ public class SimulatorTablePanel extends JPanel {
 	JTable eventsTable;
 	List<? extends Describable> elements;
 	String[] fieldNames;
+	Map<String, String> lastDescription;
+	int lastRow = -1;
 
 	public SimulatorTablePanel(List<? extends Describable> elements,
 			String[] fieldNames) {
@@ -60,9 +62,12 @@ public class SimulatorTablePanel extends JPanel {
 			if (fieldNames[columnIndex] == "#") {
 				return rowIndex;
 			}
-			Map<String, String> description = new HashMap<String, String>();
-			elements.get(rowIndex).describe(description);
-			return description.get(fieldNames[columnIndex]);
+			if(rowIndex != lastRow) {
+				lastRow = rowIndex;
+				lastDescription = new HashMap<String, String>();
+				elements.get(rowIndex).describe(lastDescription);
+			}
+			return lastDescription.get(fieldNames[columnIndex]);
 		}
 	}
 

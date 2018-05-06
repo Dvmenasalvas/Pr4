@@ -36,7 +36,11 @@ public class NewCar extends NewVehicle {
 	@Override
 	public void describe(Map<String, String> out) {
 		super.describe(out);
-		out.put("Tipo", "New Car " + id);
+		out.put("Tipo", this.toString());
+	}
+	
+	public String toString() {
+		return "New Car " + id;
 	}
 
 	public class Builder implements Event.Builder {

@@ -26,7 +26,11 @@ public class NewMostCrowded extends NewRoundRobin {
 	@Override
 	public void describe(Map<String, String> out) {
 		super.describe(out);
-		out.put("Tipo", "New MostCrowded " + id);
+		out.put("Tipo", this.toString());
+	}
+	
+	public String toString() {
+		return "New MostCrowded " + id;
 	}
 
 	public class Builder implements Event.Builder {

@@ -38,22 +38,22 @@ public class Controller {
 		try {
 			ts.ejecuta(pasos, out);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
+			System.err.println(e.getMessage());
 			e.printStackTrace();
 		}
 	}
 
 	public void insertarEventos(Ini ini) {
-		try {
 			for (IniSection sec : ini.getSections()) {
 				Event e;
-				e = Controller.parseSec(sec);
-				ts.insertaEvento(e);
+				try {
+					e = Controller.parseSec(sec);
+					ts.insertaEvento(e);
+				} catch (IOException e1) {
+					System.err.println("Error perseando el evento: \n" + sec);
+					e1.printStackTrace();
+				}
 			}
-		} catch (IOException e2) {
-			// TODO Auto-generated catch block
-			e2.printStackTrace();
-		}
 	}
 
 	public void insertarEventos(String eventos) {
@@ -62,7 +62,7 @@ public class Controller {
 			ini = new Ini(new ByteArrayInputStream(eventos.getBytes()));
 			insertarEventos(ini);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
+			System.err.println("Error al convertir el fichero: " + eventos + " a .ini");
 			e.printStackTrace();
 		}
 	}
