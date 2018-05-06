@@ -353,21 +353,36 @@ public class MainWindow extends JFrame
 	@Override
 	public void registered(UpdateEvent ue) {
 		refreshInfo(ue);
+		actions.get(Command.Execute).setEnabled(false);
+		actions.get(Command.Reset).setEnabled(false);
+		actions.get(Command.GenerateReports).setEnabled(false);
+		actions.get(Command.CleanReports).setEnabled(false);
+		actions.get(Command.SaveReports).setEnabled(false);
 	}
 
 	@Override
 	public void reset(UpdateEvent ue) {
 		refreshInfo(ue);
+		actions.get(Command.Execute).setEnabled(false);
+		actions.get(Command.Reset).setEnabled(false);
+		actions.get(Command.GenerateReports).setEnabled(false);
+		actions.get(Command.CleanReports).setEnabled(false);
+		actions.get(Command.SaveReports).setEnabled(false);
 	}
 
 	@Override
 	public void newEvent(UpdateEvent ue) {
 		eventsTable.setElements(ue.getEventsQueue());
+		actions.get(Command.Execute).setEnabled(true);
+		actions.get(Command.Reset).setEnabled(true);
 	}
 
 	@Override
 	public void advanced(UpdateEvent ue) {
 		refreshInfo(ue);
+		actions.get(Command.GenerateReports).setEnabled(true);
+		actions.get(Command.CleanReports).setEnabled(true);
+		actions.get(Command.SaveReports).setEnabled(true);
 	}
 
 	@Override

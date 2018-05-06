@@ -1,5 +1,6 @@
 package es.ucm.fdi.view;
 
+import java.awt.BorderLayout;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -29,25 +30,18 @@ public class SimulatorTablePanel extends JPanel {
 
 	public SimulatorTablePanel(List<? extends Describable> elements,
 			String[] fieldNames) {
-		super();
+		super(new BorderLayout());
 		this.elements = elements;
 		this.fieldNames = fieldNames;
 
-		TitledBorder controlBorder = new TitledBorder("Cola de eventos");
-		this.setBorder(controlBorder);
-
-		initTable();
+		tableModel = new ListOfMapsTableModel();
+		eventsTable = new JTable(tableModel);
+		add(new JScrollPane(eventsTable,JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED));
 	}
 
 	public void setElements(List<? extends Describable> elements) {
 		this.elements = elements;
 		tableModel.fireTableDataChanged();
-	}
-
-	private void initTable() {
-		tableModel = new ListOfMapsTableModel();
-		eventsTable = new JTable(tableModel);
-		this.add(new JScrollPane(eventsTable));
 	}
 
 	private class ListOfMapsTableModel extends AbstractTableModel {
