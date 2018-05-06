@@ -14,7 +14,6 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
@@ -28,6 +27,15 @@ import es.ucm.fdi.model.RoadMap;
 import es.ucm.fdi.model.TrafficSimulator.SimulatorListener;
 import es.ucm.fdi.model.TrafficSimulator.UpdateEvent;
 import es.ucm.fdi.view.SimulatorTablePanel.Describable;
+
+/**
+ * MainWindow es la ventana principal, consta de varias tablas, zonas de texto, 
+ * un grafo y una barra de herramientas. Su misión principal es escuchar los eventos
+ * que le lanza el simulador y refrescar cada ventana de acuerdo con el evento que ha
+ * sucedido, para ello en ocasiones tiene que pedirle al simulador una cola de eventos
+ * o el roadmap ya que algunas ventanas necesitan estos parámetros para actualizar las 
+ * tablas o los grafos
+ */
 
 public class MainWindow extends JFrame implements SimulatorListener {
 	private Controller controller;
@@ -53,6 +61,8 @@ public class MainWindow extends JFrame implements SimulatorListener {
 	private JMenu reportsMenu;
 	private HashMap<Command, SimulatorAction> actions;
 
+	// private ReportDialog reportDialog; // opcional
+
 	public MainWindow(Controller controller, String inFileName, int timeLimit) {
 		super("Traffic Simulator");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -66,7 +76,7 @@ public class MainWindow extends JFrame implements SimulatorListener {
 		setVisible(true);
 		mainPanel.setDividerLocation(.5);
 	}
-	
+
 	private void initGUI(int timeLimit, String inFileName) {
 		//Windows split
 		topPanel = new JPanel();
@@ -106,7 +116,7 @@ public class MainWindow extends JFrame implements SimulatorListener {
 		addTable(eventsTable, "Editor de eventos", topPanel);
 		
 		//ReportArea
-		reportsAreaPanel = new TextPanel(actions, false);
+		reportsAreaPanel = new TextPanel(actions, true);
 		addTextArea(reportsAreaPanel, "Informe", null, topPanel);
 
 		// Junctions table
@@ -276,6 +286,7 @@ public class MainWindow extends JFrame implements SimulatorListener {
 
 	@Override
 	public void error(UpdateEvent ue, String error) {
-		JOptionPane.showMessageDialog(this, error,"Simulator Error", JOptionPane.ERROR_MESSAGE);
+		// TODO Auto-generated method stub
+
 	}
 }

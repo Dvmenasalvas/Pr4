@@ -32,7 +32,12 @@ import es.ucm.fdi.ini.Ini;
 import es.ucm.fdi.model.RoadMap;
 
 /**
- * 
+ * TextPanel es utilizado para los JPanel arriba a la derecha y a la izquierda de la
+ * ventana principal. Arriba a la derecha se cargan los eventos y arriba a la izquierda 
+ * se imprimen los informes, para ello se dan varias opciones al usuario mediante
+ * el click derecho sobre cualquiera de las dos ventanas: cargar los eventos desde un fichero,
+ * guardar los eventos en un fichero, limpiar de texto la ventana y añadir una plantilla
+ * en formato ini donde solo haga falta completar los parámetros para introducir un nuevo evento 
  */
 public class TextPanel extends JPanel {
 	private JTextArea eventsEditor; // editor de eventos
