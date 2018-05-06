@@ -12,7 +12,8 @@ public class MaintTest {
 	
 	public MaintTest() {
 	}
-
+	
+	/* Este test ya no tiene sentido
 	@Test
 	public void testError() throws Exception{
 		try {
@@ -22,6 +23,7 @@ public class MaintTest {
 			//Este es el comportamiento esperado
 		}
 	}
+	*/
 	
 	@Test
 	public void testBasic() throws Exception{
