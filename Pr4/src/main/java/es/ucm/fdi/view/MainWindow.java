@@ -2,14 +2,18 @@ package es.ucm.fdi.view;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.awt.event.KeyEvent;
 import java.io.File;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
+import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
@@ -29,9 +33,11 @@ import es.ucm.fdi.model.TrafficSimulator.SimulatorListener;
 import es.ucm.fdi.model.TrafficSimulator.UpdateEvent;
 import es.ucm.fdi.view.SimulatorTablePanel.Describable;
 
-public class MainWindow extends JFrame implements SimulatorListener {
+public class MainWindow extends JFrame implements SimulatorListener, ItemListener {
 	private Controller controller;
-
+	private OutputStream out = null;
+	private CustomizedOut customizedOut;
+	
 	private JSplitPane mainPanel;
 	private JPanel topPanel;
 	private JPanel bottomPanel;
@@ -41,17 +47,20 @@ public class MainWindow extends JFrame implements SimulatorListener {
 	private TextPanel eventsEditor;
 	private SimulatorTablePanel eventsTable;
 	private TextPanel reportsAreaPanel;
-	private SimulatorTablePanel vehiclesTable; // tabla de vehiculos
-	private SimulatorTablePanel roadsTable; // tabla de carreteras
-	private SimulatorTablePanel junctionsTable; // tabla de cruces
+	
+	private SimulatorTablePanel vehiclesTable; 
+	private SimulatorTablePanel roadsTable; 
+	private SimulatorTablePanel junctionsTable; 
 	private RoadMapPanel map;
 	private StatusBar statusBar;
 
 	private JMenuBar menu;
+	private JCheckBoxMenuItem autoReports;
 	private JMenu fileMenu;
 	private JMenu simulatorMenu;
 	private JMenu reportsMenu;
 	private HashMap<Command, SimulatorAction> actions;
+	
 
 	public MainWindow(Controller controller, String inFileName, int timeLimit) {
 		super("Traffic Simulator");
@@ -108,7 +117,8 @@ public class MainWindow extends JFrame implements SimulatorListener {
 		//ReportArea
 		reportsAreaPanel = new TextPanel(actions, false);
 		addTextArea(reportsAreaPanel, "Informe", null, topPanel);
-
+		customizedOut = new CustomizedOut(reportsAreaPanel);
+		
 		// Junctions table
 		String[] cJunctions = { "ID", "Verde", "Rojo" };
 		junctionsTable = new SimulatorTablePanel(events, cJunctions);
@@ -151,7 +161,7 @@ public class MainWindow extends JFrame implements SimulatorListener {
 				() -> controller.insertarEventos(eventsEditor.getText())));
 		actions.put(Command.Execute, new SimulatorAction("Ejecutar", "play.png",
 				"Ejecutar el simulador", KeyEvent.VK_E, "control E",
-				() -> controller.ejecuta(toolBar.getSpinnerValue(), null)));
+				() -> controller.ejecuta(toolBar.getSpinnerValue(), out)));
 		actions.put(Command.Reset,
 				new SimulatorAction("Reiniciar", "reset.png",
 						"Reiniciar el simulador", KeyEvent.VK_R, "control R",
@@ -190,12 +200,25 @@ public class MainWindow extends JFrame implements SimulatorListener {
 		reportsMenu = new JMenu("Informes");
 		reportsMenu.add(actions.get(Command.GenerateReports));
 		reportsMenu.add(actions.get(Command.CleanReports));
+		autoReports = new JCheckBoxMenuItem("Informes automaticos");
+		autoReports.addItemListener(this);
+		reportsMenu.add(autoReports);
 
 		menu = new JMenuBar();
 		menu.add(fileMenu);
 		menu.add(simulatorMenu);
 		menu.add(reportsMenu);
 		setJMenuBar(menu);
+	}
+	
+	public void itemStateChanged(ItemEvent e) {
+		if(e.getSource() == autoReports) {
+			if(e.getStateChange() == 1) {
+				out = customizedOut;
+			} else {
+				out = null;
+			}
+		}
 	}
 	
 	private void addTextArea(TextPanel textArea, String borderName, String inFileName, JPanel container) {

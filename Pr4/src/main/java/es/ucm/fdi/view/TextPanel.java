@@ -206,6 +206,10 @@ public class TextPanel extends JPanel {
 	public void setText(String text) {
 		eventsEditor.setText(text);
 	}
+	
+	public void append(String text) {
+		eventsEditor.append(text);
+	}
 
 	private String newJunctionTemplate() {
 		String s = "[new_junction]\n";
