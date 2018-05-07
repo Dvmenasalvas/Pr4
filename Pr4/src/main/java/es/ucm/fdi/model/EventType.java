@@ -6,11 +6,11 @@ package es.ucm.fdi.model;
  */
 
 public enum EventType {
-	REGISTERED("Bienvenido al simulador!!"), RESET(
-			"El simulador se ha reiniciado correctamente"), NEW_EVENT(
-					"Ha habido un nuevo evento en el simulador"), ADVANCED(
-							"El simulador ha avanzado correctamente"), ERROR(
-									"ERROR, hemos detectado un error no deseado");
+	REGISTERED("Bienvenido al simulador!!"), 
+	RESET("El simulador se ha reiniciado correctamente"), 
+	NEW_EVENT("Ha habido un nuevo evento en el simulador"), 
+	ADVANCED("El simulador ha avanzado correctamente"), 
+	ERROR("ERROR, hemos detectado un error no deseado");
 
 	private String text;
 

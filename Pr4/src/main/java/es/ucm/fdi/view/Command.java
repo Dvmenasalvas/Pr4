@@ -11,7 +11,8 @@ public enum Command {
 					"Ejecutar"), Reset("Reiniciar"), GenerateReports(
 							"Generar Informes"), CleanReports(
 									"Limpiar Informes"), SaveReports(
-											"Guardar Informes"), Exit("Salir");
+											"Guardar Informes"), Exit("Salir"),
+	Delay("Parar");
 
 	private String text;
 

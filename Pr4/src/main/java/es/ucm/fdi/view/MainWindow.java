@@ -254,6 +254,11 @@ public class MainWindow extends JFrame
 				new SimulatorAction("Salir", "exit.png",
 						"Salir de la aplicacion", KeyEvent.VK_A,
 						"control shift X", () -> System.exit(0)));
+		// Delay
+				actions.put(Command.Delay,
+						new SimulatorAction("Parar", "stop.png",
+								"Parar la simulación", KeyEvent.VK_A,
+								"control shift P", () -> System.exit(0)));
 	}
 
 	private void generateReports() {
@@ -286,6 +291,7 @@ public class MainWindow extends JFrame
 
 		simulatorMenu = new JMenu("Simulador");
 		simulatorMenu.add(actions.get(Command.Execute));
+		simulatorMenu.add(actions.get(Command.Delay));
 		simulatorMenu.add(actions.get(Command.Reset));
 
 		reportsMenu = new JMenu("Informes");

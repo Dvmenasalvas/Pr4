@@ -46,6 +46,7 @@ public class ToolBar extends JToolBar {
 
 		add(actions.get(Command.InsertEvents));
 		add(actions.get(Command.Execute));
+		add(actions.get(Command.Delay));
 		add(actions.get(Command.Reset));
 
 		add(new JLabel("Pasos: "));
