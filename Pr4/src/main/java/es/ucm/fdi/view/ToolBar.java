@@ -22,6 +22,7 @@ import es.ucm.fdi.control.SimulatorAction;
 public class ToolBar extends JToolBar {
 	private HashMap<Command, SimulatorAction> actions;
 	private JSpinner stepsSpinner;
+	private JSpinner delaySpinner;
 	private JTextField timeViewer;
 
 	public ToolBar(HashMap<Command, SimulatorAction> actions, int timeLimit) {
@@ -33,6 +34,8 @@ public class ToolBar extends JToolBar {
 	private void initToolBar(int timeLimit) {
 		stepsSpinner = new JSpinner(
 				new SpinnerNumberModel(timeLimit, 1, 100, 1));
+		delaySpinner = new JSpinner(
+				new SpinnerNumberModel(0, 0, 1000, 10));
 		timeViewer = new JTextField();
 		timeViewer.setText("0");
 		timeViewer.setEditable(false);
@@ -48,6 +51,12 @@ public class ToolBar extends JToolBar {
 		add(actions.get(Command.Execute));
 		add(actions.get(Command.Delay));
 		add(actions.get(Command.Reset));
+		
+		add(new JLabel("Delay: "));
+		add(delaySpinner);
+		delaySpinner
+				.setToolTipText("<html>Determina el numero de milisegundos que <br>"
+						+ "tarda en avanzar al siguiente paso");
 
 		add(new JLabel("Pasos: "));
 		add(stepsSpinner);
