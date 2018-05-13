@@ -76,6 +76,8 @@ public class MainWindow extends JFrame
 	private JMenu simulatorMenu;
 	private JMenu reportsMenu;
 	private HashMap<Command, SimulatorAction> actions;
+	
+	private Stepper stepper;
 
 	public MainWindow(Controller controller, String inFileName, int timeLimit) {
 		super("Traffic Simulator");
@@ -84,6 +86,18 @@ public class MainWindow extends JFrame
 		this.controller = controller;
 		initGUI(timeLimit, inFileName);
 		controller.addSimulatorListener(this);
+		
+		stepper = new Stepper(() -> changeAll(false), 
+				() -> {
+					try {
+						controller.ejecuta(1, out);
+					} catch (IOException e) {
+						JOptionPane.showMessageDialog(this, e.getMessage(),
+								"Error de escritura",
+								JOptionPane.ERROR_MESSAGE);
+					}
+				},
+				() -> changeAll(true));
 
 		setSize(1250, 1000);
 		setLocationRelativeTo(null);
@@ -215,19 +229,17 @@ public class MainWindow extends JFrame
 
 		// Simulator related actions
 		actions.put(Command.Execute, new SimulatorAction("Ejecutar", "play.png",
-				"Ejecutar el simulador", KeyEvent.VK_E, "control E", () -> {
-					try {
-						controller.ejecuta(toolBar.getSpinnerValue(), out);
-					} catch (IOException e) {
-						JOptionPane.showMessageDialog(this, e.getMessage(),
-								"Error de escritura",
-								JOptionPane.ERROR_MESSAGE);
-					}
-				}));
+				"Ejecutar el simulador", KeyEvent.VK_E, "control E",
+				() -> stepper.start(toolBar.getSteps(), toolBar.getDelay())));
 		actions.put(Command.Reset,
 				new SimulatorAction("Reiniciar", "reset.png",
 						"Reiniciar el simulador", KeyEvent.VK_R, "control R",
 						() -> controller.reset()));
+		
+		actions.put(Command.Stop,
+				new SimulatorAction("Parar", "stop.png",
+						"Parar la simulación", KeyEvent.VK_D,
+						"control shift D", () -> stepper.stop()));
 
 		// Reports related actions
 		actions.put(Command.GenerateReports, new SimulatorAction("Generar",
@@ -252,13 +264,8 @@ public class MainWindow extends JFrame
 		// Exit
 		actions.put(Command.Exit,
 				new SimulatorAction("Salir", "exit.png",
-						"Salir de la aplicacion", KeyEvent.VK_A,
+						"Salir de la aplicacion", KeyEvent.VK_X,
 						"control shift X", () -> System.exit(0)));
-		// Delay
-				actions.put(Command.Delay,
-						new SimulatorAction("Parar", "stop.png",
-								"Parar la simulación", KeyEvent.VK_A,
-								"control shift P", () -> System.exit(0)));
 	}
 
 	private void generateReports() {
@@ -278,6 +285,21 @@ public class MainWindow extends JFrame
             reportsAreaPanel.setText(controller.getTrafficSimulator().report(so).toString());
 		}
 	}
+	
+	private void changeAll(boolean state) {
+		actions.get(Command.Stop).setEnabled(!state);
+		
+		actions.get(Command.LoadEvents).setEnabled(state);
+		actions.get(Command.InsertEvents).setEnabled(state);
+		actions.get(Command.SaveEvents).setEnabled(state);
+		actions.get(Command.CleanEvents).setEnabled(state);
+		actions.get(Command.InsertEvents).setEnabled(state);
+		actions.get(Command.Execute).setEnabled(state);
+		actions.get(Command.Reset).setEnabled(state);
+		actions.get(Command.GenerateReports).setEnabled(state);
+		actions.get(Command.CleanReports).setEnabled(state);
+		actions.get(Command.SaveReports).setEnabled(state);
+	}
 
 	private void addMenu() {
 		// add actions to menubar, and bar to window
@@ -291,7 +313,7 @@ public class MainWindow extends JFrame
 
 		simulatorMenu = new JMenu("Simulador");
 		simulatorMenu.add(actions.get(Command.Execute));
-		simulatorMenu.add(actions.get(Command.Delay));
+		simulatorMenu.add(actions.get(Command.Stop));
 		simulatorMenu.add(actions.get(Command.Reset));
 
 		reportsMenu = new JMenu("Informes");
@@ -391,6 +413,7 @@ public class MainWindow extends JFrame
 		actions.get(Command.GenerateReports).setEnabled(false);
 		actions.get(Command.CleanReports).setEnabled(false);
 		actions.get(Command.SaveReports).setEnabled(false);
+		actions.get(Command.Stop).setEnabled(false);
 	}
 
 	@Override
@@ -401,6 +424,7 @@ public class MainWindow extends JFrame
 		actions.get(Command.GenerateReports).setEnabled(false);
 		actions.get(Command.CleanReports).setEnabled(false);
 		actions.get(Command.SaveReports).setEnabled(false);
+		actions.get(Command.Stop).setEnabled(false);
 	}
 
 	@Override
@@ -413,9 +437,6 @@ public class MainWindow extends JFrame
 	@Override
 	public void advanced(UpdateEvent ue) {
 		refreshInfo(ue);
-		actions.get(Command.GenerateReports).setEnabled(true);
-		actions.get(Command.CleanReports).setEnabled(true);
-		actions.get(Command.SaveReports).setEnabled(true);
 	}
 
 	@Override

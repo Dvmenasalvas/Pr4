@@ -49,7 +49,7 @@ public class ToolBar extends JToolBar {
 
 		add(actions.get(Command.InsertEvents));
 		add(actions.get(Command.Execute));
-		add(actions.get(Command.Delay));
+		add(actions.get(Command.Stop));
 		add(actions.get(Command.Reset));
 		
 		add(new JLabel("Delay: "));
@@ -79,8 +79,12 @@ public class ToolBar extends JToolBar {
 
 	}
 
-	public int getSpinnerValue() {
+	public int getSteps() {
 		return (int) stepsSpinner.getValue();
+	}
+	
+	public int getDelay() {
+		return (int) delaySpinner.getValue();
 	}
 
 	public void setTimeValue(int time) {
