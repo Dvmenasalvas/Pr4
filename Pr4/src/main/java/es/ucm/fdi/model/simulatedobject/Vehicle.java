@@ -57,10 +57,7 @@ public class Vehicle extends SimObject
 
 	public void setVelocidadActual(int v) {
 		if (faultyTime == 0) {
-			if (v > maxSpeed)
-				actSpeed = maxSpeed;
-			else
-				actSpeed = v;
+			actSpeed = (v > maxSpeed) ? maxSpeed :  v;
 		}
 	}
 
