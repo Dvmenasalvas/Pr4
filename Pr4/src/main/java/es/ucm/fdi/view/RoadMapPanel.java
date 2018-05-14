@@ -6,6 +6,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.border.TitledBorder;
 
 import es.ucm.fdi.extra.graphlayout.Dot;
 import es.ucm.fdi.extra.graphlayout.Edge;
@@ -23,22 +25,24 @@ import es.ucm.fdi.model.simulatedobject.Road;
  */
 
 public class RoadMapPanel extends JPanel {
-	private GraphComponent _graphComp;
+	private GraphComponent graphComp;
 	private RoadMap rm;
 
 	public RoadMapPanel(RoadMap rm) {
 		super();
 		this.rm = rm;
-		initGUI();
+		
+		graphComp = new GraphComponent();
+		JScrollPane scroll =
+				new JScrollPane(graphComp, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
+						JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+
+		scroll.setBorder(new TitledBorder("Mapa"));
+		add(scroll);
 	}
 
 	public void setRoadMap(RoadMap rm) {
 		this.rm = rm;
-	}
-
-	private void initGUI() {
-		_graphComp = new GraphComponent();
-		add(_graphComp, BorderLayout.CENTER);
 	}
 
 	protected void generateGraph() {
@@ -65,6 +69,6 @@ public class RoadMapPanel extends JPanel {
 			++i;
 		}
 
-		_graphComp.setGraph(g);
+		graphComp.setGraph(g);
 	}
 }

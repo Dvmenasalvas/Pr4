@@ -1,6 +1,7 @@
 package es.ucm.fdi.view;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -20,6 +21,7 @@ import java.nio.file.Files;
 import java.util.HashMap;
 import java.util.Scanner;
 
+import javax.swing.BorderFactory;
 import javax.swing.JFileChooser;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
@@ -49,7 +51,7 @@ public class TextPanel extends JPanel {
 	private JPopupMenu rightClick;
 	private final String TEMPLATES = "src/main/resources/templates.ini";
 
-	public TextPanel(HashMap<Command, SimulatorAction> actions,
+	public TextPanel(HashMap<Command, SimulatorAction> actions, String borderTitle,
 			boolean editable) throws IOException {
 		super();
 		fc = new JFileChooser();
@@ -58,7 +60,11 @@ public class TextPanel extends JPanel {
 		eventsEditor.setLineWrap(true);
 		eventsEditor.setWrapStyleWord(true);
 		this.actions = actions;
-		this.add(eventsEditor);
+		
+		JScrollPane scroll = new JScrollPane(eventsEditor, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+		scroll.setBorder(new TitledBorder(borderTitle));
+		
+		add(scroll);
 
 		if (editable) {
 			addRightClick();

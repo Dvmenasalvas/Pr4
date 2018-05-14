@@ -1,13 +1,16 @@
 package es.ucm.fdi.view;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.border.Border;
 import javax.swing.border.TitledBorder;
 import javax.swing.table.AbstractTableModel;
 
@@ -29,14 +32,19 @@ public class SimulatorTablePanel extends JPanel {
 	int lastRow = -1;
 
 	public SimulatorTablePanel(List<? extends Describable> elements,
-			String[] fieldNames) {
+			String[] fieldNames, String borderTitle) {
 		super(new BorderLayout());
 		this.elements = elements;
 		this.fieldNames = fieldNames;
 
 		tableModel = new ListOfMapsTableModel();
 		eventsTable = new JTable(tableModel);
-		add(new JScrollPane(eventsTable,JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED));
+		
+		JScrollPane scroll = new JScrollPane(eventsTable,JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+		Border b = BorderFactory.createLineBorder(Color.gray, 2);
+		scroll.setBorder(BorderFactory.createTitledBorder(b,borderTitle));
+		
+		add(scroll);
 	}
 
 	public void setElements(List<? extends Describable> elements) {

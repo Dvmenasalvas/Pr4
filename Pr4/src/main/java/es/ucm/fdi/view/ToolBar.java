@@ -42,7 +42,7 @@ public class ToolBar extends JToolBar {
 		((NumberFormatter) textField.getFormatter()).setAllowsInvalid(false);
 		
 		delaySpinner = new JSpinner(
-				new SpinnerNumberModel(0, 0, 1000, 10));
+				new SpinnerNumberModel(50, 0, 1000, 50));
 		delaySpinner.setMaximumSize(new Dimension(60,30));
 		textField = ((JSpinner.NumberEditor) delaySpinner.getEditor()).getTextField();
 		((NumberFormatter) textField.getFormatter()).setAllowsInvalid(false);

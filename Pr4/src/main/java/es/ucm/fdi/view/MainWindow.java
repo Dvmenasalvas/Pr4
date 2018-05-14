@@ -99,10 +99,10 @@ public class MainWindow extends JFrame
 				},
 				() -> changeAll(true));
 
-		setSize(1250, 1000);
+		setSize(1250, 1050);
 		setLocationRelativeTo(null);
 		setVisible(true);
-		mainPanel.setDividerLocation(.5);
+		mainPanel.setDividerLocation(.45);
 	}
 
 	private void initGUI(int timeLimit, String inFileName) {
@@ -136,45 +136,45 @@ public class MainWindow extends JFrame
 
 		// EventsEditor
 		try {
-			eventsEditor = new TextPanel(actions, true);
+			eventsEditor = new TextPanel(actions, "Editor de eventos", true);
 		} catch (IOException e1) {
 			JOptionPane.showMessageDialog(this,
 					"No se ha podido leer correctamente el archivos de templates.",
 					"Error de lectura", JOptionPane.ERROR_MESSAGE);
 		}
-		addTextArea(eventsEditor, "Editor de eventos", inFileName, topPanel);
+		addTextArea(eventsEditor,inFileName, topPanel);
 
 		// Events table
 		List<Describable> events = new ArrayList<Describable>();
 		String[] cEvents = { "#", "Tiempo", "Tipo" };
-		eventsTable = new SimulatorTablePanel(events, cEvents);
-		addTable(eventsTable, "Editor de eventos", topPanel);
+		eventsTable = new SimulatorTablePanel(events, cEvents, "Eventos");
+		addTable(eventsTable, topPanel);
 
 		// ReportArea
 		try {
-			reportsAreaPanel = new TextPanel(actions, false);
+			reportsAreaPanel = new TextPanel(actions,"Informes", false);
 		} catch (IOException e) {
 			// Esta excepcion nunca se lanza
 		}
-		addTextArea(reportsAreaPanel, "Informe", null, topPanel);
+		addTextArea(reportsAreaPanel, null, topPanel);
 		customizedOut = new CustomizedOut(reportsAreaPanel);
 
 		// Junctions table
 		String[] cJunctions = { "ID", "Verde", "Rojo" };
-		junctionsTable = new SimulatorTablePanel(events, cJunctions);
-		addTable(junctionsTable, "Cruces", bottomLeftPanel);
+		junctionsTable = new SimulatorTablePanel(events, cJunctions, "Cruzes");
+		addTable(junctionsTable, bottomLeftPanel);
 
 		// Vehicles table
 		String[] cVehicles = { "ID", "Carretera", "Localizacion", "Velocidad",
 				"Km", "Unidades de averia", "Itinerario" };
-		vehiclesTable = new SimulatorTablePanel(events, cVehicles);
-		addTable(vehiclesTable, "Vehiculos", bottomLeftPanel);
+		vehiclesTable = new SimulatorTablePanel(events, cVehicles,"Vehiculos");
+		addTable(vehiclesTable, bottomLeftPanel);
 
 		// Roads table
 		String[] cRoads = { "ID", "Inicio", "Final", "Longitud",
 				"Maxima Velocidad", "Vehiculos" };
-		roadsTable = new SimulatorTablePanel(events, cRoads);
-		addTable(roadsTable, "Carreteras", bottomLeftPanel);
+		roadsTable = new SimulatorTablePanel(events, cRoads, "Carreteras");
+		addTable(roadsTable, bottomLeftPanel);
 
 		addMap();
 		addStatusBar();
@@ -341,15 +341,9 @@ public class MainWindow extends JFrame
 		}
 	}
 
-	private void addTextArea(TextPanel textArea, String borderName,
+	private void addTextArea(TextPanel textArea,
 			String inFileName, JPanel container) {
-		textArea.setBorder(new TitledBorder(borderName));
-
-		container.add(
-				new JScrollPane(textArea,
-						JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
-						JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED),
-				BorderLayout.CENTER);
+		container.add(textArea);
 
 		if (inFileName != null) {
 			try {
@@ -362,28 +356,16 @@ public class MainWindow extends JFrame
 		}
 	}
 
-	private void addTable(SimulatorTablePanel sPanel, String borderName,
+	private void addTable(SimulatorTablePanel sPanel,
 			JPanel container) {
-		TitledBorder controlBorder = new TitledBorder(borderName);
-		sPanel.setBorder(controlBorder);
-
-		container.add(
-				new JScrollPane(sPanel,
-						JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
-						JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED),
-				BorderLayout.CENTER);
+		container.add(sPanel);
 	}
 
 	private void addMap() {
 		RoadMap rm = new RoadMap();
 		map = new RoadMapPanel(rm);
 
-		map.setBorder(new TitledBorder("RoadMap"));
-
-		bottomPanel.add(
-				new JScrollPane(map, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
-						JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED),
-				BorderLayout.CENTER);
+		bottomPanel.add(map);
 	}
 
 	private void addStatusBar() {
