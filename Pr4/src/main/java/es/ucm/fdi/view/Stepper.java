@@ -5,7 +5,7 @@ public class Stepper {
 	private Runnable during;
 	private Runnable after;
 	
-	private boolean stopRequested = false;
+	private volatile boolean stopRequested = false;
 	private int steps;
 	
 	public Stepper(Runnable before, Runnable during, Runnable after) {

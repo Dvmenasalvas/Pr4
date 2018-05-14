@@ -1,14 +1,17 @@
 package es.ucm.fdi.view;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.util.HashMap;
 
 import javax.swing.BoxLayout;
+import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
 import javax.swing.JSpinner;
 import javax.swing.JTextField;
 import javax.swing.JToolBar;
 import javax.swing.SpinnerNumberModel;
+import javax.swing.text.NumberFormatter;
 
 import es.ucm.fdi.control.SimulatorAction;
 
@@ -34,12 +37,20 @@ public class ToolBar extends JToolBar {
 	private void initToolBar(int timeLimit) {
 		stepsSpinner = new JSpinner(
 				new SpinnerNumberModel(timeLimit, 1, 100, 1));
+		stepsSpinner.setMaximumSize(new Dimension(60,30));
+		JFormattedTextField textField = ((JSpinner.NumberEditor) stepsSpinner.getEditor()).getTextField();
+		((NumberFormatter) textField.getFormatter()).setAllowsInvalid(false);
+		
 		delaySpinner = new JSpinner(
 				new SpinnerNumberModel(0, 0, 1000, 10));
-		timeViewer = new JTextField();
-		timeViewer.setText("0");
+		delaySpinner.setMaximumSize(new Dimension(60,30));
+		textField = ((JSpinner.NumberEditor) delaySpinner.getEditor()).getTextField();
+		((NumberFormatter) textField.getFormatter()).setAllowsInvalid(false);
+		
+		timeViewer = new JTextField("0");
 		timeViewer.setEditable(false);
-		timeViewer.setPreferredSize(new Dimension(50, 60));
+		timeViewer.setMaximumSize(new Dimension(65, 30));
+		timeViewer.setBackground(Color.WHITE);
 
 		// add actions to toolbar, and bar to window
 		add(actions.get(Command.LoadEvents));

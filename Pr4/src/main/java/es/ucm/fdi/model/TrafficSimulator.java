@@ -49,6 +49,7 @@ public class TrafficSimulator {
 
 	private void fireUpdateEvent(EventType type, String error) {
 		UpdateEvent ue = new UpdateEvent(type);
+		SwingUtilities.invokeLater(() -> {
 		switch (type) {
 		case ADVANCED:
 			for (SimulatorListener l : listeners) {
@@ -73,6 +74,7 @@ public class TrafficSimulator {
 		default:
 			break;
 		}
+		});
 
 	}
 
