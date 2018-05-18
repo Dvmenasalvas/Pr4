@@ -39,7 +39,7 @@ public class Controller {
 		return e;
 	}
 
-	public void ejecuta(int pasos, OutputStream out) throws IOException {
+	public void ejecuta(int pasos, OutputStream out){
 		ts.ejecuta(pasos, out);
 	}
 	

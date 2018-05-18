@@ -102,8 +102,7 @@ public class TrafficSimulator {
 		fireUpdateEvent(EventType.RESET, "");
 	}
 
-	public void ejecuta(int pasosSimulacion, OutputStream out)
-			throws IOException {
+	public void ejecuta(int pasosSimulacion, OutputStream out){
 		int limiteTiempo = time + pasosSimulacion;
 		while (time < limiteTiempo) {
 			if (events.containsKey(time)) {
@@ -136,11 +135,14 @@ public class TrafficSimulator {
 				writeObjects(simObjects.getRoads(), out);
 				writeObjects(simObjects.getVehicles(), out);
 			} catch (IOException e1) {
-				throw new IOException(
-						"Excepcion de escritura de objetos en tiempo: " + time,
-						e1);
+				fireUpdateEvent(EventType.ERROR,
+						"Excepcion de escritura de objetos en tiempo: "
+						+ time + '\n' +
+						e1.getMessage() + '\n'
+						+ "Este informe no se generara correctamente.");
+			} finally {
+				fireUpdateEvent(EventType.ADVANCED, "");
 			}
-			fireUpdateEvent(EventType.ADVANCED, "");
 		}
 	}
 

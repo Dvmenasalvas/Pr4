@@ -17,26 +17,18 @@ import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
-import javax.swing.border.Border;
-import javax.swing.border.TitledBorder;
 
 import es.ucm.fdi.control.Controller;
 import es.ucm.fdi.control.SimulatorAction;
-import es.ucm.fdi.model.EventType;
 import es.ucm.fdi.model.RoadMap;
 import es.ucm.fdi.model.TrafficSimulator.SimulatorListener;
 import es.ucm.fdi.model.TrafficSimulator.UpdateEvent;
-import es.ucm.fdi.model.simulatedobject.Junction;
-import es.ucm.fdi.model.simulatedobject.Road;
 import es.ucm.fdi.model.simulatedobject.SimObject;
-import es.ucm.fdi.model.simulatedobject.Vehicle;
 import es.ucm.fdi.view.SimulatorTablePanel.Describable;
 
 /**
@@ -88,15 +80,7 @@ public class MainWindow extends JFrame
 		controller.addSimulatorListener(this);
 		
 		stepper = new Stepper(() -> changeAll(false), 
-				() -> {
-					try {
-						controller.ejecuta(1, out);
-					} catch (IOException e) {
-						JOptionPane.showMessageDialog(this, e.getMessage(),
-								"Error de escritura",
-								JOptionPane.ERROR_MESSAGE);
-					}
-				},
+				() -> controller.ejecuta(1, out),
 				() -> changeAll(true));
 
 		setSize(1250, 1050);
@@ -138,9 +122,8 @@ public class MainWindow extends JFrame
 		try {
 			eventsEditor = new TextPanel(actions, "Editor de eventos", true);
 		} catch (IOException e1) {
-			JOptionPane.showMessageDialog(this,
-					"No se ha podido leer correctamente el archivos de templates.",
-					"Error de lectura", JOptionPane.ERROR_MESSAGE);
+			showException(e1, "No se ha podido leer correctamente el archivos de templates.",
+					"Error de lectura");
 		}
 		addTextArea(eventsEditor,inFileName, topPanel);
 
@@ -191,9 +174,7 @@ public class MainWindow extends JFrame
 							try {
 								eventsEditor.loadEvents();
 							} catch (FileNotFoundException e3) {
-								JOptionPane.showMessageDialog(this,
-										e3.getMessage(), "Error de lectura",
-										JOptionPane.ERROR_MESSAGE);
+								showException(e3,"", "Error de lectura");
 							}
 						}));
 		actions.put(Command.SaveEvents,
@@ -203,9 +184,7 @@ public class MainWindow extends JFrame
 							try {
 								eventsEditor.saveEvents();
 							} catch (FileNotFoundException e2) {
-								JOptionPane.showMessageDialog(this,
-										e2.getMessage(), "Error de escritura",
-										JOptionPane.ERROR_MESSAGE);
+								showException(e2,"","Error de escritura");
 							}
 						}));
 		actions.put(Command.CleanEvents,
@@ -220,10 +199,7 @@ public class MainWindow extends JFrame
 								controller.insertarEventos(
 										eventsEditor.getText());
 							} catch (IOException e1) {
-								JOptionPane.showMessageDialog(this,
-										e1.getMessage(),
-										"Error de formato de evento",
-										JOptionPane.ERROR_MESSAGE);
+								showException(e1, "","Error de formato de evento");
 							}
 						}));
 
@@ -255,9 +231,7 @@ public class MainWindow extends JFrame
 							try {
 								reportsAreaPanel.saveEvents();
 							} catch (FileNotFoundException e) {
-								JOptionPane.showMessageDialog(this,
-										e.getMessage(), "Error de escritura",
-										JOptionPane.ERROR_MESSAGE);
+								showException(e, null, "Error de escritura");
 							}
 						}));
 
@@ -349,9 +323,8 @@ public class MainWindow extends JFrame
 			try {
 				textArea.setText(TextPanel.readFile(new File(inFileName)));
 			} catch (FileNotFoundException e) {
-				JOptionPane.showMessageDialog(this,
-						"No se ha podido encontrar el archivo: " + inFileName,
-						"Error de lectura", JOptionPane.ERROR_MESSAGE);
+				showException(e, "No se ha podido encontrar el archivo: " + inFileName,
+							"Error de lectura");
 			}
 		}
 	}
@@ -373,6 +346,23 @@ public class MainWindow extends JFrame
 		statusBar.setBorder(BorderFactory.createLineBorder(Color.black));
 		add(statusBar, BorderLayout.SOUTH);
 	}
+	
+	private void showException(Exception e, String msg, String title) {
+		String msgF = msg == null ? "" : msg;
+		msgF += '\n' + exceptionString(e);
+		JOptionPane.showMessageDialog(this,
+				msgF, title,
+				JOptionPane.ERROR_MESSAGE);
+	}
+	
+	private String exceptionString(Exception e) {
+		StringBuilder out = new StringBuilder();
+		while(e != null) {
+			out.append(e.getMessage() + '\n');
+			e = (Exception) e.getCause();
+		}
+		return out.toString();
+	}
 
 	private void refreshInfo(UpdateEvent ue) {
 		map.setRoadMap(ue.getRoadMap());
@@ -387,9 +377,7 @@ public class MainWindow extends JFrame
 		reportsSelector.setData(ue.getRoadMap().getVehicles(), ue.getRoadMap().getRoads(), ue.getRoadMap().getJunctions());
 	}
 
-	@Override
-	public void registered(UpdateEvent ue) {
-		refreshInfo(ue);
+	private void reset() {
 		actions.get(Command.Execute).setEnabled(false);
 		actions.get(Command.Reset).setEnabled(false);
 		actions.get(Command.GenerateReports).setEnabled(false);
@@ -397,16 +385,16 @@ public class MainWindow extends JFrame
 		actions.get(Command.SaveReports).setEnabled(false);
 		actions.get(Command.Stop).setEnabled(false);
 	}
+	@Override
+	public void registered(UpdateEvent ue) {
+		refreshInfo(ue);
+		reset();
+	}
 
 	@Override
 	public void reset(UpdateEvent ue) {
 		refreshInfo(ue);
-		actions.get(Command.Execute).setEnabled(false);
-		actions.get(Command.Reset).setEnabled(false);
-		actions.get(Command.GenerateReports).setEnabled(false);
-		actions.get(Command.CleanReports).setEnabled(false);
-		actions.get(Command.SaveReports).setEnabled(false);
-		actions.get(Command.Stop).setEnabled(false);
+		reset();
 	}
 
 	@Override

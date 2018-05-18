@@ -34,8 +34,7 @@ public class RoadMapPanel extends JPanel {
 		
 		graphComp = new GraphComponent();
 		JScrollPane scroll =
-				new JScrollPane(graphComp, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
-						JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+				new JScrollPane(graphComp);
 
 		scroll.setBorder(new TitledBorder("Mapa"));
 		add(scroll);

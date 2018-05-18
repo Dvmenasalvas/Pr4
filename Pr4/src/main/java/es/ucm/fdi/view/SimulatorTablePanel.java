@@ -24,12 +24,12 @@ import javax.swing.table.AbstractTableModel;
  */
 
 public class SimulatorTablePanel extends JPanel {
-	ListOfMapsTableModel tableModel;
-	JTable eventsTable;
-	List<? extends Describable> elements;
-	String[] fieldNames;
-	Map<String, String> lastDescription;
-	int lastRow = -1;
+	private ListOfMapsTableModel tableModel;
+	private JTable eventsTable;
+	private List<? extends Describable> elements;
+	private String[] fieldNames;
+	private Map<String, String> lastDescription;
+	private int lastRow = -1;
 
 	public SimulatorTablePanel(List<? extends Describable> elements,
 			String[] fieldNames, String borderTitle) {
@@ -40,7 +40,7 @@ public class SimulatorTablePanel extends JPanel {
 		tableModel = new ListOfMapsTableModel();
 		eventsTable = new JTable(tableModel);
 		
-		JScrollPane scroll = new JScrollPane(eventsTable,JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+		JScrollPane scroll = new JScrollPane(eventsTable);
 		Border b = BorderFactory.createLineBorder(Color.gray, 2);
 		scroll.setBorder(BorderFactory.createTitledBorder(b,borderTitle));
 		

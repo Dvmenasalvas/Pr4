@@ -5,6 +5,8 @@ import javax.swing.JScrollPane;
 import javax.swing.border.Border;
 import javax.swing.border.TitledBorder;
 
+import es.ucm.fdi.view.SimObjectListModel;
+
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -22,8 +24,8 @@ public class DialogWindow extends JDialog {
 
 	private static final long serialVersionUID = 1L;
 
-	private MyListModel<String> _itemsListModel;
-	private MyListModel<Integer> _numsListModel;
+	private SimObjectListModel<String> _itemsListModel;
+	private SimObjectListModel<Integer> _numsListModel;
 
 	private int _status;
 	private JList<String> _itemsList;
@@ -63,8 +65,8 @@ public class DialogWindow extends JDialog {
 		itemsPanel.setMinimumSize(new Dimension(100, 100));
 		numsPanel.setMinimumSize(new Dimension(100, 100));
 
-		_itemsListModel = new MyListModel<>();
-		_numsListModel = new MyListModel<>();
+		_itemsListModel = new SimObjectListModel<>();
+		_numsListModel = new SimObjectListModel<>();
 
 		_itemsList = new JList<>(_itemsListModel);
 		_numsList = new JList<>(_numsListModel);

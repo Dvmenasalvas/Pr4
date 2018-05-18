@@ -5,7 +5,6 @@ import javax.swing.JScrollPane;
 import javax.swing.border.Border;
 import javax.swing.border.TitledBorder;
 
-import es.ucm.fdi.extra.dialog.MyListModel;
 import es.ucm.fdi.model.RoadMap;
 import es.ucm.fdi.model.simulatedobject.Junction;
 import es.ucm.fdi.model.simulatedobject.Road;
@@ -33,9 +32,9 @@ public class ReportWindow extends JDialog {
 	JPanel mainPanel;
 	JPanel contentPanel;
 	
-	private MyListModel<String> vehiclesListModel;
-	private MyListModel<String> roadsListModel;
-	private MyListModel<String> junctionsListModel;
+	private SimObjectListModel<String> vehiclesListModel;
+	private SimObjectListModel<String> roadsListModel;
+	private SimObjectListModel<String> junctionsListModel;
 
 	private int status;
 	private JList<String> vehiclesList;
@@ -69,9 +68,9 @@ public class ReportWindow extends JDialog {
 		addPanel(roadsPanel,"Carreteras");
 		addPanel(junctionsPanel,"Cruzes");
 
-		vehiclesListModel = new MyListModel<>();
-		roadsListModel = new MyListModel<>();
-		junctionsListModel = new MyListModel<>();
+		vehiclesListModel = new SimObjectListModel<>();
+		roadsListModel = new SimObjectListModel<>();
+		junctionsListModel = new SimObjectListModel<>();
 
 		vehiclesList = new JList<>(vehiclesListModel);
 		roadsList = new JList<>(roadsListModel);
@@ -82,21 +81,15 @@ public class ReportWindow extends JDialog {
 		addCleanSelectionListener(junctionsList);
 
 		vehiclesPanel.add(
-				new JScrollPane(vehiclesList,
-						JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
-						JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED),
+				new JScrollPane(vehiclesList),
 				BorderLayout.CENTER);
 
 		roadsPanel.add(
-				new JScrollPane(roadsList,
-						JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
-						JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED),
+				new JScrollPane(roadsList),
 				BorderLayout.CENTER);
 		
 		junctionsPanel.add(
-				new JScrollPane(junctionsList,
-						JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
-						JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED),
+				new JScrollPane(junctionsList),
 				BorderLayout.CENTER);
 
 		JPanel buttonsPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));

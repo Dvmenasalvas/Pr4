@@ -1,15 +1,15 @@
-package es.ucm.fdi.extra.dialog;
+package es.ucm.fdi.view;
 
 import java.util.List;
 
 import javax.swing.DefaultListModel;
 
-public class MyListModel<E> extends DefaultListModel<E> {
+public class SimObjectListModel<E> extends DefaultListModel<E> {
 
 	private static final long serialVersionUID = 1L;
 	List<E> list;
 
-	public MyListModel() {
+	public SimObjectListModel() {
 		list = null;
 	}
 

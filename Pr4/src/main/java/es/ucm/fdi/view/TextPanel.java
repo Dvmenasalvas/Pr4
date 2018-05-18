@@ -49,7 +49,7 @@ public class TextPanel extends JPanel {
 	private JFileChooser fc;
 	private HashMap<Command, SimulatorAction> actions;
 	private JPopupMenu rightClick;
-	private final String TEMPLATES = "src/main/resources/templates.ini";
+	private final String TEMPLATES = "templates.ini";
 
 	public TextPanel(HashMap<Command, SimulatorAction> actions, String borderTitle,
 			boolean editable) throws IOException {
@@ -61,7 +61,7 @@ public class TextPanel extends JPanel {
 		eventsEditor.setWrapStyleWord(true);
 		this.actions = actions;
 		
-		JScrollPane scroll = new JScrollPane(eventsEditor, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+		JScrollPane scroll = new JScrollPane(eventsEditor);
 		scroll.setBorder(new TitledBorder(borderTitle));
 		
 		add(scroll);
@@ -80,8 +80,8 @@ public class TextPanel extends JPanel {
 		JMenu subMenu = new JMenu("Add template");
 		rightClick.add(subMenu);
 		// Leemos fichero .ini
-		File file = new File(TEMPLATES);
-		InputStream s = new FileInputStream(file);
+		
+		InputStream s = this.getClass().getClassLoader().getResourceAsStream(TEMPLATES);
 		Ini templates = new Ini(s);
 
 		for (IniSection sec : templates.getSections()) {
